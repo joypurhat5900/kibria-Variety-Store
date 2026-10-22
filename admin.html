@@ -67,6 +67,7 @@ dialog{max-height:90vh;overflow:auto}
 .cm div{max-width:82%;padding:8px 12px;border-radius:14px;background:var(--bg);border:1px solid var(--line);align-self:flex-start;word-break:break-word}
 .cm div.me{align-self:flex-end;background:var(--pri);color:#fff;border-color:var(--pri)}
 .cm small{display:block;opacity:.7;font-size:11px}
+.qrr{padding:10px 0;border-bottom:1px solid var(--line)}.qrr:last-child{border:0}.qrr img{display:block;max-width:150px;margin:6px 0;border:1px solid var(--line);border-radius:8px;background:#fff}
 </style></head><body>
 <header><div class="w"><div class="logo">নেটলিংক<b>.</b> অ্যাডমিন</div><div class="hr"><button class="lk" id="out" hidden>লগআউট</button></div></div></header>
 <section id="lg" class="w login"><div class="box plain"><h2 style="margin:0 0 4px">অ্যাডমিন লগইন</h2>
@@ -91,7 +92,7 @@ dialog{max-height:90vh;overflow:auto}
 <div class="tp" id="t5" hidden><h2>লাইভ চ্যাট</h2><div class="pk" id="cv"></div></div>
 
 <div class="tp" id="t4" hidden>
-<h2>মার্চেন্ট নম্বর</h2><div class="pk"><div class="row"><div><label for="mb">বিকাশ</label><input id="mb" maxlength="11"></div><div><label for="mn">নগদ</label><input id="mn" maxlength="11"></div></div><label for="mr">রকেট</label><input id="mr" maxlength="12"></div>
+<h2>অ্যাড মানি QR কোড</h2><div class="pk"><p class="hint" style="margin:0 0 6px">গ্রাহকের অ্যাড মানি পেজে শুধু এই QR দেখাবে। ছবি বাছলেই আপলোড হয়ে যাবে, সেভ বাটন লাগবে না। নতুন ছবি দিলে আগেরটা বদলে যাবে।</p><div id="qrl"></div></div>
 <h2>বিল পে অপশন</h2><div class="pk"><p class="hint" style="margin:0 0 6px">প্রতি লাইনে একটা ধরন: <b>ধরন: কোম্পানি১, কোম্পানি২</b>। নামে "প্রিপেইড" থাকলে গ্রাহকের কাছে মাস লুকানো থাকবে, বাকিগুলোতে মাস আসবে।</p><textarea id="bt"></textarea>
 <label for="bmn">বিলের মাসের তালিকা (সাল সহ), কত মাস পর্যন্ত দেখাবে</label><select id="bmn"></select></div>
 <h2>হোমের হেল্পলাইন বক্স</h2><div class="pk"><label for="p1">শিরোনাম</label><input id="p1" maxlength="60" placeholder="যেমন: ২৪/৭ সেবা"><label for="p2">লেখা</label><input id="p2" maxlength="120" placeholder="যেমন: সমস্যায় হেল্পলাইন ১২১"><p class="hint">দুটোই খালি রাখলে বক্সটা লুকিয়ে যাবে।</p></div>
@@ -99,13 +100,14 @@ dialog{max-height:90vh;overflow:auto}
 <label for="al">ডাউনলোড লিংক (ঐচ্ছিক, https:// দিয়ে শুরু)</label><input id="al" maxlength="300" placeholder="https://..."><p class="hint">লিংক দিলে বাটনে চাপলে ওই লিংক খুলবে (যেমন APK)। না দিলে ফোনে সরাসরি ইনস্টল হবে।</p></div>
 <h2>চলন্ত নিউজ</h2><div class="pk"><label for="nw">গ্রাহকের পেজের ওপরে চলবে (খালি রাখলে বন্ধ)</label><input id="nw" maxlength="300"></div>
 <h2>অপারেটরের অফার</h2><div class="pk"><p class="hint" style="margin:0 0 6px">প্রতি লাইনে: <b>অপারেটর | অফারের নাম | দাম</b> (অপারেটর: গ্রামীণফোন, রবি, বাংলালিংক, এয়ারটেল, টেলিটক)</p><textarea id="ot" style="min-height:220px"></textarea></div>
+<h2>বাংলা লেখার ফন্ট</h2><div class="pk"><select id="fs"></select></div>
+<button class="go" id="ss">সব সেটিংস সেভ করুন</button>
 <h2>টেলিগ্রাম বট</h2><div class="pk"><p class="hint" id="tgs" style="margin:0 0 6px"></p>
 <label for="tgt">Bot Token (BotFather থেকে)</label><input id="tgt" type="password" autocomplete="off" placeholder="খালি রাখলে আগেরটাই থাকবে">
 <label for="tgc">Chat ID</label><input id="tgc" autocomplete="off" placeholder="যেমন 123456789 বা -100123...">
 <div class="row"><button class="btn2 g" data-a="tgsave">সেভ</button><button class="btn2" data-a="tgtest">টেস্ট মেসেজ</button></div><button class="btn2 r" style="width:100%" data-a="tgclear">বট সরিয়ে দিন</button>
 <p class="hint">বটকে টেলিগ্রামে /start পাঠান। Chat ID পেতে @userinfobot কে মেসেজ দিন বা getUpdates লিংক খুলুন।</p></div>
-<h2>বাংলা লেখার ফন্ট</h2><div class="pk"><select id="fs"></select></div>
-<button class="go" id="ss">সব সেটিংস সেভ করুন</button></div>
+</div>
 </main></div>
 
 <dialog id="cd"><h3 id="ctt" style="margin:0 0 6px"></h3><div id="cin"></div>
@@ -130,7 +132,7 @@ const E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt
 const M=n=>'৳'+bn(+n),dt=t=>new Date(t).toLocaleString('bn-BD');
 const KIND={recharge:'রিচার্জ',bill:'বিল পে',send:'সেন্ড মানি',topup:'ব্যালেন্স যোগ',adjust:'অ্যাডমিন সমন্বয়',refund:'টাকা ফেরত'};
 const ST={pending:['প্রক্রিয়াধীন','ps'],completed:['সম্পন্ন','pa'],refunded:['ফেল · ফেরত','pr'],approved:['যোগ হয়েছে','pa'],rejected:['বাতিল','pr']};
-const PN={bkash:'বিকাশ',nagad:'নগদ',rocket:'রকেট'};
+const PN={bkash:'বিকাশ',nagad:'নগদ',rocket:'রকেট',qr:'QR পেমেন্ট'};
 const DEF={'বিদ্যুৎ':['নেসকো প্রিপেইড','নেসকো পোস্টপেইড','ডেসকো','ডিপিডিসি','পল্লী বিদ্যুৎ'],'গ্যাস':['তিতাস গ্যাস','বাখরাবাদ গ্যাস','জালালাবাদ গ্যাস'],'পানি':['ঢাকা ওয়াসা','চট্টগ্রাম ওয়াসা','খুলনা ওয়াসা'],'ইন্টারনেট':['লিংক৩','আমরা নেটওয়ার্কস','ক্যারিয়ার ব্রডব্যান্ড'],'ল্যান্ডফোন':['বিটিসিএল']};
 const FONTS={'Hind Siliguri':"'Hind Siliguri'",'Noto Sans Bengali':"'Noto Sans Bengali'",'Anek Bangla':"'Anek Bangla'",'Baloo Da 2':"'Baloo Da 2'",'Noto Serif Bengali':"'Noto Serif Bengali'",'Tiro Bangla':"'Tiro Bangla'",'সিস্টেম ফন্ট':'system-ui'};
 const applyFont=n=>document.documentElement.style.setProperty('--font',FONTS[n]||FONTS['Hind Siliguri']);
@@ -140,10 +142,21 @@ $('#fs').onchange=e=>{try{localStorage.setItem('nl_font',e.target.value)}catch(x
 const DEF_OFF={'গ্রামীণফোন':[['১ জিবি · ৭ দিন',49],['৫ জিবি · ৭ দিন',149],['১৫ জিবি · ৩০ দিন',349],['২০০ মিনিট · ৩০ দিন',179]],'রবি':[['১ জিবি · ৭ দিন',48],['৫ জিবি · ৭ দিন',147],['১৫ জিবি · ৩০ দিন',345],['৩০০ মিনিট · ৩০ দিন',199]],'বাংলালিংক':[['১ জিবি · ৭ দিন',47],['৬ জিবি · ৭ দিন',146],['১৬ জিবি · ৩০ দিন',348],['২৫০ মিনিট · ৩০ দিন',189]],'এয়ারটেল':[['১ জিবি · ৭ দিন',46],['৫ জিবি · ৭ দিন',145],['১৫ জিবি · ৩০ দিন',340]],'টেলিটক':[['১ জিবি · ৭ দিন',39],['৫ জিবি · ৭ দিন',129],['২০ জিবি · ৩০ দিন',299]]};
 const offText=o=>Object.keys(o).flatMap(k=>o[k].map(x=>k+' | '+x[0]+' | '+x[1])).join('\n');
 const textOff=t=>{const o={};let n=0;t.split('\n').forEach(l=>{const p=l.split('|').map(x=>x.trim());if(p.length<3||!p[0]||!p[1])return;const v=parseFloat(en(p[2]));if(!v||v<=0)return;(o[p[0]]=o[p[0]]||[]).push([p[1],v]);n++});return n||!t.trim()?o:null};
+const QRS=[['qr_all','বাংলা QR']];
+function rq(){if(document.activeElement?.dataset?.q)return;$('#qrl').innerHTML=QRS.map(([k,n])=>{const u=/^https:\/\//.test(cfg[k]||'')?cfg[k]:'';return `<div class="qrr"><b>${n}</b>${u?`<img src="${E(u)}" alt="${n}">`:'<p class="hint" style="margin:4px 0">আপলোড করা নেই</p>'}<input type="file" accept="image/png,image/jpeg,image/webp" data-q="${k}">${u?`<button class="sb r" data-a="qrdel" data-i="${k}">মুছুন</button>`:''}</div>`}).join('')}
+async function toBlob(f){const bm=await createImageBitmap(f),s=Math.min(1,900/Math.max(bm.width,bm.height)),c=document.createElement('canvas');c.width=Math.round(bm.width*s);c.height=Math.round(bm.height*s);const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(bm,0,0,c.width,c.height);return new Promise(r=>c.toBlob(r,'image/png'))}
+const qpath=u=>u&&u.includes('/qr/')?decodeURIComponent(u.split('/qr/')[1].split('?')[0]):null;
+document.addEventListener('change',async e=>{const k=e.target.dataset?.q;if(!k)return;const f=e.target.files[0];if(!f)return;
+if(!/^image\//.test(f.type)){e.target.value='';return toast('শুধু ছবি দিন।')}
+toast('আপলোড হচ্ছে...');try{const bl=await toBlob(f);if(bl.size>1000000)throw new Error('ছবি ১ MB এর বেশি, ছোট ছবি দিন');
+const path=k+'-'+Date.now()+'.png',up=await sb.storage.from('qr').upload(path,bl,{contentType:'image/png',cacheControl:'3600'});if(up.error)throw up.error;
+const url=sb.storage.from('qr').getPublicUrl(path).data.publicUrl,old=qpath(cfg[k]);
+const{error}=await sb.from('settings').upsert({key:k,value:url});if(error)throw error;
+if(old)sb.storage.from('qr').remove([old]);toast('✅ QR আপলোড হয়েছে');await loadAll()}catch(x){toast(errMsg(x))}finally{e.target.value=''}});
 let CH=[],chU=null,chT=null;
 let U=[],TP=[],TX=[],cfg={},cur=null,timer=null;
 const toast=t=>{const x=$('#toast');x.textContent=t;x.style.display='block';clearTimeout(x._t);x._t=setTimeout(()=>x.style.display='none',4000)};
-const errMsg=e=>{const m=e?.message||'';if(/manual add/.test(m))return 'ম্যানুয়াল ব্যালেন্স যোগ বন্ধ করা আছে।';if(/not deletable/.test(m))return 'পেন্ডিং লেনদেন মোছা যায় না।';if(/forbidden/.test(m))return 'আপনার অনুমতি নেই।';if(/invalid adjustment/.test(m))return 'ব্যালেন্স ঋণাত্মক হবে বা গ্রাহক নেই।';if(/not pending/.test(m))return 'এটা আগেই প্রক্রিয়া হয়েছে।';if(/Invalid login/i.test(m))return 'ইমেইল বা পাসওয়ার্ড ভুল।';if(/not confirmed/i.test(m))return 'ইমেইল কনফার্ম হয়নি।';if(/protected/.test(m))return 'অ্যাডমিন অ্যাকাউন্টে এটা করা যাবে না।';if(/short password/.test(m))return 'পাসওয়ার্ড কমপক্ষে ৮ অক্ষর দিন।';return 'ব্যর্থ: '+(m||'আবার চেষ্টা করুন।')};
+const errMsg=e=>{const m=e?.message||'';if(/manual add/.test(m))return 'ম্যানুয়াল ব্যালেন্স যোগ বন্ধ করা আছে।';if(/row-level security|Unauthorized/i.test(m))return 'অনুমতি নেই। Supabase-এ সংস্করণ ৫ SQL রান করা হয়েছে কি দেখুন।';if(/not deletable/.test(m))return 'পেন্ডিং লেনদেন মোছা যায় না।';if(/forbidden/.test(m))return 'আপনার অনুমতি নেই।';if(/invalid adjustment/.test(m))return 'ব্যালেন্স ঋণাত্মক হবে বা গ্রাহক নেই।';if(/not pending/.test(m))return 'এটা আগেই প্রক্রিয়া হয়েছে।';if(/Invalid login/i.test(m))return 'ইমেইল বা পাসওয়ার্ড ভুল।';if(/not confirmed/i.test(m))return 'ইমেইল কনফার্ম হয়নি।';if(/protected/.test(m))return 'অ্যাডমিন অ্যাকাউন্টে এটা করা যাবে না।';if(/short password/.test(m))return 'পাসওয়ার্ড কমপক্ষে ৮ অক্ষর দিন।';return 'ব্যর্থ: '+(m||'আবার চেষ্টা করুন।')};
 const cfgText=o=>Object.keys(o).map(k=>k+': '+o[k].join(', ')).join('\n');
 const textCfg=t=>{const o={};t.split('\n').forEach(l=>{const i=l.indexOf(':');if(i<1)return;const k=l.slice(0,i).trim(),v=l.slice(i+1).split(',').map(x=>x.trim()).filter(Boolean);if(k&&v.length)o[k]=v});return Object.keys(o).length?o:null};
 $('#bmn').innerHTML=Array.from({length:12},(_,i)=>`<option value="${i+1}">${bn(i+1)} মাস</option>`).join('');
@@ -168,9 +181,9 @@ $('#k5').textContent=bn(TX.filter(t=>new Date(t.created_at).toDateString()===tod
 $('#nb1').textContent=TP.length+po.length?'('+bn(TP.length+po.length)+')':'';
 $('#r1').innerHTML=TP.length?TP.map(t=>`<div class="sm"><span>${who(t)}<br>${PN[t.method]} · ${M(t.amount)}<br><small>থেকে ${bn(E(t.sender))} · ${E(t.trx)} · ${dt(t.created_at)}</small></span><span><button class="sb g" data-a="ap" data-i="${t.id}">অনুমোদন</button><button class="sb r" data-a="rj" data-i="${t.id}">বাতিল</button></span></div>`).join(''):'<p class="hint">কোনো পেন্ডিং রিকোয়েস্ট নেই।</p>';
 $('#r2').innerHTML=po.length?po.map(t=>`<div class="sm"><span>${who(t)}<br>${KIND[t.kind]} · ${M(t.amount)} (চার্জ ${M(t.fee)})<br><small>${E(t.details)} · ${dt(t.created_at)}</small></span><span><button class="sb g" data-a="dn" data-i="${t.id}">সম্পন্ন</button><button class="sb r" data-a="rf" data-i="${t.id}">ফেল · টাকা ফেরত</button></span></div>`).join(''):'<p class="hint">কোনো পেন্ডিং অর্ডার নেই।</p>';
-rc();rt();rch();
+rc();rt();rch();rq();
 const f=(id,v)=>{if(document.activeElement!==$(id))$(id).value=v};
-f('#mb',cfg.bkash||'');f('#mn',cfg.nagad||'');f('#mr',cfg.rocket||'');
+
 let bc=DEF;try{if(cfg.bill_cfg)bc=JSON.parse(cfg.bill_cfg)}catch(e){}f('#bt',cfgText(bc));f('#bmn',cfg.bill_months||'3');f('#nw',cfg.news||'');f('#p1',cfg.promo_t??'২৪/৭ সেবা');f('#p2',cfg.promo_b??'সমস্যায় হেল্পলাইন ১২১');f('#ai',cfg.app_install||'on');f('#al',cfg.app_link||'');let of=DEF_OFF;try{if(cfg.offers)of=JSON.parse(cfg.offers)}catch(e){}f('#ot',offText(of))}
 function rch(){const g={},ord=[];CH.forEach(m=>{if(!g[m.user_id]){g[m.user_id]=m;ord.push(m.user_id)}});
 const nw=ord.filter(i=>g[i].sender==='user').length;$('#nb5').textContent=nw?'('+bn(nw)+')':'';
@@ -204,6 +217,7 @@ if(a==='tgsave'){const t=$('#tgt').value.trim(),c=$('#tgc').value.trim();if(!t&&
 if(a==='tgtest'){const{error}=await sb.rpc('admin_test_telegram');return toast(error?errMsg(error):'টেস্ট মেসেজ পাঠানো হয়েছে। টেলিগ্রাম দেখুন।')}
 if(a==='tgclear'){if(!confirm('বট সরিয়ে দিলে নোটিফিকেশন বন্ধ হবে। নিশ্চিত?'))return;const{error}=await sb.rpc('admin_clear_telegram');toast(error?errMsg(error):'বট সরানো হয়েছে');return loadTg()}
 if(a==='co')return openChat(i);
+if(a==='qrdel'){if(!confirm('এই QR মুছে ফেলবেন?'))return;const old=qpath(cfg[i]);const{error}=await sb.from('settings').upsert({key:i,value:''});if(error)return toast(errMsg(error));if(old)sb.storage.from('qr').remove([old]);toast('✅ মুছে গেছে');return loadAll()}
 if(a==='dtx'){if(!confirm('এই লেনদেন হিস্ট্রি থেকে মুছবেন? (ব্যালেন্সে কোনো পরিবর্তন হবে না)'))return;return rpc('admin_delete_tx',{p_id:+i},'মুছে গেছে')}
 if(a==='cs'){const t=$('#cip').value.trim();if(!t||!chU)return;const{error}=await sb.rpc('admin_send_chat',{p_user:chU,p_body:t});if(error)return toast(errMsg(error));$('#cip').value='';await chLoad();$('#cms').scrollTop=1e9;return}
 if(a==='cdc'){if(!chU||!confirm('এই গ্রাহকের পুরো চ্যাট মুছবেন?'))return;const{error}=await sb.rpc('admin_delete_chat',{p_user:chU});if(error)return toast(errMsg(error));toast('✅ চ্যাট মুছে গেছে');$('#ch').close();return loadAll()}
@@ -217,7 +231,7 @@ if(a==='cbl')await rpc('admin_set_blocked',{p_user:cur.id,p_block:!cur.blocked},
 if(a==='cdel'){if(!confirm('এই গ্রাহকের অ্যাকাউন্ট ও সব লেনদেন চিরতরে মুছে যাবে। নিশ্চিত?'))return;const id=cur.id;cur=null;if(await rpc('admin_delete_user',{p_user:id},'অ্যাকাউন্ট মুছে গেছে'))$('#cd').close();else cur=U.find(x=>x.id===id)}});
 
 $('#ss').onclick=async()=>{const bc=textCfg($('#bt').value);if(!bc)return toast('বিল অপশন ঠিকমতো লিখুন (ধরন: কোম্পানি১, কোম্পানি২)।');const lk=$('#al').value.trim();if(lk&&!/^https?:\/\//i.test(lk))return toast('ডাউনলোড লিংক https:// দিয়ে শুরু হতে হবে।');const of=textOff($('#ot').value);if(!of)return toast('অফার ঠিকমতো লিখুন (অপারেটর | অফারের নাম | দাম)।');
-const{error}=await sb.from('settings').upsert([{key:'bkash',value:$('#mb').value.trim()},{key:'nagad',value:$('#mn').value.trim()},{key:'rocket',value:$('#mr').value.trim()},{key:'bill_cfg',value:JSON.stringify(bc)},{key:'bill_months',value:$('#bmn').value},{key:'news',value:$('#nw').value.trim()},{key:'promo_t',value:$('#p1').value.trim()},{key:'promo_b',value:$('#p2').value.trim()},{key:'app_install',value:$('#ai').value},{key:'app_link',value:lk},{key:'offers',value:JSON.stringify(of)}]);
+const{error}=await sb.from('settings').upsert([{key:'bill_cfg',value:JSON.stringify(bc)},{key:'bill_months',value:$('#bmn').value},{key:'news',value:$('#nw').value.trim()},{key:'promo_t',value:$('#p1').value.trim()},{key:'promo_b',value:$('#p2').value.trim()},{key:'app_install',value:$('#ai').value},{key:'app_link',value:lk},{key:'offers',value:JSON.stringify(of)}]);
 toast(error?errMsg(error):'✅ সেটিংস সেভ হয়েছে');if(!error)loadAll()};
 
 async function boot(s){clearInterval(timer);if(!s){show('lg');return}

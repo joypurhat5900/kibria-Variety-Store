@@ -88,6 +88,7 @@ dialog::backdrop{background:rgba(0,0,0,.5)}
 @keyframes mq{to{transform:translateX(-100%)}}
 @media (prefers-reduced-motion:reduce){.news span{animation:none;padding:0;white-space:normal}.news{white-space:normal}}
 .of{display:grid;gap:6px;margin-top:6px}.of button{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font-size:15px}.of b{color:var(--pri)}
+#qri{display:block;max-width:240px;width:100%;margin:6px auto;border:1px solid var(--line);border-radius:12px;background:#fff;padding:8px}
 [hidden]{display:none!important}
 </style>
 </head>
@@ -130,8 +131,9 @@ dialog::backdrop{background:rgba(0,0,0,.5)}
 <div id="vs" hidden><div class="lb">কোন অ্যাকাউন্টে পাঠাবেন</div><div class="chips" id="sm"></div>
 <div class="row"><div><label for="sn">প্রাপকের নম্বর</label><input id="sn" inputmode="numeric" maxlength="11"></div><div><label for="sa">পরিমাণ (৳)</label><input id="sa" inputmode="numeric"></div></div>
 <p class="hint">ব্যালেন্স থেকে কাটা হবে। চার্জ ১.৫% (সর্বনিম্ন ৳৫)। অ্যাডমিন পাঠালে "সম্পন্ন" দেখাবে।</p></div>
-<div id="va" hidden><div class="lb">কোন মাধ্যমে টাকা পাঠিয়েছেন</div><div class="chips" id="am"></div><p class="hint" id="mh"></p>
-<div class="row"><div><label for="an">আপনার পাঠানো নম্বর</label><input id="an" inputmode="numeric" maxlength="11"></div><div><label for="aa">পরিমাণ (৳)</label><input id="aa" inputmode="numeric"></div></div>
+<div id="va" hidden><p class="hint" id="mh" style="margin:0 0 6px"></p>
+<div id="qrw" hidden><div class="lb">কিউআর কোড স্ক্যান করে পেমেন্ট করুন</div><img id="qri" alt="পেমেন্ট QR কোড"><div style="text-align:center"><button type="button" class="sb" id="qrd">⬇ QR ডাউনলোড করুন</button></div></div>
+<div class="row"><div><label for="an">যে নম্বর থেকে টাকা পাঠিয়েছেন</label><input id="an" inputmode="numeric" maxlength="11"></div><div><label for="aa">পরিমাণ (৳)</label><input id="aa" inputmode="numeric"></div></div>
 <label for="at">ট্রানজেকশন আইডি (TrxID)</label><input id="at" maxlength="20" style="text-transform:uppercase">
 <p class="hint">অ্যাডমিন যাচাই করে ব্যালেন্সে যোগ করবেন।</p></div>
 <button class="go" id="go"></button>
@@ -184,7 +186,7 @@ const dt=t=>new Date(t).toLocaleString('bn-BD');
 const OPS=['গ্রামীণফোন','রবি','বাংলালিংক','এয়ারটেল','টেলিটক'],PFX={7:0,3:0,8:1,9:2,4:2,6:3,5:4};
 const BILL={'বিদ্যুৎ':['নেসকো প্রিপেইড','নেসকো পোস্টপেইড','ডেসকো','ডিপিডিসি','নেসকো','পল্লী বিদ্যুৎ'],'গ্যাস':['তিতাস গ্যাস','বাখরাবাদ গ্যাস','জালালাবাদ গ্যাস'],'পানি':['ঢাকা ওয়াসা','চট্টগ্রাম ওয়াসা','খুলনা ওয়াসা'],'ইন্টারনেট':['লিংক৩','আমরা নেটওয়ার্কস','ক্যারিয়ার ব্রডব্যান্ড'],'ল্যান্ডফোন':['বিটিসিএল']};
 const MN=['জানুয়ারি','ফেব্রুয়ারি','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর'];
-const PAYS={'বিকাশ':'bkash','নগদ':'nagad','রকেট':'rocket'},PN={bkash:'বিকাশ',nagad:'নগদ',rocket:'রকেট'};
+const PAYS={'বিকাশ':'bkash','নগদ':'nagad','রকেট':'rocket'},PN={bkash:'বিকাশ',nagad:'নগদ',rocket:'রকেট',qr:'QR পেমেন্ট'};
 const KIND={recharge:'রিচার্জ',bill:'বিল পে',send:'সেন্ড মানি',topup:'ব্যালেন্স যোগ',adjust:'অ্যাডমিন সমন্বয়',refund:'টাকা ফেরত'};
 const ST={pending:['প্রক্রিয়াধীন','ps'],completed:['সম্পন্ন','pa'],refunded:['ফেল · টাকা ফেরত','pr'],approved:['যোগ হয়েছে','pa'],rejected:['বাতিল','pr']};
 let me=null,tab='r',op='',sm='বিকাশ',am='বিকাশ',mode='in',cfg={},pend=null,timer=null,busy=false;
@@ -216,7 +218,7 @@ $('#inst').onclick=async()=>{if(lkOk())window.open(cfg.app_link,'_blank','noopen
 if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 let bal=0,shown=false;const renderBal=()=>{$('#bv0').textContent=shown?M(bal):'৳ ••••'};
 // ---- সেটআপ
-chips('#ops',OPS,'',v=>{op=v;showOffers()});chips('#sm',Object.keys(PAYS),sm,v=>sm=v);chips('#am',Object.keys(PAYS),am,v=>{am=v;merch()});
+chips('#ops',OPS,'',v=>{op=v;showOffers()});chips('#sm',Object.keys(PAYS),sm,v=>sm=v);
 $('#qa').innerHTML=[20,50,100,200,500].map(a=>`<button type="button">${bn(a)}</button>`).join('');
 $('#qa').onclick=e=>{if(e.target.tagName==='BUTTON')$('#ra').value=e.target.textContent};
 $('#bc').innerHTML=Object.keys(BILL).map(k=>`<option>${k}</option>`).join('');
@@ -228,7 +230,9 @@ const n=Math.min(12,Math.max(1,+cfg.bill_months||3)),d=new Date(),cm=$('#bm').va
 $('#bm').innerHTML=Array.from({length:n},(_,i)=>{const x=new Date(d.getFullYear(),d.getMonth()-i,1);return `<option>${MN[x.getMonth()]} ${bn(x.getFullYear())}</option>`}).join('');if(cm)$('#bm').value=cm}
 buildBill();
 $('#rn').oninput=e=>{const n=en(e.target.value);if(n.length>=3&&PFX[n[2]]!==undefined){op=OPS[PFX[n[2]]];$$('#ops button').forEach(b=>b.classList.toggle('on',b.textContent===op));showOffers()}};
-const merch=()=>{const n=cfg[PAYS[am]];$('#mh').textContent=n?`${am} মার্চেন্ট নম্বর: ${bn(n)} (Send Money করুন)`:'মার্চেন্ট নম্বর এখনও সেট করা হয়নি।'};
+const merch=()=>{const q=cfg.qr_all||'',ok=/^https:\/\//.test(q);$('#qrw').hidden=!ok;if(ok&&$('#qri').getAttribute('src')!==q)$('#qri').src=q;
+$('#mh').textContent=ok?'১) নিচের QR স্ক্যান করে পেমেন্ট করুন। ২) তারপর পেমেন্টের তথ্য দিয়ে রিকোয়েস্ট পাঠান।':'এখনও QR সেট করা হয়নি। অ্যাডমিনের সাথে যোগাযোগ করুন।'};
+$('#qrd').onclick=async()=>{const u=$('#qri').src;try{const r=await fetch(u),b=await r.blob(),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='qr-payment'+(b.type==='image/jpeg'?'.jpg':'.png');document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000)}catch(e){window.open(u,'_blank','noopener');toast('ছবিটা চেপে ধরে "Save image" করুন।')}};
 function setTab(t){tab=t;const f='rbsa'.indexOf(t)>=0,T={r:'মোবাইল রিচার্জ',b:'বিল পে',s:'সেন্ড মানি',a:'অ্যাড মানি',h:'হিস্ট্রি',p:'প্রোফাইল',c:'লাইভ চ্যাট'};
 $$('#tb button').forEach(b=>b.classList.toggle('on',b.dataset.t===t&&!b.classList.contains('fab')));
 $('#hero').hidden=$('#vhome').hidden=t!=='home';$('#bar').hidden=t==='home';$('#bt0').textContent=T[t]||'';
@@ -278,7 +282,7 @@ pend={rpc:'place_order',args:{p_kind:'bill',p_details:$('#bo').value+' | '+ac+' 
 else if(tab==='s'){const n=en($('#sn').value),a=+en($('#sa').value);if(!ok(n))return toast('প্রাপকের সঠিক নম্বর দিন।');if(!a||a<10||a>25000)return toast('১০ থেকে ২৫,০০০ টাকার মধ্যে দিন।');
 const f=fee(a,.015);rows=[[sm,bn(n)],['পরিমাণ',M(a)],['চার্জ',M(f)]];pend={rpc:'place_order',args:{p_kind:'send',p_details:sm+' '+n,p_amount:a},total:a+f}}
 else{const n=en($('#an').value),a=+en($('#aa').value),t=$('#at').value.trim().toUpperCase();if(!ok(n))return toast('সঠিক নম্বর দিন।');if(!a||a<10||a>50000)return toast('১০ থেকে ৫০,০০০ টাকার মধ্যে দিন।');if(t.length<6)return toast('TrxID দিন।');
-rows=[['মাধ্যম',am],['নম্বর',bn(n)],['পরিমাণ',M(a)],['TrxID',E(t)]];pend={rpc:'request_topup',args:{p_method:PAYS[am],p_sender:n,p_amount:a,p_trx:t},total:0,top:1}}
+rows=[['মাধ্যম','QR পেমেন্ট'],['নম্বর',bn(n)],['পরিমাণ',M(a)],['TrxID',E(t)]];pend={rpc:'request_topup',args:{p_method:'qr',p_sender:n,p_amount:a,p_trx:t},total:0,top:1}}
 if(!pend.top&&me.balance<pend.total)return toast(`ব্যালেন্স কম। দরকার ${M(pend.total)}, আছে ${M(me.balance)}।`);
 $('#sum').innerHTML=rows.map(r=>`<div class="sm"><span>${r[0]}</span><b>${r[1]}</b></div>`).join('')+(pend.top?'':`<div class="sm"><span>সর্বমোট</span><b>${M(pend.total)}</b></div>`);$('#cp').value='';$('#dg').showModal()};
 $('#no').onclick=()=>$('#dg').close();
