@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>নেটলিংক টেলিকম</title>
-<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;700&family=Noto+Sans+Bengali:wght@400;500;700&family=Anek+Bangla:wght@400;500;700&family=Baloo+Da+2:wght@400;500;700&family=Noto+Serif+Bengali:wght@400;500;700&family=Tiro+Bangla&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.min.js"></script>
 <script>window.supabase||document.write('<script src="https://unpkg.com/@supabase/supabase-js@2.58.0/dist/umd/supabase.min.js"><\/script>')</script>
 <style>
@@ -12,7 +12,7 @@
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1522;--card:#13243a;--ink:#eaf1f9;--mute:#9db0c4;--line:#243a55}}
 :root[data-theme="dark"]{--bg:#0b1522;--card:#13243a;--ink:#eaf1f9;--mute:#9db0c4;--line:#243a55}
 *{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:'Hind Siliguri',system-ui,sans-serif;line-height:1.6}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font,'Hind Siliguri'),system-ui,sans-serif;line-height:1.6}
 .w{max-width:980px;margin:auto;padding:0 16px}
 header{position:sticky;top:env(safe-area-inset-top,0px);background:var(--card);border-bottom:1px solid var(--line);z-index:5}
 header .w{display:flex;align-items:center;justify-content:space-between;height:56px}
@@ -112,7 +112,7 @@ dialog::backdrop{background:rgba(0,0,0,.5)}
 <label for="ra">পরিমাণ (৳)</label><input id="ra" inputmode="numeric" placeholder="যেমন ৩০০"><div class="chips" id="qa" style="margin-top:8px"></div></div>
 <div id="vb" hidden>
 <div class="row"><div><label for="bc">বিলের ধরন</label><select id="bc"></select></div><div><label for="bo">কোম্পানি</label><select id="bo"></select></div></div>
-<div class="row"><div><label for="ba">অ্যাকাউন্ট/মিটার নম্বর</label><input id="ba" maxlength="40"></div><div><label for="bm">বিলের মাস</label><select id="bm"></select></div></div>
+<div class="row"><div><label for="ba">অ্যাকাউন্ট/মিটার নম্বর</label><input id="ba" maxlength="40"></div><div id="bmw"><label for="bm">বিলের মাস</label><select id="bm"></select></div></div>
 <div class="row"><div><label for="bn">যোগাযোগের মোবাইল</label><input id="bn" inputmode="numeric" maxlength="11"></div><div><label for="bv">বিলের পরিমাণ (৳)</label><input id="bv" inputmode="numeric"></div></div>
 <p class="hint">সার্ভিস চার্জ: ১% (সর্বনিম্ন ৳৫)</p></div>
 <div id="vs" hidden><div class="lb">কোন অ্যাকাউন্টে পাঠাবেন</div><div class="chips" id="sm"></div>
@@ -128,6 +128,7 @@ dialog::backdrop{background:rgba(0,0,0,.5)}
 <div class="box" id="vp" hidden><h3 style="margin:0 0 8px">প্রোফাইল</h3>
 <div class="sm"><span>ইমেইল</span><b id="pe"></b></div><div class="sm"><span>মোবাইল</span><b id="pm"></b></div><div class="sm"><span>যোগ দিয়েছেন</span><b id="pd"></b></div>
 <label for="pn">নাম</label><input id="pn" maxlength="60" autocomplete="name"><button class="go" id="pns" style="padding:10px;font-size:16px;margin-top:10px">নাম সেভ করুন</button>
+<label for="fs">বাংলা লেখার ফন্ট</label><select id="fs"></select>
 <label for="p1">নতুন পাসওয়ার্ড (কমপক্ষে ৮ অক্ষর)</label><input id="p1" type="password" minlength="8" autocomplete="new-password"><button class="go" id="pps" style="padding:10px;font-size:16px;margin-top:10px">পাসওয়ার্ড বদলান</button>
 <button class="go" id="pout" style="padding:10px;font-size:16px;background:var(--bad)">লগআউট</button></div>
 </main>
@@ -175,13 +176,19 @@ const toast=t=>{const x=$('#toast');x.textContent=t;x.style.display='block';clea
 const chips=(id,list,cur,fn)=>{$(id).innerHTML=list.map(v=>`<button type="button" class="${v===cur?'on':''}">${v}</button>`).join('');$(id).onclick=e=>{if(e.target.tagName==='BUTTON'){$$(id+' button').forEach(b=>b.classList.toggle('on',b===e.target));fn(e.target.textContent)}}};
 const errMsg=e=>{const m=e?.message||'';if(/blocked/.test(m))return 'আপনার অ্যাকাউন্ট ব্লক করা আছে।';if(/insufficient/.test(m))return 'ব্যালেন্স কম। আগে ব্যালেন্স যোগ করুন।';if(/duplicate|unique/.test(m))return 'এই তথ্য আগেই ব্যবহৃত হয়েছে (TrxID/মোবাইল)।';if(/forbidden/.test(m))return 'আপনার অনুমতি নেই।';if(/Invalid login/i.test(m))return 'ইমেইল বা পাসওয়ার্ড ভুল (অথবা এই ইমেইলে অ্যাকাউন্ট নেই)।';if(/not confirmed/i.test(m))return 'ইমেইল কনফার্ম হয়নি। মেইলের লিংকে ক্লিক করুন।';if(/rate limit/i.test(m))return 'অনেকবার চেষ্টা হয়েছে। কিছুক্ষণ পর আবার করুন।';return 'ব্যর্থ: '+(m||'আবার চেষ্টা করুন।')};
 
+const FONTS={'Hind Siliguri':"'Hind Siliguri'",'Noto Sans Bengali':"'Noto Sans Bengali'",'Anek Bangla':"'Anek Bangla'",'Baloo Da 2':"'Baloo Da 2'",'Noto Serif Bengali':"'Noto Serif Bengali'",'Tiro Bangla':"'Tiro Bangla'",'সিস্টেম ফন্ট':'system-ui'};
+const applyFont=n=>document.documentElement.style.setProperty('--font',FONTS[n]||FONTS['Hind Siliguri']);
+{let f='Hind Siliguri';try{f=localStorage.getItem('nl_font')||f}catch(e){}if(!FONTS[f])f='Hind Siliguri';applyFont(f);
+$('#fs').innerHTML=Object.keys(FONTS).map(k=>`<option>${k}</option>`).join('');$('#fs').value=f;
+$('#fs').onchange=e=>{try{localStorage.setItem('nl_font',e.target.value)}catch(x){}applyFont(e.target.value)}}
 let bal=0,shown=false;const renderBal=()=>{$('#bv0').textContent=shown?M(bal):'৳ ••••'};
 // ---- সেটআপ
 chips('#ops',OPS,'',v=>op=v);chips('#sm',Object.keys(PAYS),sm,v=>sm=v);chips('#am',Object.keys(PAYS),am,v=>{am=v;merch()});
 $('#qa').innerHTML=[20,50,100,200,500].map(a=>`<button type="button">${bn(a)}</button>`).join('');
 $('#qa').onclick=e=>{if(e.target.tagName==='BUTTON')$('#ra').value=e.target.textContent};
 $('#bc').innerHTML=Object.keys(BILL).map(k=>`<option>${k}</option>`).join('');
-const fb=()=>$('#bo').innerHTML=((window.BL||BILL)[$('#bc').value]||[]).map(k=>`<option>${E(k)}</option>`).join('');fb();$('#bc').onchange=fb;
+function mm(){const pre=/প্রিপেইড/.test($('#bo').value);$('#bmw').hidden=pre;$('#bmw').parentElement.style.gridTemplateColumns=pre?'1fr':'';$('#ba').previousElementSibling.textContent=pre?'প্রিপেইড মিটার নম্বর':'অ্যাকাউন্ট/মিটার নম্বর'}
+const fb=()=>{$('#bo').innerHTML=((window.BL||BILL)[$('#bc').value]||[]).map(k=>`<option>${E(k)}</option>`).join('');mm()};fb();$('#bc').onchange=fb;$('#bo').onchange=mm;
 function buildBill(){let B=BILL;try{if(cfg.bill_cfg)B=JSON.parse(cfg.bill_cfg)}catch(e){}window.BL=B;
 const cs=$('#bc').value;$('#bc').innerHTML=Object.keys(B).map(k=>`<option>${E(k)}</option>`).join('');if(B[cs])$('#bc').value=cs;fb();
 const n=Math.min(12,Math.max(1,+cfg.bill_months||3)),d=new Date(),cm=$('#bm').value;
@@ -233,8 +240,8 @@ $('#go').onclick=()=>{let rows;
 if(tab==='r'){const n=en($('#rn').value),a=+en($('#ra').value);if(!op)return toast('অপারেটর বেছে নিন।');if(!ok(n))return toast('সঠিক মোবাইল নম্বর দিন।');if(!a||a<10||a>1000)return toast('১০ থেকে ১০০০ টাকার মধ্যে দিন।');
 rows=[['অপারেটর',op+' ('+$('#rt').value+')'],['নম্বর',bn(n)],['পরিমাণ',M(a)]];pend={rpc:'place_order',args:{p_kind:'recharge',p_details:op+' '+n+' '+$('#rt').value,p_amount:a},total:a}}
 else if(tab==='b'){const a=+en($('#bv').value),ac=$('#ba').value.trim();if(!ac)return toast('অ্যাকাউন্ট নম্বর দিন।');if(!ok($('#bn').value))return toast('যোগাযোগের সঠিক নম্বর দিন।');if(!a||a<10)return toast('সঠিক পরিমাণ দিন।');
-const f=fee(a,.01);rows=[['কোম্পানি',$('#bo').value],['অ্যাকাউন্ট',E(ac)],['মাস',$('#bm').value],['বিল',M(a)],['চার্জ',M(f)]];
-pend={rpc:'place_order',args:{p_kind:'bill',p_details:$('#bo').value+' | '+ac+' | '+$('#bm').value+' | '+en($('#bn').value),p_amount:a},total:a+f}}
+const f=fee(a,.01),pre=/প্রিপেইড/.test($('#bo').value),mo=pre?'প্রিপেইড':$('#bm').value;rows=[['কোম্পানি',$('#bo').value],['অ্যাকাউন্ট',E(ac)],pre?['ধরন','প্রিপেইড']:['মাস',mo],['বিল',M(a)],['চার্জ',M(f)]];
+pend={rpc:'place_order',args:{p_kind:'bill',p_details:$('#bo').value+' | '+ac+' | '+mo+' | '+en($('#bn').value),p_amount:a},total:a+f}}
 else if(tab==='s'){const n=en($('#sn').value),a=+en($('#sa').value);if(!ok(n))return toast('প্রাপকের সঠিক নম্বর দিন।');if(!a||a<10||a>25000)return toast('১০ থেকে ২৫,০০০ টাকার মধ্যে দিন।');
 const f=fee(a,.015);rows=[[sm,bn(n)],['পরিমাণ',M(a)],['চার্জ',M(f)]];pend={rpc:'place_order',args:{p_kind:'send',p_details:sm+' '+n,p_amount:a},total:a+f}}
 else{const n=en($('#an').value),a=+en($('#aa').value),t=$('#at').value.trim().toUpperCase();if(!ok(n))return toast('সঠিক নম্বর দিন।');if(!a||a<10||a>50000)return toast('১০ থেকে ৫০,০০০ টাকার মধ্যে দিন।');if(t.length<6)return toast('TrxID দিন।');

@@ -2,7 +2,7 @@
 <html lang="bn"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>অ্যাডমিন – নেটলিংক</title>
-<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;700&family=Noto+Sans+Bengali:wght@400;500;700&family=Anek+Bangla:wght@400;500;700&family=Baloo+Da+2:wght@400;500;700&family=Noto+Serif+Bengali:wght@400;500;700&family=Tiro+Bangla&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.min.js"></script>
 <script>window.supabase||document.write('<script src="https://unpkg.com/@supabase/supabase-js@2.58.0/dist/umd/supabase.min.js"><\/script>')</script>
 <style>
@@ -10,7 +10,7 @@
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1522;--card:#13243a;--ink:#eaf1f9;--mute:#9db0c4;--line:#243a55}}
 :root[data-theme="dark"]{--bg:#0b1522;--card:#13243a;--ink:#eaf1f9;--mute:#9db0c4;--line:#243a55}
 *{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:'Hind Siliguri',system-ui,sans-serif;line-height:1.6}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font,'Hind Siliguri'),system-ui,sans-serif;line-height:1.6}
 .w{max-width:980px;margin:auto;padding:0 16px}
 header{position:sticky;top:env(safe-area-inset-top,0px);background:var(--card);border-bottom:1px solid var(--line);z-index:5}
 header .w{display:flex;align-items:center;justify-content:space-between;height:56px}
@@ -73,9 +73,7 @@ dialog{max-height:90vh;overflow:auto}
 
 <div class="tp" id="t0">
 <div class="st"><div><small>মোট গ্রাহক</small><b id="k1"></b></div><div><small>মোট ব্যালেন্স</small><b id="k2"></b></div><div><small>পেন্ডিং রিকোয়েস্ট</small><b id="k3"></b></div><div><small>পেন্ডিং অর্ডার</small><b id="k4"></b></div><div><small>আজকের লেনদেন</small><b id="k5"></b></div><div><small>ব্লক করা গ্রাহক</small><b id="k6"></b></div></div>
-<h2>ম্যানুয়াল ব্যালেন্স যোগ / বিয়োগ</h2>
-<div class="pk"><label for="qu">গ্রাহক</label><select id="qu"></select><label for="qm">পরিমাণ (৳)</label><input id="qm" inputmode="numeric" placeholder="যেমন ৫০০">
-<div class="row"><button class="btn2 g" data-a="qa">+ যোগ করুন</button><button class="btn2 r" data-a="qs">− বিয়োগ করুন</button></div></div></div>
+</div>
 
 <div class="tp" id="t1" hidden>
 <h2>ব্যালেন্স রিকোয়েস্ট</h2><div class="pk" id="r1"></div>
@@ -87,13 +85,19 @@ dialog{max-height:90vh;overflow:auto}
 
 <div class="tp" id="t4" hidden>
 <h2>মার্চেন্ট নম্বর</h2><div class="pk"><div class="row"><div><label for="mb">বিকাশ</label><input id="mb" maxlength="11"></div><div><label for="mn">নগদ</label><input id="mn" maxlength="11"></div></div><label for="mr">রকেট</label><input id="mr" maxlength="12"></div>
-<h2>বিল পে অপশন</h2><div class="pk"><p class="hint" style="margin:0 0 6px">প্রতি লাইনে একটা ধরন: <b>ধরন: কোম্পানি১, কোম্পানি২</b> (যেমন: বিদ্যুৎ: নেসকো প্রিপেইড, ডেসকো)</p><textarea id="bt"></textarea>
+<h2>বিল পে অপশন</h2><div class="pk"><p class="hint" style="margin:0 0 6px">প্রতি লাইনে একটা ধরন: <b>ধরন: কোম্পানি১, কোম্পানি২</b>। নামে "প্রিপেইড" থাকলে গ্রাহকের কাছে মাস লুকানো থাকবে, বাকিগুলোতে মাস আসবে।</p><textarea id="bt"></textarea>
 <label for="bmn">বিলের মাসের তালিকা (সাল সহ), কত মাস পর্যন্ত দেখাবে</label><select id="bmn"></select></div>
+<h2>টেলিগ্রাম বট</h2><div class="pk"><p class="hint" id="tgs" style="margin:0 0 6px"></p>
+<label for="tgt">Bot Token (BotFather থেকে)</label><input id="tgt" type="password" autocomplete="off" placeholder="খালি রাখলে আগেরটাই থাকবে">
+<label for="tgc">Chat ID</label><input id="tgc" autocomplete="off" placeholder="যেমন 123456789 বা -100123...">
+<div class="row"><button class="btn2 g" data-a="tgsave">সেভ</button><button class="btn2" data-a="tgtest">টেস্ট মেসেজ</button></div><button class="btn2 r" style="width:100%" data-a="tgclear">বট সরিয়ে দিন</button>
+<p class="hint">বটকে টেলিগ্রামে /start পাঠান। Chat ID পেতে @userinfobot কে মেসেজ দিন বা getUpdates লিংক খুলুন।</p></div>
+<h2>বাংলা লেখার ফন্ট</h2><div class="pk"><select id="fs"></select></div>
 <button class="go" id="ss">সব সেটিংস সেভ করুন</button></div>
 </main></div>
 
 <dialog id="cd"><h3 id="ctt" style="margin:0 0 6px"></h3><div id="cin"></div>
-<label for="cam">ব্যালেন্স যোগ/বিয়োগ (৳)</label><input id="cam" inputmode="numeric"><div class="row"><button class="btn2 g" data-a="ca">+ যোগ</button><button class="btn2 r" data-a="cm">− বিয়োগ</button></div>
+<label for="cam">ভুল সংশোধনে ব্যালেন্স কাটুন (৳)</label><input id="cam" inputmode="numeric"><button class="btn2 r" style="width:100%" data-a="cm">− ব্যালেন্স কাটুন</button>
 <label for="cpw">নতুন পাসওয়ার্ড/পিন (কমপক্ষে ৮ অক্ষর)</label><input id="cpw" type="text" autocomplete="off"><button class="btn2" style="width:100%" data-a="cp">পাসওয়ার্ড বদলান</button>
 <div class="row" style="margin-top:8px"><button class="btn2" id="cbl" data-a="cbl"></button><button class="btn2 r" data-a="cdel">অ্যাকাউন্ট মুছুন</button></div>
 <h3 style="margin:14px 0 4px;font-size:16px">সাম্প্রতিক লেনদেন</h3><div id="cht"></div>
@@ -113,9 +117,14 @@ const KIND={recharge:'রিচার্জ',bill:'বিল পে',send:'স�
 const ST={pending:['প্রক্রিয়াধীন','ps'],completed:['সম্পন্ন','pa'],refunded:['ফেল · ফেরত','pr'],approved:['যোগ হয়েছে','pa'],rejected:['বাতিল','pr']};
 const PN={bkash:'বিকাশ',nagad:'নগদ',rocket:'রকেট'};
 const DEF={'বিদ্যুৎ':['নেসকো প্রিপেইড','নেসকো পোস্টপেইড','ডেসকো','ডিপিডিসি','পল্লী বিদ্যুৎ'],'গ্যাস':['তিতাস গ্যাস','বাখরাবাদ গ্যাস','জালালাবাদ গ্যাস'],'পানি':['ঢাকা ওয়াসা','চট্টগ্রাম ওয়াসা','খুলনা ওয়াসা'],'ইন্টারনেট':['লিংক৩','আমরা নেটওয়ার্কস','ক্যারিয়ার ব্রডব্যান্ড'],'ল্যান্ডফোন':['বিটিসিএল']};
+const FONTS={'Hind Siliguri':"'Hind Siliguri'",'Noto Sans Bengali':"'Noto Sans Bengali'",'Anek Bangla':"'Anek Bangla'",'Baloo Da 2':"'Baloo Da 2'",'Noto Serif Bengali':"'Noto Serif Bengali'",'Tiro Bangla':"'Tiro Bangla'",'সিস্টেম ফন্ট':'system-ui'};
+const applyFont=n=>document.documentElement.style.setProperty('--font',FONTS[n]||FONTS['Hind Siliguri']);
+{let f='Hind Siliguri';try{f=localStorage.getItem('nl_font')||f}catch(e){}if(!FONTS[f])f='Hind Siliguri';applyFont(f);
+$('#fs').innerHTML=Object.keys(FONTS).map(k=>`<option>${k}</option>`).join('');$('#fs').value=f;
+$('#fs').onchange=e=>{try{localStorage.setItem('nl_font',e.target.value)}catch(x){}applyFont(e.target.value)}}
 let U=[],TP=[],TX=[],cfg={},cur=null,timer=null;
 const toast=t=>{const x=$('#toast');x.textContent=t;x.style.display='block';clearTimeout(x._t);x._t=setTimeout(()=>x.style.display='none',4000)};
-const errMsg=e=>{const m=e?.message||'';if(/forbidden/.test(m))return 'আপনার অনুমতি নেই।';if(/invalid adjustment/.test(m))return 'ব্যালেন্স ঋণাত্মক হবে বা গ্রাহক নেই।';if(/not pending/.test(m))return 'এটা আগেই প্রক্রিয়া হয়েছে।';if(/Invalid login/i.test(m))return 'ইমেইল বা পাসওয়ার্ড ভুল।';if(/not confirmed/i.test(m))return 'ইমেইল কনফার্ম হয়নি।';if(/protected/.test(m))return 'অ্যাডমিন অ্যাকাউন্টে এটা করা যাবে না।';if(/short password/.test(m))return 'পাসওয়ার্ড কমপক্ষে ৮ অক্ষর দিন।';return 'ব্যর্থ: '+(m||'আবার চেষ্টা করুন।')};
+const errMsg=e=>{const m=e?.message||'';if(/manual add/.test(m))return 'ম্যানুয়াল ব্যালেন্স যোগ বন্ধ করা আছে।';if(/forbidden/.test(m))return 'আপনার অনুমতি নেই।';if(/invalid adjustment/.test(m))return 'ব্যালেন্স ঋণাত্মক হবে বা গ্রাহক নেই।';if(/not pending/.test(m))return 'এটা আগেই প্রক্রিয়া হয়েছে।';if(/Invalid login/i.test(m))return 'ইমেইল বা পাসওয়ার্ড ভুল।';if(/not confirmed/i.test(m))return 'ইমেইল কনফার্ম হয়নি।';if(/protected/.test(m))return 'অ্যাডমিন অ্যাকাউন্টে এটা করা যাবে না।';if(/short password/.test(m))return 'পাসওয়ার্ড কমপক্ষে ৮ অক্ষর দিন।';return 'ব্যর্থ: '+(m||'আবার চেষ্টা করুন।')};
 const cfgText=o=>Object.keys(o).map(k=>k+': '+o[k].join(', ')).join('\n');
 const textCfg=t=>{const o={};t.split('\n').forEach(l=>{const i=l.indexOf(':');if(i<1)return;const k=l.slice(0,i).trim(),v=l.slice(i+1).split(',').map(x=>x.trim()).filter(Boolean);if(k&&v.length)o[k]=v});return Object.keys(o).length?o:null};
 $('#bmn').innerHTML=Array.from({length:12},(_,i)=>`<option value="${i+1}">${bn(i+1)} মাস</option>`).join('');
@@ -130,14 +139,14 @@ async function loadAll(){
 const[u,tp,tx,st]=await Promise.all([sb.from('profiles').select('*').order('created_at',{ascending:false}),
 sb.from('topups').select('*,profiles(name,phone)').eq('status','pending').order('created_at'),
 sb.from('transactions').select('*,profiles(name,phone)').order('created_at',{ascending:false}).limit(200),sb.from('settings').select('*')]);
-U=u.data||[];TP=tp.data||[];TX=tx.data||[];cfg={};(st.data||[]).forEach(r=>cfg[r.key]=r.value);render()}
+U=u.data||[];TP=tp.data||[];TX=tx.data||[];cfg={};(st.data||[]).forEach(r=>cfg[r.key]=r.value);render();loadTg()}
+async function loadTg(){const{data}=await sb.rpc('admin_telegram_status');const d=data||{};$('#tgs').innerHTML=d.token?`✅ বট সেট আছে (টোকেন শেষে ${E(d.token)}), Chat ID: ${E(d.chat||'নেই')}`:'⚠ বট সেট করা নেই। নোটিফিকেশন যাবে না।';if(document.activeElement!==$('#tgc'))$('#tgc').value=d.chat||''}
 const who=r=>E(r.profiles?.name)+' '+bn(E(r.profiles?.phone));
 function render(){
 const po=TX.filter(t=>t.status==='pending'&&['recharge','bill','send'].includes(t.kind)),today=new Date().toDateString();
 $('#k1').textContent=bn(U.length);$('#k2').textContent=M(U.reduce((s,a)=>s+ +a.balance,0));$('#k3').textContent=bn(TP.length);$('#k4').textContent=bn(po.length);
 $('#k5').textContent=bn(TX.filter(t=>new Date(t.created_at).toDateString()===today).length);$('#k6').textContent=bn(U.filter(x=>x.blocked).length);
 $('#nb1').textContent=TP.length+po.length?'('+bn(TP.length+po.length)+')':'';
-const qs=$('#qu').value;$('#qu').innerHTML=U.map(x=>`<option value="${x.id}">${E(x.name)} ${bn(E(x.phone))} (${M(x.balance)})</option>`).join('');if(qs)$('#qu').value=qs;
 $('#r1').innerHTML=TP.length?TP.map(t=>`<div class="sm"><span>${who(t)}<br>${PN[t.method]} · ${M(t.amount)}<br><small>থেকে ${bn(E(t.sender))} · ${E(t.trx)} · ${dt(t.created_at)}</small></span><span><button class="sb g" data-a="ap" data-i="${t.id}">অনুমোদন</button><button class="sb r" data-a="rj" data-i="${t.id}">বাতিল</button></span></div>`).join(''):'<p class="hint">কোনো পেন্ডিং রিকোয়েস্ট নেই।</p>';
 $('#r2').innerHTML=po.length?po.map(t=>`<div class="sm"><span>${who(t)}<br>${KIND[t.kind]} · ${M(t.amount)} (চার্জ ${M(t.fee)})<br><small>${E(t.details)} · ${dt(t.created_at)}</small></span><span><button class="sb g" data-a="dn" data-i="${t.id}">সম্পন্ন</button><button class="sb r" data-a="rf" data-i="${t.id}">ফেল · টাকা ফেরত</button></span></div>`).join(''):'<p class="hint">কোনো পেন্ডিং অর্ডার নেই।</p>';
 rc();rt();
@@ -165,7 +174,9 @@ if(a==='ap')return rpc('admin_topup',{p_id:+i,p_approve:true},'অনুমো�
 if(a==='rj')return rpc('admin_topup',{p_id:+i,p_approve:false},'বাতিল');
 if(a==='dn')return rpc('admin_order',{p_id:+i,p_status:'completed'},'সম্পন্ন');
 if(a==='rf'){if(!confirm('অর্ডার ফেল করে গ্রাহকের ব্যালেন্সে টাকা ফেরত দেবেন?'))return;return rpc('admin_order',{p_id:+i,p_status:'refunded'},'টাকা ফেরত গেছে')}
-if(a==='qa'||a==='qs'){const v=parseFloat(en($('#qm').value));if(!$('#qu').value||!v||v<=0)return toast('গ্রাহক ও সঠিক পরিমাণ দিন।');if(await rpc('admin_adjust',{p_user:$('#qu').value,p_amount:a==='qa'?v:-v}))$('#qm').value='';return}
+if(a==='tgsave'){const t=$('#tgt').value.trim(),c=$('#tgc').value.trim();if(!t&&!c)return toast('টোকেন বা Chat ID দিন।');const{error}=await sb.rpc('admin_set_telegram',{p_token:t,p_chat:c});if(error)return toast(errMsg(error));$('#tgt').value='';toast('✅ সেভ হয়েছে');return loadTg()}
+if(a==='tgtest'){const{error}=await sb.rpc('admin_test_telegram');return toast(error?errMsg(error):'টেস্ট মেসেজ পাঠানো হয়েছে। টেলিগ্রাম দেখুন।')}
+if(a==='tgclear'){if(!confirm('বট সরিয়ে দিলে নোটিফিকেশন বন্ধ হবে। নিশ্চিত?'))return;const{error}=await sb.rpc('admin_clear_telegram');toast(error?errMsg(error):'বট সরানো হয়েছে');return loadTg()}
 if(a==='cx')return $('#cd').close();
 if(!cur)return;
 if(a==='ca'||a==='cm'){const v=parseFloat(en($('#cam').value));if(!v||v<=0)return toast('সঠিক পরিমাণ দিন।');if(await rpc('admin_adjust',{p_user:cur.id,p_amount:a==='ca'?v:-v}))$('#cam').value=''}
