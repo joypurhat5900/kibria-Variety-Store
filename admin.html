@@ -94,6 +94,9 @@ dialog{max-height:90vh;overflow:auto}
 <h2>মার্চেন্ট নম্বর</h2><div class="pk"><div class="row"><div><label for="mb">বিকাশ</label><input id="mb" maxlength="11"></div><div><label for="mn">নগদ</label><input id="mn" maxlength="11"></div></div><label for="mr">রকেট</label><input id="mr" maxlength="12"></div>
 <h2>বিল পে অপশন</h2><div class="pk"><p class="hint" style="margin:0 0 6px">প্রতি লাইনে একটা ধরন: <b>ধরন: কোম্পানি১, কোম্পানি২</b>। নামে "প্রিপেইড" থাকলে গ্রাহকের কাছে মাস লুকানো থাকবে, বাকিগুলোতে মাস আসবে।</p><textarea id="bt"></textarea>
 <label for="bmn">বিলের মাসের তালিকা (সাল সহ), কত মাস পর্যন্ত দেখাবে</label><select id="bmn"></select></div>
+<h2>হোমের হেল্পলাইন বক্স</h2><div class="pk"><label for="p1">শিরোনাম</label><input id="p1" maxlength="60" placeholder="যেমন: ২৪/৭ সেবা"><label for="p2">লেখা</label><input id="p2" maxlength="120" placeholder="যেমন: সমস্যায় হেল্পলাইন ১২১"><p class="hint">দুটোই খালি রাখলে বক্সটা লুকিয়ে যাবে।</p></div>
+<h2>অ্যাপ ডাউনলোড / ইনস্টল</h2><div class="pk"><label for="ai">গ্রাহকের পেজে ইনস্টল বাটন</label><select id="ai"><option value="on">চালু</option><option value="off">বন্ধ</option></select>
+<label for="al">ডাউনলোড লিংক (ঐচ্ছিক, https:// দিয়ে শুরু)</label><input id="al" maxlength="300" placeholder="https://..."><p class="hint">লিংক দিলে বাটনে চাপলে ওই লিংক খুলবে (যেমন APK)। না দিলে ফোনে সরাসরি ইনস্টল হবে।</p></div>
 <h2>চলন্ত নিউজ</h2><div class="pk"><label for="nw">গ্রাহকের পেজের ওপরে চলবে (খালি রাখলে বন্ধ)</label><input id="nw" maxlength="300"></div>
 <h2>অপারেটরের অফার</h2><div class="pk"><p class="hint" style="margin:0 0 6px">প্রতি লাইনে: <b>অপারেটর | অফারের নাম | দাম</b> (অপারেটর: গ্রামীণফোন, রবি, বাংলালিংক, এয়ারটেল, টেলিটক)</p><textarea id="ot" style="min-height:220px"></textarea></div>
 <h2>টেলিগ্রাম বট</h2><div class="pk"><p class="hint" id="tgs" style="margin:0 0 6px"></p>
@@ -168,7 +171,7 @@ $('#r2').innerHTML=po.length?po.map(t=>`<div class="sm"><span>${who(t)}<br>${KIN
 rc();rt();rch();
 const f=(id,v)=>{if(document.activeElement!==$(id))$(id).value=v};
 f('#mb',cfg.bkash||'');f('#mn',cfg.nagad||'');f('#mr',cfg.rocket||'');
-let bc=DEF;try{if(cfg.bill_cfg)bc=JSON.parse(cfg.bill_cfg)}catch(e){}f('#bt',cfgText(bc));f('#bmn',cfg.bill_months||'3');f('#nw',cfg.news||'');let of=DEF_OFF;try{if(cfg.offers)of=JSON.parse(cfg.offers)}catch(e){}f('#ot',offText(of))}
+let bc=DEF;try{if(cfg.bill_cfg)bc=JSON.parse(cfg.bill_cfg)}catch(e){}f('#bt',cfgText(bc));f('#bmn',cfg.bill_months||'3');f('#nw',cfg.news||'');f('#p1',cfg.promo_t??'২৪/৭ সেবা');f('#p2',cfg.promo_b??'সমস্যায় হেল্পলাইন ১২১');f('#ai',cfg.app_install||'on');f('#al',cfg.app_link||'');let of=DEF_OFF;try{if(cfg.offers)of=JSON.parse(cfg.offers)}catch(e){}f('#ot',offText(of))}
 function rch(){const g={},ord=[];CH.forEach(m=>{if(!g[m.user_id]){g[m.user_id]=m;ord.push(m.user_id)}});
 const nw=ord.filter(i=>g[i].sender==='user').length;$('#nb5').textContent=nw?'('+bn(nw)+')':'';
 $('#cv').innerHTML=ord.length?ord.map(i=>{const m=g[i];return `<div class="sm" data-a="co" data-i="${i}" style="cursor:pointer"><span>${who(m)}<br><small>${m.sender==='admin'?'আপনি: ':''}${E(m.body).slice(0,70)} · ${dt(m.created_at)}</small></span>${m.sender==='user'?'<b class="ps">নতুন</b>':''}</div>`}).join(''):'<p class="hint">কোনো চ্যাট নেই।</p>'}
@@ -213,8 +216,8 @@ if(a==='cp'){const p=$('#cpw').value;if(p.length<8)return toast('কমপক্
 if(a==='cbl')await rpc('admin_set_blocked',{p_user:cur.id,p_block:!cur.blocked},cur.blocked?'আনব্লক হয়েছে':'ব্লক হয়েছে');
 if(a==='cdel'){if(!confirm('এই গ্রাহকের অ্যাকাউন্ট ও সব লেনদেন চিরতরে মুছে যাবে। নিশ্চিত?'))return;const id=cur.id;cur=null;if(await rpc('admin_delete_user',{p_user:id},'অ্যাকাউন্ট মুছে গেছে'))$('#cd').close();else cur=U.find(x=>x.id===id)}});
 
-$('#ss').onclick=async()=>{const bc=textCfg($('#bt').value);if(!bc)return toast('বিল অপশন ঠিকমতো লিখুন (ধরন: কোম্পানি১, কোম্পানি২)।');const of=textOff($('#ot').value);if(!of)return toast('অফার ঠিকমতো লিখুন (অপারেটর | অফারের নাম | দাম)।');
-const{error}=await sb.from('settings').upsert([{key:'bkash',value:$('#mb').value.trim()},{key:'nagad',value:$('#mn').value.trim()},{key:'rocket',value:$('#mr').value.trim()},{key:'bill_cfg',value:JSON.stringify(bc)},{key:'bill_months',value:$('#bmn').value},{key:'news',value:$('#nw').value.trim()},{key:'offers',value:JSON.stringify(of)}]);
+$('#ss').onclick=async()=>{const bc=textCfg($('#bt').value);if(!bc)return toast('বিল অপশন ঠিকমতো লিখুন (ধরন: কোম্পানি১, কোম্পানি২)।');const lk=$('#al').value.trim();if(lk&&!/^https?:\/\//i.test(lk))return toast('ডাউনলোড লিংক https:// দিয়ে শুরু হতে হবে।');const of=textOff($('#ot').value);if(!of)return toast('অফার ঠিকমতো লিখুন (অপারেটর | অফারের নাম | দাম)।');
+const{error}=await sb.from('settings').upsert([{key:'bkash',value:$('#mb').value.trim()},{key:'nagad',value:$('#mn').value.trim()},{key:'rocket',value:$('#mr').value.trim()},{key:'bill_cfg',value:JSON.stringify(bc)},{key:'bill_months',value:$('#bmn').value},{key:'news',value:$('#nw').value.trim()},{key:'promo_t',value:$('#p1').value.trim()},{key:'promo_b',value:$('#p2').value.trim()},{key:'app_install',value:$('#ai').value},{key:'app_link',value:lk},{key:'offers',value:JSON.stringify(of)}]);
 toast(error?errMsg(error):'✅ সেটিংস সেভ হয়েছে');if(!error)loadAll()};
 
 async function boot(s){clearInterval(timer);if(!s){show('lg');return}

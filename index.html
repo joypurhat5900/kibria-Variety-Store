@@ -111,14 +111,14 @@ dialog::backdrop{background:rgba(0,0,0,.5)}
 <div id="bar" class="bar" hidden><button id="bkb" type="button" aria-label="পিছনে">←</button><span id="bt0"></span></div>
 <div id="vhome">
 <div id="gr"><button data-t="r"><i>📱</i>মোবাইল রিচার্জ</button><button data-t="b"><i>🧾</i>বিল পে</button><button data-t="s"><i>💸</i>সেন্ড মানি</button><button data-t="a"><i>➕</i>অ্যাড মানি</button><button data-t="h"><i>🕘</i>হিস্ট্রি</button><button data-t="p"><i>👤</i>প্রোফাইল</button><button data-t="c"><i>💬</i>লাইভ চ্যাট</button><button id="inst" type="button" hidden><i>📲</i>অ্যাপ ইনস্টল</button></div>
-<div class="promo"><b>২৪/৭ সেবা</b><br>সমস্যায় হেল্পলাইন <b>১২১</b></div>
+<div class="promo" id="pr"><b id="pr1">২৪/৭ সেবা</b><br><span id="pr2">সমস্যায় হেল্পলাইন ১২১</span></div>
 <h2 style="font-size:18px;margin:20px 0 8px">সাম্প্রতিক লেনদেন</h2><div class="pk" id="hx"></div>
 <p style="text-align:center"><button class="lk" data-t="h">সব দেখুন →</button></p>
 </div>
 <div class="box" id="pay" hidden>
 <h3 id="ft" style="margin:0 0 4px"></h3>
 <form onsubmit="return false">
-<div id="vr"><div class="lb">অপারেটর</div><div class="chips" id="ops"></div><div id="of"></div>
+<div id="vr"><div class="lb">অপারেটর</div><div class="chips" id="ops"></div>
 <div class="row"><div><label for="rn">মোবাইল নম্বর</label><input id="rn" inputmode="numeric" maxlength="11" placeholder="01XXXXXXXXX"></div>
 <div><label for="rt">সংযোগ</label><select id="rt"><option>প্রিপেইড</option><option>পোস্টপেইড</option></select></div></div>
 <label for="ra">পরিমাণ (৳)</label><input id="ra" inputmode="numeric" placeholder="যেমন ৩০০"><div class="chips" id="qa" style="margin-top:8px"></div></div>
@@ -135,6 +135,7 @@ dialog::backdrop{background:rgba(0,0,0,.5)}
 <label for="at">ট্রানজেকশন আইডি (TrxID)</label><input id="at" maxlength="20" style="text-transform:uppercase">
 <p class="hint">অ্যাডমিন যাচাই করে ব্যালেন্সে যোগ করবেন।</p></div>
 <button class="go" id="go"></button>
+<div id="of"></div>
 </form></div>
 <div class="box" id="vh" hidden><h3 style="margin:0 0 4px">লেনদেনের হিস্ট্রি</h3><div id="tx"></div><h3 style="margin:22px 0 4px">ব্যালেন্স রিকোয়েস্ট</h3><div id="rq"></div></div>
 <div class="box" id="vc" hidden><div id="cm" class="cm"></div>
@@ -199,17 +200,19 @@ $('#fs').onchange=e=>{try{localStorage.setItem('nl_font',e.target.value)}catch(x
 const DEF_OFF={'গ্রামীণফোন':[['১ জিবি · ৭ দিন',49],['৫ জিবি · ৭ দিন',149],['১৫ জিবি · ৩০ দিন',349],['২০০ মিনিট · ৩০ দিন',179]],'রবি':[['১ জিবি · ৭ দিন',48],['৫ জিবি · ৭ দিন',147],['১৫ জিবি · ৩০ দিন',345],['৩০০ মিনিট · ৩০ দিন',199]],'বাংলালিংক':[['১ জিবি · ৭ দিন',47],['৬ জিবি · ৭ দিন',146],['১৬ জিবি · ৩০ দিন',348],['২৫০ মিনিট · ৩০ দিন',189]],'এয়ারটেল':[['১ জিবি · ৭ দিন',46],['৫ জিবি · ৭ দিন',145],['১৫ জিবি · ৩০ দিন',340]],'টেলিটক':[['১ জিবি · ৭ দিন',39],['৫ জিবি · ৭ দিন',129],['২০ জিবি · ৩০ দিন',299]]};
 function offs(){let o=DEF_OFF;try{if(cfg.offers)o=JSON.parse(cfg.offers)}catch(e){}return o}
 function showOffers(){const l=op?(offs()[op]||[]):[];$('#of').innerHTML=l.length?`<div class="lb" style="margin-top:10px">${E(op)} এর অফার (ট্যাপ করে বেছে নিন)</div><div class="of">`+l.map(x=>`<button type="button" data-p="${+x[1]}"><span>${E(x[0])}</span><b>${M(x[1])}</b></button>`).join('')+'</div>':''}
-$('#of').onclick=e=>{const b=e.target.closest('[data-p]');if(b)$('#ra').value=bn(b.dataset.p)};
+$('#of').onclick=e=>{const b=e.target.closest('[data-p]');if(b){$('#ra').value=bn(b.dataset.p);$('#ra').scrollIntoView({behavior:'smooth',block:'center'})}};
 let chT=null;
 async function chatLoad(){if(!me)return;const{data}=await sb.from('chat_messages').select('*').eq('user_id',me.id).order('created_at').limit(100);const el=$('#cm'),nb=el.scrollTop+el.clientHeight>=el.scrollHeight-40;
 el.innerHTML=(data||[]).length?data.map(m=>`<div class="${m.sender==='user'?'me':''}">${E(m.body)}<small>${m.sender==='admin'?'অ্যাডমিন · ':''}${dt(m.created_at)}</small></div>`).join(''):'<p class="hint">কোনো মেসেজ নেই। নিচে লিখে পাঠান।</p>';if(nb)el.scrollTop=el.scrollHeight}
 function chatOpen(){chatLoad().then(()=>{$('#cm').scrollTop=1e9});clearInterval(chT);chT=setInterval(chatLoad,4000)}
 $('#cs2').onclick=async()=>{const t=$('#ci').value.trim();if(!t)return;$('#cs2').disabled=true;const{error}=await sb.rpc('send_chat',{p_body:t});$('#cs2').disabled=false;if(error)return toast(errMsg(error));$('#ci').value='';await chatLoad();$('#cm').scrollTop=1e9};
 $('#ci').onkeydown=e=>{if(e.key==='Enter')$('#cs2').click()};
-let dp=null;addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;$('#inst').hidden=false});
-addEventListener('appinstalled',()=>{$('#inst').hidden=true});
-if(/iphone|ipad/i.test(navigator.userAgent)&&!navigator.standalone)$('#inst').hidden=false;
-$('#inst').onclick=async()=>{if(dp){dp.prompt();await dp.userChoice;dp=null;$('#inst').hidden=true}else toast('Safari-তে নিচের শেয়ার বাটন চেপে "Add to Home Screen" বাছুন।')};
+let dp=null;const ios=/iphone|ipad/i.test(navigator.userAgent)&&!navigator.standalone,lkOk=()=>/^https?:\/\//i.test(cfg.app_link||'');
+const instUI=()=>{$('#inst').hidden=!(cfg.app_install!=='off'&&(dp||ios||lkOk())&&!matchMedia('(display-mode: standalone)').matches)};
+function promo(){const t=cfg.promo_t??'২৪/৭ সেবা',b=cfg.promo_b??'সমস্যায় হেল্পলাইন ১২১';$('#pr').hidden=!t&&!b;$('#pr1').textContent=t;$('#pr2').textContent=b}
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;instUI()});
+addEventListener('appinstalled',()=>{dp=null;$('#inst').hidden=true});
+$('#inst').onclick=async()=>{if(lkOk())window.open(cfg.app_link,'_blank','noopener');else if(dp){dp.prompt();await dp.userChoice;dp=null;instUI()}else toast('Safari-তে নিচের শেয়ার বাটন চেপে "Add to Home Screen" বাছুন।')};
 if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 let bal=0,shown=false;const renderBal=()=>{$('#bv0').textContent=shown?M(bal):'৳ ••••'};
 // ---- সেটআপ
@@ -229,7 +232,7 @@ const merch=()=>{const n=cfg[PAYS[am]];$('#mh').textContent=n?`${am} মার�
 function setTab(t){tab=t;const f='rbsa'.indexOf(t)>=0,T={r:'মোবাইল রিচার্জ',b:'বিল পে',s:'সেন্ড মানি',a:'অ্যাড মানি',h:'হিস্ট্রি',p:'প্রোফাইল',c:'লাইভ চ্যাট'};
 $$('#tb button').forEach(b=>b.classList.toggle('on',b.dataset.t===t&&!b.classList.contains('fab')));
 $('#hero').hidden=$('#vhome').hidden=t!=='home';$('#bar').hidden=t==='home';$('#bt0').textContent=T[t]||'';
-['r','b','s','a'].forEach(k=>$('#v'+k).hidden=k!==t);$('#pay').hidden=!f;$('#vh').hidden=t!=='h';$('#vp').hidden=t!=='p';$('#vc').hidden=t!=='c';if(t==='c')chatOpen();else clearInterval(chT);
+['r','b','s','a'].forEach(k=>$('#v'+k).hidden=k!==t);$('#pay').hidden=!f;$('#vh').hidden=t!=='h';$('#vp').hidden=t!=='p';$('#vc').hidden=t!=='c';$('#of').hidden=t!=='r';if(t==='c')chatOpen();else clearInterval(chT);
 $('#ft').textContent={r:'রিচার্জের তথ্য',b:'বিলের তথ্য',s:'কাকে পাঠাবেন',a:'ব্যালেন্সে টাকা যোগ'}[t]||'';
 $('#go').textContent={r:'রিচার্জ করুন',b:'বিল পরিশোধ করুন',s:'টাকা পাঠান',a:'রিকোয়েস্ট পাঠান'}[t]||''}
 $$('#tb button').forEach(b=>b.onclick=()=>{setTab(b.dataset.t);scrollTo(0,0)});setTab('home');
@@ -257,7 +260,7 @@ const{data:p,error}=await sb.from('profiles').select('*').maybeSingle();if(error
 $('#who').textContent=p.name||'';$('#hi').textContent='স্বাগতম, '+(p.name||'');bal=+p.balance;renderBal();$('#adm').hidden=!p.is_admin;$('#pe').textContent=p.email||'';$('#pm').textContent=bn(p.phone||'');$('#pd').textContent=dt(p.created_at);if(document.activeElement!==$('#pn'))$('#pn').value=p.name||'';
 if(!$('#an').value)$('#an').value=bn(p.phone||'');if(!$('#rn').value&&p.phone){$('#rn').value=bn(p.phone);$('#rn').dispatchEvent(new Event('input'))}
 const[st,tx,tp]=await Promise.all([sb.from('settings').select('*'),sb.from('transactions').select('*').eq('user_id',p.id).order('created_at',{ascending:false}).limit(50),sb.from('topups').select('*').eq('user_id',p.id).order('created_at',{ascending:false}).limit(20)]);
-cfg={};(st.data||[]).forEach(r=>cfg[r.key]=r.value);merch();buildBill();showOffers();$('#news').hidden=!cfg.news;$('#nt').textContent=cfg.news||'';$('#nt').style.animationDuration=Math.max(14,(cfg.news||'').length*.3)+'s';
+cfg={};(st.data||[]).forEach(r=>cfg[r.key]=r.value);merch();buildBill();showOffers();promo();instUI();$('#news').hidden=!cfg.news;$('#nt').textContent=cfg.news||'';$('#nt').style.animationDuration=Math.max(14,(cfg.news||'').length*.3)+'s';
 $('#tx').innerHTML=(tx.data||[]).length?tx.data.map(t=>{const c=t.kind==='topup'||t.kind==='refund'||(t.kind==='adjust'&&t.amount>0),v=t.kind==='adjust'?Math.abs(t.amount):t.kind==='refund'?+t.amount:+t.amount+ +t.fee;
 return `<div class="sm"><span>${KIND[t.kind]}<br><small>${E(t.details)} · ${dt(t.created_at)}</small></span><b class="${c?'pa':''}">${c?'+':'−'}${M(v)}<br><small class="${ST[t.status][1]}">${ST[t.status][0]}</small></b></div>`}).join(''):'<p class="hint">এখনও কোনো লেনদেন নেই।</p>';
 {const c=[...$('#tx').children];$('#hx').innerHTML=c.length&&c[0].classList.contains('sm')?c.slice(0,3).map(e=>e.outerHTML).join(''):$('#tx').innerHTML}
