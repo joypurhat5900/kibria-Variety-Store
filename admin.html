@@ -235,8 +235,9 @@ const{error}=await sb.from('settings').upsert([{key:'bill_cfg',value:JSON.string
 toast(error?errMsg(error):'✅ সেটিংস সেভ হয়েছে');if(!error)loadAll()};
 
 async function boot(s){clearInterval(timer);if(!s){show('lg');return}
-const{data:p,error}=await sb.from('profiles').select('is_admin,name').maybeSingle();
-if(error||!p){$('#msg').textContent='প্রোফাইল পাওয়া যায়নি। supabase.sql রান করুন।';show('lg');return}
+const{data:p,error}=await sb.from('profiles').select('is_admin,name').eq('id',s.user.id).maybeSingle();
+if(error){$('#msg').textContent='ডাটাবেস ত্রুটি: '+error.message;show('lg');return}
+if(!p){$('#msg').textContent='প্রোফাইল পাওয়া যায়নি। supabase.sql রান করে ব্যাকফিল অংশ চালান।';show('lg');return}
 if(!p.is_admin){$('#msg').textContent='এই অ্যাকাউন্ট অ্যাডমিন নয়। SQL দিয়ে is_admin = true করুন।';show('lg');return}
 show('ad');await loadAll();timer=setInterval(()=>{if(!$('#cd').open&&!$('#ch').open)loadAll()},20000)}
 sb.auth.onAuthStateChange((ev,s)=>{setTimeout(()=>boot(s),0)});

@@ -260,7 +260,7 @@ if(!s){me=null;['app','ad'].forEach(i=>$('#'+i).hidden=true);$('#lg').hidden=fal
 $('#lg').hidden=true;$('#out').hidden=false;if($('#app').hidden&&$('#ad').hidden)$('#app').hidden=false;
 await load();timer=setInterval(load,20000)}
 async function load(){if(busy)return;
-const{data:p,error}=await sb.from('profiles').select('*').maybeSingle();if(error||!p)return;if(p.blocked){toast('আপনার অ্যাকাউন্ট ব্লক করা হয়েছে। অ্যাডমিনের সাথে যোগাযোগ করুন।');sb.auth.signOut();return}me=p;
+const{data:{session:ss}}=await sb.auth.getSession();if(!ss)return;const{data:p,error}=await sb.from('profiles').select('*').eq('id',ss.user.id).maybeSingle();if(error||!p)return;if(p.blocked){toast('আপনার অ্যাকাউন্ট ব্লক করা হয়েছে। অ্যাডমিনের সাথে যোগাযোগ করুন।');sb.auth.signOut();return}me=p;
 $('#who').textContent=p.name||'';$('#hi').textContent='স্বাগতম, '+(p.name||'');bal=+p.balance;renderBal();$('#adm').hidden=!p.is_admin;$('#pe').textContent=p.email||'';$('#pm').textContent=bn(p.phone||'');$('#pd').textContent=dt(p.created_at);if(document.activeElement!==$('#pn'))$('#pn').value=p.name||'';
 if(!$('#an').value)$('#an').value=bn(p.phone||'');if(!$('#rn').value&&p.phone){$('#rn').value=bn(p.phone);$('#rn').dispatchEvent(new Event('input'))}
 const[st,tx,tp]=await Promise.all([sb.from('settings').select('*'),sb.from('transactions').select('*').eq('user_id',p.id).order('created_at',{ascending:false}).limit(50),sb.from('topups').select('*').eq('user_id',p.id).order('created_at',{ascending:false}).limit(20)]);
