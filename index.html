@@ -146,7 +146,6 @@ dialog::backdrop{background:rgba(0,0,0,.5)}
 <div class="box" id="vp" hidden><h3 style="margin:0 0 8px">প্রোফাইল</h3>
 <div class="sm"><span>ইমেইল</span><b id="pe"></b></div><div class="sm"><span>মোবাইল</span><b id="pm"></b></div><div class="sm"><span>যোগ দিয়েছেন</span><b id="pd"></b></div>
 <label for="pn">নাম</label><input id="pn" maxlength="60" autocomplete="name"><button class="go" id="pns" style="padding:10px;font-size:16px;margin-top:10px">নাম সেভ করুন</button>
-<label for="fs">বাংলা লেখার ফন্ট</label><select id="fs"></select>
 <label for="p1">নতুন পাসওয়ার্ড (কমপক্ষে ৮ অক্ষর)</label><input id="p1" type="password" minlength="8" autocomplete="new-password"><button class="go" id="pps" style="padding:10px;font-size:16px;margin-top:10px">পাসওয়ার্ড বদলান</button>
 <button class="go" id="pout" style="padding:10px;font-size:16px;background:var(--bad)">লগআউট</button></div>
 </main>
@@ -196,9 +195,7 @@ const errMsg=e=>{const m=e?.message||'';if(/too fast/.test(m))return 'একট�
 
 const FONTS={'Hind Siliguri':"'Hind Siliguri'",'Noto Sans Bengali':"'Noto Sans Bengali'",'Anek Bangla':"'Anek Bangla'",'Baloo Da 2':"'Baloo Da 2'",'Noto Serif Bengali':"'Noto Serif Bengali'",'Tiro Bangla':"'Tiro Bangla'",'সিস্টেম ফন্ট':'system-ui'};
 const applyFont=n=>document.documentElement.style.setProperty('--font',FONTS[n]||FONTS['Hind Siliguri']);
-{let f='Hind Siliguri';try{f=localStorage.getItem('nl_font')||f}catch(e){}if(!FONTS[f])f='Hind Siliguri';applyFont(f);
-$('#fs').innerHTML=Object.keys(FONTS).map(k=>`<option>${k}</option>`).join('');$('#fs').value=f;
-$('#fs').onchange=e=>{try{localStorage.setItem('nl_font',e.target.value)}catch(x){}applyFont(e.target.value)}}
+try{const f=localStorage.getItem('nl_font');if(FONTS[f])applyFont(f)}catch(e){}
 const DEF_OFF={'গ্রামীণফোন':[['১ জিবি · ৭ দিন',49],['৫ জিবি · ৭ দিন',149],['১৫ জিবি · ৩০ দিন',349],['২০০ মিনিট · ৩০ দিন',179]],'রবি':[['১ জিবি · ৭ দিন',48],['৫ জিবি · ৭ দিন',147],['১৫ জিবি · ৩০ দিন',345],['৩০০ মিনিট · ৩০ দিন',199]],'বাংলালিংক':[['১ জিবি · ৭ দিন',47],['৬ জিবি · ৭ দিন',146],['১৬ জিবি · ৩০ দিন',348],['২৫০ মিনিট · ৩০ দিন',189]],'এয়ারটেল':[['১ জিবি · ৭ দিন',46],['৫ জিবি · ৭ দিন',145],['১৫ জিবি · ৩০ দিন',340]],'টেলিটক':[['১ জিবি · ৭ দিন',39],['৫ জিবি · ৭ দিন',129],['২০ জিবি · ৩০ দিন',299]]};
 function offs(){let o=DEF_OFF;try{if(cfg.offers)o=JSON.parse(cfg.offers)}catch(e){}return o}
 function showOffers(){const l=op?(offs()[op]||[]):[];$('#of').innerHTML=l.length?`<div class="lb" style="margin-top:10px">${E(op)} এর অফার (ট্যাপ করে বেছে নিন)</div><div class="of">`+l.map(x=>`<button type="button" data-p="${+x[1]}"><span>${E(x[0])}</span><b>${M(x[1])}</b></button>`).join('')+'</div>':''}
@@ -264,7 +261,7 @@ const{data:{session:ss}}=await sb.auth.getSession();if(!ss)return;const{data:p,e
 $('#who').textContent=p.name||'';$('#hi').textContent='স্বাগতম, '+(p.name||'');bal=+p.balance;renderBal();$('#adm').hidden=!p.is_admin;$('#pe').textContent=p.email||'';$('#pm').textContent=bn(p.phone||'');$('#pd').textContent=dt(p.created_at);if(document.activeElement!==$('#pn'))$('#pn').value=p.name||'';
 if(!$('#an').value)$('#an').value=bn(p.phone||'');if(!$('#rn').value&&p.phone){$('#rn').value=bn(p.phone);$('#rn').dispatchEvent(new Event('input'))}
 const[st,tx,tp]=await Promise.all([sb.from('settings').select('*'),sb.from('transactions').select('*').eq('user_id',p.id).order('created_at',{ascending:false}).limit(50),sb.from('topups').select('*').eq('user_id',p.id).order('created_at',{ascending:false}).limit(20)]);
-cfg={};(st.data||[]).forEach(r=>cfg[r.key]=r.value);merch();buildBill();showOffers();promo();instUI();$('#news').hidden=!cfg.news;$('#nt').textContent=cfg.news||'';$('#nt').style.animationDuration=Math.max(14,(cfg.news||'').length*.3)+'s';
+cfg={};(st.data||[]).forEach(r=>cfg[r.key]=r.value);merch();buildBill();showOffers();promo();instUI();{const fo=FONTS[cfg.font]?cfg.font:'Hind Siliguri';applyFont(fo);try{localStorage.setItem('nl_font',fo)}catch(e){}}$('#news').hidden=!cfg.news;$('#nt').textContent=cfg.news||'';$('#nt').style.animationDuration=Math.max(14,(cfg.news||'').length*.3)+'s';
 $('#tx').innerHTML=(tx.data||[]).length?tx.data.map(t=>{const c=t.kind==='topup'||t.kind==='refund'||(t.kind==='adjust'&&t.amount>0),v=t.kind==='adjust'?Math.abs(t.amount):t.kind==='refund'?+t.amount:+t.amount+ +t.fee;
 return `<div class="sm"><span>${KIND[t.kind]}<br><small>${E(t.details)} · ${dt(t.created_at)}</small></span><b class="${c?'pa':''}">${c?'+':'−'}${M(v)}<br><small class="${ST[t.status][1]}">${ST[t.status][0]}</small></b></div>`}).join(''):'<p class="hint">এখনও কোনো লেনদেন নেই।</p>';
 {const c=[...$('#tx').children];$('#hx').innerHTML=c.length&&c[0].classList.contains('sm')?c.slice(0,3).map(e=>e.outerHTML).join(''):$('#tx').innerHTML}
