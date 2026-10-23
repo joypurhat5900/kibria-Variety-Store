@@ -128,10 +128,10 @@ dialog,input,select,textarea,button{font-family:inherit}
 <div class="row"><div><label for="bc">বিলের ধরন</label><select id="bc"></select></div><div><label for="bo">কোম্পানি</label><select id="bo"></select></div></div>
 <div class="row"><div><label for="ba">অ্যাকাউন্ট/মিটার নম্বর</label><input id="ba" maxlength="40"></div><div id="bmw"><label for="bm">বিলের মাস</label><select id="bm"></select></div></div>
 <div class="row"><div><label for="bn">যোগাযোগের মোবাইল</label><input id="bn" inputmode="numeric" maxlength="11"></div><div><label for="bv">বিলের পরিমাণ (৳)</label><input id="bv" inputmode="numeric"></div></div>
-<p class="hint">সার্ভিস চার্জ: ১% (সর্বনিম্ন ৳৫)</p></div>
+<p class="hint">সার্ভিস চার্জ নিশ্চিতকরণের সময় দেখানো হবে।</p></div>
 <div id="vs" hidden><div class="lb">কোন অ্যাকাউন্টে পাঠাবেন</div><div class="chips" id="sm"></div>
 <div class="row"><div><label for="sn">প্রাপকের নম্বর</label><input id="sn" inputmode="numeric" maxlength="11"></div><div><label for="sa">পরিমাণ (৳)</label><input id="sa" inputmode="numeric"></div></div>
-<p class="hint">ব্যালেন্স থেকে কাটা হবে। চার্জ ১.৫% (সর্বনিম্ন ৳৫)। অ্যাডমিন পাঠালে "সম্পন্ন" দেখাবে।</p></div>
+<p class="hint">ব্যালেন্স থেকে কাটা হবে। চার্জ নিশ্চিতকরণের সময় দেখানো হবে। অ্যাডমিন পাঠালে "সম্পন্ন" দেখাবে।</p></div>
 <div id="va" hidden><p class="hint" id="mh" style="margin:0 0 6px"></p>
 <div id="qrw" hidden><div class="lb">কিউআর কোড স্ক্যান করে পেমেন্ট করুন</div><img id="qri" alt="পেমেন্ট QR কোড"><div style="text-align:center"><button type="button" class="sb" id="qrd">⬇ QR ডাউনলোড করুন</button></div></div>
 <div class="row"><div><label for="an">যে নম্বর থেকে টাকা পাঠিয়েছেন</label><input id="an" inputmode="numeric" maxlength="11"></div><div><label for="aa">পরিমাণ (৳)</label><input id="aa" inputmode="numeric"></div></div>
@@ -188,7 +188,7 @@ const OPS=['গ্রামীণফোন','রবি','বাংলালি�
 const BILL={'বিদ্যুৎ':['নেসকো প্রিপেইড','নেসকো পোস্টপেইড','ডেসকো','ডিপিডিসি','নেসকো','পল্লী বিদ্যুৎ'],'গ্যাস':['তিতাস গ্যাস','বাখরাবাদ গ্যাস','জালালাবাদ গ্যাস'],'পানি':['ঢাকা ওয়াসা','চট্টগ্রাম ওয়াসা','খুলনা ওয়াসা'],'ইন্টারনেট':['লিংক৩','আমরা নেটওয়ার্কস','ক্যারিয়ার ব্রডব্যান্ড'],'ল্যান্ডফোন':['বিটিসিএল']};
 const MN=['জানুয়ারি','ফেব্রুয়ারি','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর'];
 const PAYS={'বিকাশ':'bkash','নগদ':'nagad','রকেট':'rocket'},PN={bkash:'বিকাশ',nagad:'নগদ',rocket:'রকেট',qr:'QR পেমেন্ট'};
-const KIND={recharge:'রিচার্জ',bill:'বিল পে',send:'সেন্ড মানি',topup:'ব্যালেন্স যোগ',adjust:'অ্যাডমিন সমন্বয়',refund:'টাকা ফেরত'};
+const KIND={recharge:'রিচার্জ',bill:'বিল পে',send:'সেন্ড মানি',topup:'ব্যালেন্স যোগ',adjust:'অ্যাডমিন সমন্বয়',refund:'টাকা ফেরত',commission:'কমিশন'};
 const ST={pending:['প্রক্রিয়াধীন','ps'],completed:['সম্পন্ন','pa'],refunded:['ফেল · টাকা ফেরত','pr'],approved:['যোগ হয়েছে','pa'],rejected:['বাতিল','pr']};
 let me=null,tab='r',op='',sm='বিকাশ',am='বিকাশ',mode='in',cfg={},pend=null,timer=null,busy=false;
 const toast=t=>{const x=$('#toast');x.textContent=t;x.style.display='block';clearTimeout(x._t);x._t=setTimeout(()=>x.style.display='none',4000)};
@@ -261,24 +261,29 @@ $('#who').textContent=p.name||'';$('#hi').textContent='স্বাগতম, '+
 if(!$('#an').value)$('#an').value=bn(p.phone||'');if(!$('#rn').value&&p.phone){$('#rn').value=bn(p.phone);$('#rn').dispatchEvent(new Event('input'))}
 const[st,tx,tp]=await Promise.all([sb.from('settings').select('*'),sb.from('transactions').select('*').eq('user_id',p.id).order('created_at',{ascending:false}).limit(50),sb.from('topups').select('*').eq('user_id',p.id).order('created_at',{ascending:false}).limit(20)]);
 cfg={};(st.data||[]).forEach(r=>cfg[r.key]=r.value);merch();buildBill();showOffers();promo();instUI();$('#news').hidden=!cfg.news;$('#nt').textContent=cfg.news||'';$('#nt').style.animationDuration=Math.max(14,(cfg.news||'').length*.3)+'s';
-$('#tx').innerHTML=(tx.data||[]).length?tx.data.map(t=>{const c=t.kind==='topup'||t.kind==='refund'||(t.kind==='adjust'&&t.amount>0),v=t.kind==='adjust'?Math.abs(t.amount):t.kind==='refund'?+t.amount:+t.amount+ +t.fee;
+$('#tx').innerHTML=(tx.data||[]).length?tx.data.map(t=>{const c=t.kind==='topup'||t.kind==='refund'||t.kind==='commission'||(t.kind==='adjust'&&t.amount>0),v=t.kind==='adjust'?Math.abs(t.amount):t.kind==='refund'||t.kind==='topup'||t.kind==='commission'?+t.amount:+t.amount+ +t.fee;
 return `<div class="sm"><span>${KIND[t.kind]}<br><small>${E(t.details)} · ${dt(t.created_at)}</small></span><b class="${c?'pa':''}">${c?'+':'−'}${M(v)}<br><small class="${ST[t.status][1]}">${ST[t.status][0]}</small></b></div>`}).join(''):'<p class="hint">এখনও কোনো লেনদেন নেই।</p>';
 {const c=[...$('#tx').children];$('#hx').innerHTML=c.length&&c[0].classList.contains('sm')?c.slice(0,3).map(e=>e.outerHTML).join(''):$('#tx').innerHTML}
 $('#rq').innerHTML=(tp.data||[]).length?tp.data.map(t=>`<div class="sm"><span>${PN[t.method]} · ${M(t.amount)}<br><small>${E(t.trx)} · ${dt(t.created_at)}</small></span><b class="${ST[t.status][1]}">${ST[t.status][0]}</b></div>`).join(''):'<p class="hint">কোনো রিকোয়েস্ট নেই।</p>';
 if(p.is_admin){$('#cb').value=cfg.bkash||'';$('#cn').value=cfg.nagad||'';$('#cr').value=cfg.rocket||'';if(!$('#ad').hidden)loadAdmin()}}
 
 // ---- লেনদেন
-const fee=(a,p)=>Math.max(5,Math.ceil(a*p));
+const FD={bill:{type:'percent',value:1,min:5,max:0},send:{type:'percent',value:1.5,min:5,max:0}};
+function calcAmt(p,a){if(!p)return 0;if(p.type==='percent'){let v=Math.round(a*(+p.value||0))/100;v=Math.max(v,+p.min||0);if(+p.max>0)v=Math.min(v,+p.max);return Math.round(v*100)/100}return +p.value||0}
+function ovOf(sv,k){const o=me&&me.fee_override;return(o&&o[sv]&&o[sv][k])||null}
+function feeOf(sv,a){let o={};try{if(cfg.fees)o=JSON.parse(cfg.fees)}catch(e){}const p=ovOf(sv,'charge')||(o[sv]&&o[sv].charge)||FD[sv]||{type:'fixed',value:0};return calcAmt(p,a)}
+function commOf(sv,a){const p=ovOf(sv,'commission');return p?calcAmt(p,a):0}
 $('#go').onclick=()=>{let rows;
 if(tab==='r'){const n=en($('#rn').value),a=+en($('#ra').value);if(!op)return toast('অপারেটর বেছে নিন।');if(!ok(n))return toast('সঠিক মোবাইল নম্বর দিন।');if(!a||a<10||a>1000)return toast('১০ থেকে ১০০০ টাকার মধ্যে দিন।');
-rows=[['অপারেটর',op+' ('+$('#rt').value+')'],['নম্বর',bn(n)],['পরিমাণ',M(a)]];pend={rpc:'place_order',args:{p_kind:'recharge',p_details:op+' '+n+' '+$('#rt').value,p_amount:a},total:a}}
+rows=[['অপারেটর',op+' ('+$('#rt').value+')'],['নম্বর',bn(n)],['পরিমাণ',M(a)]].concat(feeOf('recharge',a)?[['চার্জ',M(feeOf('recharge',a))]]:[]);pend={rpc:'place_order',args:{p_kind:'recharge',p_details:op+' '+n+' '+$('#rt').value,p_amount:a},total:a+feeOf('recharge',a)}}
 else if(tab==='b'){const a=+en($('#bv').value),ac=$('#ba').value.trim();if(!ac)return toast('অ্যাকাউন্ট নম্বর দিন।');if(!ok($('#bn').value))return toast('যোগাযোগের সঠিক নম্বর দিন।');if(!a||a<10)return toast('সঠিক পরিমাণ দিন।');
-const f=fee(a,.01),pre=/প্রিপেইড/.test($('#bo').value),mo=pre?'প্রিপেইড':$('#bm').value;rows=[['কোম্পানি',$('#bo').value],['অ্যাকাউন্ট',E(ac)],pre?['ধরন','প্রিপেইড']:['মাস',mo],['বিল',M(a)],['চার্জ',M(f)]];
+const f=feeOf('bill',a),pre=/প্রিপেইড/.test($('#bo').value),mo=pre?'প্রিপেইড':$('#bm').value;rows=[['কোম্পানি',$('#bo').value],['অ্যাকাউন্ট',E(ac)],pre?['ধরন','প্রিপেইড']:['মাস',mo],['বিল',M(a)],['চার্জ',M(f)]];
 pend={rpc:'place_order',args:{p_kind:'bill',p_details:$('#bo').value+' | '+ac+' | '+mo+' | '+en($('#bn').value),p_amount:a},total:a+f}}
 else if(tab==='s'){const n=en($('#sn').value),a=+en($('#sa').value);if(!ok(n))return toast('প্রাপকের সঠিক নম্বর দিন।');if(!a||a<10||a>25000)return toast('১০ থেকে ২৫,০০০ টাকার মধ্যে দিন।');
-const f=fee(a,.015);rows=[[sm,bn(n)],['পরিমাণ',M(a)],['চার্জ',M(f)]];pend={rpc:'place_order',args:{p_kind:'send',p_details:sm+' '+n,p_amount:a},total:a+f}}
+const f=feeOf('send',a);rows=[[sm,bn(n)],['পরিমাণ',M(a)],['চার্জ',M(f)]];pend={rpc:'place_order',args:{p_kind:'send',p_details:sm+' '+n,p_amount:a},total:a+f}}
 else{const n=en($('#an').value),a=+en($('#aa').value),t=$('#at').value.trim().toUpperCase();if(!ok(n))return toast('সঠিক নম্বর দিন।');if(!a||a<10||a>50000)return toast('১০ থেকে ৫০,০০০ টাকার মধ্যে দিন।');if(t.length<6)return toast('TrxID দিন।');
-rows=[['মাধ্যম','QR পেমেন্ট'],['নম্বর',bn(n)],['পরিমাণ',M(a)],['TrxID',E(t)]];pend={rpc:'request_topup',args:{p_method:'qr',p_sender:n,p_amount:a,p_trx:t},total:0,top:1}}
+rows=[['মাধ্যম','QR পেমেন্ট'],['নম্বর',bn(n)],['পরিমাণ',M(a)],['TrxID',E(t)]].concat(feeOf('topup',a)?[['চার্জ (জমা থেকে কাটা হবে)',M(feeOf('topup',a))]]:[]);pend={rpc:'request_topup',args:{p_method:'qr',p_sender:n,p_amount:a,p_trx:t},total:0,top:1}}
+{const cm=commOf(pend.top?'topup':pend.args.p_kind,pend.args.p_amount);if(cm)rows.push([pend.top?'কমিশন (অনুমোদনে ব্যালেন্সে আসবে)':'কমিশন (সম্পন্ন হলে ব্যালেন্সে আসবে)',M(cm)])}
 if(!pend.top&&me.balance<pend.total)return toast(`ব্যালেন্স কম। দরকার ${M(pend.total)}, আছে ${M(me.balance)}।`);
 $('#sum').innerHTML=rows.map(r=>`<div class="sm"><span>${r[0]}</span><b>${r[1]}</b></div>`).join('')+(pend.top?'':`<div class="sm"><span>সর্বমোট</span><b>${M(pend.total)}</b></div>`);$('#cp').value='';$('#dg').showModal()};
 $('#no').onclick=()=>$('#dg').close();
