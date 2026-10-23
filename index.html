@@ -141,9 +141,8 @@ dialog,input,select,textarea,button{font-family:inherit}
 <div id="of"></div>
 </form></div>
 <div class="box" id="vh" hidden><h3 style="margin:0 0 4px">লেনদেনের হিস্ট্রি</h3><div id="tx"></div><h3 style="margin:22px 0 4px">ব্যালেন্স রিকোয়েস্ট</h3><div id="rq"></div></div>
-<div class="box" id="vn" hidden><h3 style="margin:0 0 6px">নোটিফিকেশন</h3>
-<button class="sb" id="npm" type="button" hidden>🔔 ফোনে নোটিফিকেশন চালু করুন</button><p class="hint" id="npn" style="margin:6px 0 10px"></p><div class="pk" style="margin-bottom:10px"><b>পুশ নোটিফিকেশন পরীক্ষা</b><div class="hint" id="pdg" style="margin:6px 0"></div><button class="sb" id="ptest" type="button">📨 পুশ টেস্ট পাঠান</button><p class="hint">টেস্ট চেপে অ্যাপ বন্ধ করে ১০ সেকেন্ড অপেক্ষা করুন। ফোনে নোটিফিকেশন আসা উচিত।</p></div>
-<div id="nl"></div></div>
+<div class="box" id="vn" hidden><h3 style="margin:0 0 6px">নোটিফিকেশন (সর্বশেষ ৫টি)</h3>
+<button class="sb" id="npm" type="button" hidden>🔔 ফোনে নোটিফিকেশন চালু করুন</button><p class="hint" id="npn" style="margin:6px 0 10px"></p><div id="nl"></div></div>
 <div class="box" id="vc" hidden><div id="cm" class="cm"></div>
 <div class="row" style="grid-template-columns:1fr auto;margin-top:10px"><input id="ci" maxlength="500" placeholder="মেসেজ লিখুন..."><button class="go" id="cs2" style="margin:0;width:auto;padding:0 18px;font-size:16px">পাঠান</button></div>
 <p class="hint">আমরা যত দ্রুত সম্ভব উত্তর দেব।</p></div>
@@ -208,7 +207,7 @@ if(navigator.serviceWorker&&navigator.serviceWorker.ready)navigator.serviceWorke
 function npState(){const sup='Notification' in window,p=sup?Notification.permission:'';$('#npm').hidden=!(sup&&p==='default');
 $('#npn').textContent=!sup?'এই ব্রাউজারে সমর্থন নেই। iPhone-এ অ্যাপটি Home Screen-এ ইনস্টল করে খুলতে হয়।':p==='granted'?(cfg.vapid_public?'✅ ফোনে নোটিফিকেশন চালু আছে (অ্যাপ বন্ধ থাকলেও আসবে)।':'✅ ফোনে নোটিফিকেশন চালু আছে (অ্যাপ খোলা বা ব্যাকগ্রাউন্ডে থাকলে আসবে)।'):p==='denied'?'নোটিফিকেশন বন্ধ করা আছে। ব্রাউজার বা ফোনের সেটিংস থেকে চালু করুন।':'নতুন আপডেট ফোনে পেতে চালু করুন।'}
 function notifRender(l){const un=l.filter(x=>!x.read).length;$('#bell').hidden=false;$('#nbg').textContent=un?' '+bn(un):'';$('#nbg').style.color=un?'#ff8a00':'';
-$('#nl').innerHTML=l.length?l.map(x=>`<div class="sm" style="align-items:flex-start"><span><b>${E(x.title)}</b>${x.read?'':' <small class="ps">নতুন</small>'}<br>${E(x.body).replace(/\n/g,'<br>')}<br><small>${dt(x.created_at)}</small></span></div>`).join(''):'<p class="hint">কোনো নোটিফিকেশন নেই।</p>';
+$('#nl').innerHTML=l.length?l.slice(0,5).map(x=>`<div class="sm" style="align-items:flex-start"><span><b>${E(x.title)}</b>${x.read?'':' <small class="ps">নতুন</small>'}<br>${E(x.body).replace(/\n/g,'<br>')}<br><small>${dt(x.created_at)}</small></span></div>`).join(''):'<p class="hint">কোনো নোটিফিকেশন নেই।</p>';
 let ln=-1;try{const v=localStorage.getItem('nl_ln');ln=v===null?-1:+v}catch(e){}const mx=l.reduce((m,x)=>Math.max(m,x.id),0);
 if(ln<0)ln=mx;else{l.filter(x=>x.id>ln&&!x.read).reverse().forEach(sysNote);if(mx>ln)ln=mx}
 try{localStorage.setItem('nl_ln',String(ln))}catch(e){}npState()}
@@ -219,15 +218,9 @@ if(!sub){try{sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicati
 let j=sub.toJSON();let r=await sb.rpc('save_push_sub',{p_endpoint:j.endpoint,p_p256dh:j.keys.p256dh,p_auth:j.keys.auth});
 if(r.error){try{await sub.unsubscribe();sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:key});j=sub.toJSON();await sb.rpc('save_push_sub',{p_endpoint:j.endpoint,p_p256dh:j.keys.p256dh,p_auth:j.keys.auth})}catch(e){}}}
 async function dropPush(){window._ps=0;try{const reg=await navigator.serviceWorker.ready,sub=await reg.pushManager.getSubscription();if(sub)await sb.rpc('drop_push_sub',{p_endpoint:sub.endpoint})}catch(e){}}
-async function pdiag(){const sup=('serviceWorker' in navigator)&&('PushManager' in window)&&('Notification' in window);let sub=null;
-try{const reg=await navigator.serviceWorker.ready;sub=await reg.pushManager.getSubscription()}catch(e){}
-const c=await sb.rpc('my_push_count');
-const L=[['পুশ কী তৈরি করা আছে (অ্যাডমিন)',!!cfg.vapid_public],['ব্রাউজার পুশ সমর্থন করে',sup],['নোটিফিকেশনের অনুমতি দেওয়া আছে',sup&&Notification.permission==='granted'],['এই ফোনের সংযোগ তৈরি হয়েছে',!!sub],['সংযোগ সার্ভারে সেভ হয়েছে',(c.data||0)>0]];
-$('#pdg').innerHTML=L.map(x=>(x[1]?'✅ ':'❌ ')+x[0]).join('<br>')}
-$('#ptest').onclick=async()=>{const{error}=await sb.rpc('send_test_push');if(error)return toast(/too fast/.test(error.message)?'একটু পরে আবার চাপুন।':errMsg(error));toast('টেস্ট পাঠানো হয়েছে। অ্যাপ বন্ধ করে অপেক্ষা করুন।');setTimeout(load,3000)};
 async function markRead(){if(tab!=='n')return;await sb.rpc('mark_notifications_read');load()}
 $('#bell').onclick=()=>{setTab('n');scrollTo(0,0)};
-$('#npm').onclick=()=>{if('Notification' in window)Notification.requestPermission().then(async()=>{npState();await pushSub().catch(()=>{});pdiag()})};
+$('#npm').onclick=()=>{if('Notification' in window)Notification.requestPermission().then(()=>{npState();pushSub().catch(()=>{})})};
 async function chatLoad(){if(!me)return;const{data}=await sb.from('chat_messages').select('*').eq('user_id',me.id).order('created_at').limit(100);const el=$('#cm'),nb=el.scrollTop+el.clientHeight>=el.scrollHeight-40;
 el.innerHTML=(data||[]).length?data.map(m=>`<div class="${m.sender==='user'?'me':''}">${E(m.body)}<small>${m.sender==='admin'?'অ্যাডমিন · ':''}${dt(m.created_at)}</small></div>`).join(''):'<p class="hint">কোনো মেসেজ নেই। নিচে লিখে পাঠান।</p>';if(nb)el.scrollTop=el.scrollHeight}
 function chatOpen(){chatLoad().then(()=>{$('#cm').scrollTop=1e9});clearInterval(chT);chT=setInterval(chatLoad,4000)}
@@ -260,7 +253,7 @@ $('#qrd').onclick=async()=>{const u=$('#qri').src;try{const r=await fetch(u),b=a
 function setTab(t){tab=t;const f='rbsa'.indexOf(t)>=0,T={r:'মোবাইল রিচার্জ',b:'বিল পে',s:'সেন্ড মানি',a:'অ্যাড মানি',h:'হিস্ট্রি',p:'প্রোফাইল',c:'লাইভ চ্যাট',n:'নোটিফিকেশন'};
 $$('#tb button').forEach(b=>b.classList.toggle('on',b.dataset.t===t&&!b.classList.contains('fab')));
 $('#hero').hidden=$('#vhome').hidden=t!=='home';$('#bar').hidden=t==='home';$('#bt0').textContent=T[t]||'';
-['r','b','s','a'].forEach(k=>$('#v'+k).hidden=k!==t);$('#pay').hidden=!f;$('#vh').hidden=t!=='h';$('#vp').hidden=t!=='p';$('#vc').hidden=t!=='c';$('#vn').hidden=t!=='n';if(t==='n'){setTimeout(markRead,1500);pdiag()}$('#of').hidden=t!=='r';if(t==='c')chatOpen();else clearInterval(chT);
+['r','b','s','a'].forEach(k=>$('#v'+k).hidden=k!==t);$('#pay').hidden=!f;$('#vh').hidden=t!=='h';$('#vp').hidden=t!=='p';$('#vc').hidden=t!=='c';$('#vn').hidden=t!=='n';if(t==='n')setTimeout(markRead,1500);$('#of').hidden=t!=='r';if(t==='c')chatOpen();else clearInterval(chT);
 $('#ft').textContent={r:'রিচার্জের তথ্য',b:'বিলের তথ্য',s:'কাকে পাঠাবেন',a:'ব্যালেন্সে টাকা যোগ'}[t]||'';
 $('#go').textContent={r:'রিচার্জ করুন',b:'বিল পরিশোধ করুন',s:'টাকা পাঠান',a:'রিকোয়েস্ট পাঠান'}[t]||''}
 $$('#tb button').forEach(b=>b.onclick=()=>{setTab(b.dataset.t);scrollTo(0,0)});setTab('home');
