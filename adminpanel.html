@@ -125,7 +125,7 @@ dialog{max-height:90vh;overflow:auto}
 document.getElementById('st').textContent='';window.onerror=function(m){document.getElementById('st').textContent='ত্রুটি: '+m};
 const SUPABASE_URL='https://hdyzypxswjopyagouwpw.supabase.co';
 const SUPABASE_ANON_KEY='sb_publishable_WMry2OnjCdMuah2eQPboxA_idjWksIC';
-const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{global:{fetch:(u,o)=>fetch(u,{...o,cache:'no-store'})}});
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const D='০১২৩৪৫৬৭৮৯',bn=n=>String(n).replace(/\d/g,d=>D[d]),en=s=>String(s).replace(/[০-৯]/g,d=>D.indexOf(d));
 const E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -231,7 +231,7 @@ if(a==='cdel'){if(!confirm('এই গ্রাহকের অ্যাকা�
 $('#t4').addEventListener('input',e=>{if(e.target.type!=='file')sdirty=true});$('#t4').addEventListener('change',e=>{if(e.target.type!=='file')sdirty=true});
 $('#ss').onclick=async()=>{const bc=textCfg($('#bt').value);if(!bc)return toast('বিল অপশন ঠিকমতো লিখুন (ধরন: কোম্পানি১, কোম্পানি২)।');const lk=$('#al').value.trim();if(lk&&!/^https?:\/\//i.test(lk))return toast('ডাউনলোড লিংক https:// দিয়ে শুরু হতে হবে।');const of=textOff($('#ot').value);if(!of)return toast('অফার ঠিকমতো লিখুন (অপারেটর | অফারের নাম | দাম)।');
 const{error}=await sb.from('settings').upsert([{key:'bill_cfg',value:JSON.stringify(bc)},{key:'bill_months',value:$('#bmn').value},{key:'news',value:$('#nw').value.trim()},{key:'promo_t',value:$('#p1').value.trim()},{key:'promo_b',value:$('#p2').value.trim()},{key:'app_install',value:$('#ai').value},{key:'app_link',value:lk},{key:'offers',value:JSON.stringify(of)}]);
-if(error)return toast(errMsg(error));sdirty=false;toast('✅ সেভ হয়েছে (ফন্ট: '+$('#fs').value+')');loadAll()};
+if(error)return toast(errMsg(error));sdirty=false;const rb=await sb.from('settings').select('value').eq('key','font').maybeSingle();toast('✅ সেভ হয়েছে। ডাটাবেসে ফন্ট: '+(rb.data?rb.data.value:'পাওয়া যায়নি'));loadAll()};
 
 async function boot(s){clearInterval(timer);if(!s){show('lg');return}
 const{data:p,error}=await sb.from('profiles').select('is_admin,name').eq('id',s.user.id).maybeSingle();

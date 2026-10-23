@@ -147,6 +147,7 @@ dialog::backdrop{background:rgba(0,0,0,.5)}
 <div class="sm"><span>ইমেইল</span><b id="pe"></b></div><div class="sm"><span>মোবাইল</span><b id="pm"></b></div><div class="sm"><span>যোগ দিয়েছেন</span><b id="pd"></b></div>
 <label for="pn">নাম</label><input id="pn" maxlength="60" autocomplete="name"><button class="go" id="pns" style="padding:10px;font-size:16px;margin-top:10px">নাম সেভ করুন</button>
 <label for="p1">নতুন পাসওয়ার্ড (কমপক্ষে ৮ অক্ষর)</label><input id="p1" type="password" minlength="8" autocomplete="new-password"><button class="go" id="pps" style="padding:10px;font-size:16px;margin-top:10px">পাসওয়ার্ড বদলান</button>
+<p class="hint" id="ver" style="text-align:center"></p>
 <button class="go" id="pout" style="padding:10px;font-size:16px;background:var(--bad)">লগআউট</button></div>
 </main>
 <nav class="tabs" id="tb" aria-label="প্রধান মেনু"><button class="on" data-t="home"><span>🏠</span>হোম</button><button data-t="h"><span>🕘</span>হিস্ট্রি</button><button class="fab" data-t="s"><span>💸</span>পাঠান</button><button data-t="a"><span>➕</span>অ্যাড মানি</button><button data-t="p"><span>👤</span>প্রোফাইল</button></nav>
@@ -176,7 +177,7 @@ document.getElementById('st').textContent='';window.onerror=function(m){document
 const SUPABASE_URL='https://hdyzypxswjopyagouwpw.supabase.co';
 const SUPABASE_ANON_KEY='sb_publishable_WMry2OnjCdMuah2eQPboxA_idjWksIC';
 // ==================================================================
-const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{global:{fetch:(u,o)=>fetch(u,{...o,cache:'no-store'})}});
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const D='০১২৩৪৫৬৭৮৯',bn=n=>String(n).replace(/\d/g,d=>D[d]),en=s=>String(s).replace(/[০-৯]/g,d=>D.indexOf(d));
 const E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -261,7 +262,7 @@ const{data:{session:ss}}=await sb.auth.getSession();if(!ss)return;const{data:p,e
 $('#who').textContent=p.name||'';$('#hi').textContent='স্বাগতম, '+(p.name||'');bal=+p.balance;renderBal();$('#adm').hidden=!p.is_admin;$('#pe').textContent=p.email||'';$('#pm').textContent=bn(p.phone||'');$('#pd').textContent=dt(p.created_at);if(document.activeElement!==$('#pn'))$('#pn').value=p.name||'';
 if(!$('#an').value)$('#an').value=bn(p.phone||'');if(!$('#rn').value&&p.phone){$('#rn').value=bn(p.phone);$('#rn').dispatchEvent(new Event('input'))}
 const[st,tx,tp]=await Promise.all([sb.from('settings').select('*'),sb.from('transactions').select('*').eq('user_id',p.id).order('created_at',{ascending:false}).limit(50),sb.from('topups').select('*').eq('user_id',p.id).order('created_at',{ascending:false}).limit(20)]);
-cfg={};(st.data||[]).forEach(r=>cfg[r.key]=r.value);merch();buildBill();showOffers();promo();instUI();{const fo=FONTS[cfg.font]?cfg.font:'Hind Siliguri';applyFont(fo);try{localStorage.setItem('nl_font',fo)}catch(e){}}$('#news').hidden=!cfg.news;$('#nt').textContent=cfg.news||'';$('#nt').style.animationDuration=Math.max(14,(cfg.news||'').length*.3)+'s';
+cfg={};(st.data||[]).forEach(r=>cfg[r.key]=r.value);merch();buildBill();showOffers();promo();instUI();{const fo=FONTS[cfg.font]?cfg.font:'Hind Siliguri';applyFont(fo);$('#ver').textContent='অ্যাপ সংস্করণ ৮ · ফন্ট (অ্যাডমিন সেট): '+fo;try{localStorage.setItem('nl_font',fo)}catch(e){}}$('#news').hidden=!cfg.news;$('#nt').textContent=cfg.news||'';$('#nt').style.animationDuration=Math.max(14,(cfg.news||'').length*.3)+'s';
 $('#tx').innerHTML=(tx.data||[]).length?tx.data.map(t=>{const c=t.kind==='topup'||t.kind==='refund'||(t.kind==='adjust'&&t.amount>0),v=t.kind==='adjust'?Math.abs(t.amount):t.kind==='refund'?+t.amount:+t.amount+ +t.fee;
 return `<div class="sm"><span>${KIND[t.kind]}<br><small>${E(t.details)} · ${dt(t.created_at)}</small></span><b class="${c?'pa':''}">${c?'+':'−'}${M(v)}<br><small class="${ST[t.status][1]}">${ST[t.status][0]}</small></b></div>`}).join(''):'<p class="hint">এখনও কোনো লেনদেন নেই।</p>';
 {const c=[...$('#tx').children];$('#hx').innerHTML=c.length&&c[0].classList.contains('sm')?c.slice(0,3).map(e=>e.outerHTML).join(''):$('#tx').innerHTML}
