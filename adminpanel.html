@@ -100,7 +100,7 @@ dialog{max-height:90vh;overflow:auto}
 <label for="al">ডাউনলোড লিংক (ঐচ্ছিক, https:// দিয়ে শুরু)</label><input id="al" maxlength="300" placeholder="https://..."><p class="hint">লিংক দিলে বাটনে চাপলে ওই লিংক খুলবে (যেমন APK)। না দিলে ফোনে সরাসরি ইনস্টল হবে।</p></div>
 <h2>চলন্ত নিউজ</h2><div class="pk"><label for="nw">গ্রাহকের পেজের ওপরে চলবে (খালি রাখলে বন্ধ)</label><input id="nw" maxlength="300"></div>
 <h2>অপারেটরের অফার</h2><div class="pk"><p class="hint" style="margin:0 0 6px">প্রতি লাইনে: <b>অপারেটর | অফারের নাম | দাম</b> (অপারেটর: গ্রামীণফোন, রবি, বাংলালিংক, এয়ারটেল, টেলিটক)</p><textarea id="ot" style="min-height:220px"></textarea></div>
-<h2>গ্রাহকের অ্যাপের ফন্ট</h2><div class="pk"><select id="fs"></select><p class="hint">এখানে যে ফন্ট বেছে সেভ করবেন, সব গ্রাহক সেই ফন্টেই দেখবেন। গ্রাহকের নিজে বদলানোর অপশন নেই।</p></div>
+<h2>গ্রাহকের অ্যাপের ফন্ট</h2><div class="pk"><select id="fs"></select><p class="hint">ফন্ট বাছলেই নিজে সেভ হয়ে যায় (সেভ বাটন লাগবে না)। সব গ্রাহক এই ফন্টেই দেখবেন। গ্রাহকের নিজে বদলানোর অপশন নেই।</p></div>
 <button class="go" id="ss">সব সেটিংস সেভ করুন</button>
 <h2>টেলিগ্রাম বট</h2><div class="pk"><p class="hint" id="tgs" style="margin:0 0 6px"></p>
 <label for="tgt">Bot Token (BotFather থেকে)</label><input id="tgt" type="password" autocomplete="off" placeholder="খালি রাখলে আগেরটাই থাকবে">
@@ -136,7 +136,7 @@ const PN={bkash:'বিকাশ',nagad:'নগদ',rocket:'রকেট',qr:'QR
 const DEF={'বিদ্যুৎ':['নেসকো প্রিপেইড','নেসকো পোস্টপেইড','ডেসকো','ডিপিডিসি','পল্লী বিদ্যুৎ'],'গ্যাস':['তিতাস গ্যাস','বাখরাবাদ গ্যাস','জালালাবাদ গ্যাস'],'পানি':['ঢাকা ওয়াসা','চট্টগ্রাম ওয়াসা','খুলনা ওয়াসা'],'ইন্টারনেট':['লিংক৩','আমরা নেটওয়ার্কস','ক্যারিয়ার ব্রডব্যান্ড'],'ল্যান্ডফোন':['বিটিসিএল']};
 const FONTS={'Hind Siliguri':"'Hind Siliguri'",'Noto Sans Bengali':"'Noto Sans Bengali'",'Anek Bangla':"'Anek Bangla'",'Baloo Da 2':"'Baloo Da 2'",'Noto Serif Bengali':"'Noto Serif Bengali'",'Tiro Bangla':"'Tiro Bangla'",'সিস্টেম ফন্ট':'system-ui'};
 const applyFont=n=>document.documentElement.style.setProperty('--font',FONTS[n]||FONTS['Hind Siliguri']);
-$('#fs').innerHTML=Object.keys(FONTS).map(k=>`<option>${k}</option>`).join('');$('#fs').onchange=e=>applyFont(e.target.value);
+$('#fs').innerHTML=Object.keys(FONTS).map(k=>`<option>${k}</option>`).join('');$('#fs').onchange=async e=>{const v=e.target.value;applyFont(v);const{error}=await sb.from('settings').upsert({key:'font',value:v});if(error){toast(errMsg(error));return}cfg.font=v;toast('✅ ফন্ট সেভ হয়েছে। গ্রাহকরা অল্প সময়ের মধ্যে নতুন ফন্ট দেখবেন।')};
 const DEF_OFF={'গ্রামীণফোন':[['১ জিবি · ৭ দিন',49],['৫ জিবি · ৭ দিন',149],['১৫ জিবি · ৩০ দিন',349],['২০০ মিনিট · ৩০ দিন',179]],'রবি':[['১ জিবি · ৭ দিন',48],['৫ জিবি · ৭ দিন',147],['১৫ জিবি · ৩০ দিন',345],['৩০০ মিনিট · ৩০ দিন',199]],'বাংলালিংক':[['১ জিবি · ৭ দিন',47],['৬ জিবি · ৭ দিন',146],['১৬ জিবি · ৩০ দিন',348],['২৫০ মিনিট · ৩০ দিন',189]],'এয়ারটেল':[['১ জিবি · ৭ দিন',46],['৫ জিবি · ৭ দিন',145],['১৫ জিবি · ৩০ দিন',340]],'টেলিটক':[['১ জিবি · ৭ দিন',39],['৫ জিবি · ৭ দিন',129],['২০ জিবি · ৩০ দিন',299]]};
 const offText=o=>Object.keys(o).flatMap(k=>o[k].map(x=>k+' | '+x[0]+' | '+x[1])).join('\n');
 const textOff=t=>{const o={};let n=0;t.split('\n').forEach(l=>{const p=l.split('|').map(x=>x.trim());if(p.length<3||!p[0]||!p[1])return;const v=parseFloat(en(p[2]));if(!v||v<=0)return;(o[p[0]]=o[p[0]]||[]).push([p[1],v]);n++});return n||!t.trim()?o:null};
@@ -151,7 +151,7 @@ const path=k+'-'+Date.now()+'.png',up=await sb.storage.from('qr').upload(path,bl
 const url=sb.storage.from('qr').getPublicUrl(path).data.publicUrl,old=qpath(cfg[k]);
 const{error}=await sb.from('settings').upsert({key:k,value:url});if(error)throw error;
 if(old)sb.storage.from('qr').remove([old]);toast('✅ QR আপলোড হয়েছে');await loadAll()}catch(x){toast(errMsg(x))}finally{e.target.value=''}});
-let CH=[],chU=null,chT=null;
+let CH=[],chU=null,chT=null,sdirty=false;
 let U=[],TP=[],TX=[],cfg={},cur=null,timer=null;
 const toast=t=>{const x=$('#toast');x.textContent=t;x.style.display='block';clearTimeout(x._t);x._t=setTimeout(()=>x.style.display='none',4000)};
 const errMsg=e=>{const m=e?.message||'';if(/manual add/.test(m))return 'ম্যানুয়াল ব্যালেন্স যোগ বন্ধ করা আছে।';if(/row-level security|Unauthorized/i.test(m))return 'অনুমতি নেই। Supabase-এ সংস্করণ ৫ SQL রান করা হয়েছে কি দেখুন।';if(/not deletable/.test(m))return 'পেন্ডিং লেনদেন মোছা যায় না।';if(/forbidden/.test(m))return 'আপনার অনুমতি নেই।';if(/invalid adjustment/.test(m))return 'ব্যালেন্স ঋণাত্মক হবে বা গ্রাহক নেই।';if(/not pending/.test(m))return 'এটা আগেই প্রক্রিয়া হয়েছে।';if(/Invalid login/i.test(m))return 'ইমেইল বা পাসওয়ার্ড ভুল।';if(/not confirmed/i.test(m))return 'ইমেইল কনফার্ম হয়নি।';if(/protected/.test(m))return 'অ্যাডমিন অ্যাকাউন্টে এটা করা যাবে না।';if(/short password/.test(m))return 'পাসওয়ার্ড কমপক্ষে ৮ অক্ষর দিন।';return 'ব্যর্থ: '+(m||'আবার চেষ্টা করুন।')};
@@ -180,9 +180,9 @@ $('#nb1').textContent=TP.length+po.length?'('+bn(TP.length+po.length)+')':'';
 $('#r1').innerHTML=TP.length?TP.map(t=>`<div class="sm"><span>${who(t)}<br>${PN[t.method]} · ${M(t.amount)}<br><small>থেকে ${bn(E(t.sender))} · ${E(t.trx)} · ${dt(t.created_at)}</small></span><span><button class="sb g" data-a="ap" data-i="${t.id}">অনুমোদন</button><button class="sb r" data-a="rj" data-i="${t.id}">বাতিল</button></span></div>`).join(''):'<p class="hint">কোনো পেন্ডিং রিকোয়েস্ট নেই।</p>';
 $('#r2').innerHTML=po.length?po.map(t=>`<div class="sm"><span>${who(t)}<br>${KIND[t.kind]} · ${M(t.amount)} (চার্জ ${M(t.fee)})<br><small>${E(t.details)} · ${dt(t.created_at)}</small></span><span><button class="sb g" data-a="dn" data-i="${t.id}">সম্পন্ন</button><button class="sb r" data-a="rf" data-i="${t.id}">ফেল · টাকা ফেরত</button></span></div>`).join(''):'<p class="hint">কোনো পেন্ডিং অর্ডার নেই।</p>';
 rc();rt();rch();rq();
-const f=(id,v)=>{if(document.activeElement!==$(id))$(id).value=v};
+const f=(id,v)=>{if(!sdirty&&document.activeElement!==$(id))$(id).value=v};
 
-let bc=DEF;try{if(cfg.bill_cfg)bc=JSON.parse(cfg.bill_cfg)}catch(e){}f('#bt',cfgText(bc));f('#bmn',cfg.bill_months||'3');f('#nw',cfg.news||'');f('#p1',cfg.promo_t??'২৪/৭ সেবা');f('#p2',cfg.promo_b??'সমস্যায় হেল্পলাইন ১২১');f('#ai',cfg.app_install||'on');f('#al',cfg.app_link||'');f('#fs',FONTS[cfg.font]?cfg.font:'Hind Siliguri');if(!window._fa){window._fa=1;applyFont(FONTS[cfg.font]?cfg.font:'Hind Siliguri')}let of=DEF_OFF;try{if(cfg.offers)of=JSON.parse(cfg.offers)}catch(e){}f('#ot',offText(of))}
+let bc=DEF;try{if(cfg.bill_cfg)bc=JSON.parse(cfg.bill_cfg)}catch(e){}f('#bt',cfgText(bc));f('#bmn',cfg.bill_months||'3');f('#nw',cfg.news||'');f('#p1',cfg.promo_t??'২৪/৭ সেবা');f('#p2',cfg.promo_b??'সমস্যায় হেল্পলাইন ১২১');f('#ai',cfg.app_install||'on');f('#al',cfg.app_link||'');f('#fs',FONTS[cfg.font]?cfg.font:'Hind Siliguri');if(!sdirty)applyFont(FONTS[cfg.font]?cfg.font:'Hind Siliguri');let of=DEF_OFF;try{if(cfg.offers)of=JSON.parse(cfg.offers)}catch(e){}f('#ot',offText(of))}
 function rch(){const g={},ord=[];CH.forEach(m=>{if(!g[m.user_id]){g[m.user_id]=m;ord.push(m.user_id)}});
 const nw=ord.filter(i=>g[i].sender==='user').length;$('#nb5').textContent=nw?'('+bn(nw)+')':'';
 $('#cv').innerHTML=ord.length?ord.map(i=>{const m=g[i];return `<div class="sm" data-a="co" data-i="${i}" style="cursor:pointer"><span>${who(m)}<br><small>${m.sender==='admin'?'আপনি: ':''}${E(m.body).slice(0,70)} · ${dt(m.created_at)}</small></span>${m.sender==='user'?'<b class="ps">নতুন</b>':''}</div>`}).join(''):'<p class="hint">কোনো চ্যাট নেই।</p>'}
@@ -228,9 +228,10 @@ if(a==='cp'){const p=$('#cpw').value;if(p.length<8)return toast('কমপক্
 if(a==='cbl')await rpc('admin_set_blocked',{p_user:cur.id,p_block:!cur.blocked},cur.blocked?'আনব্লক হয়েছে':'ব্লক হয়েছে');
 if(a==='cdel'){if(!confirm('এই গ্রাহকের অ্যাকাউন্ট ও সব লেনদেন চিরতরে মুছে যাবে। নিশ্চিত?'))return;const id=cur.id;cur=null;if(await rpc('admin_delete_user',{p_user:id},'অ্যাকাউন্ট মুছে গেছে'))$('#cd').close();else cur=U.find(x=>x.id===id)}});
 
+$('#t4').addEventListener('input',e=>{if(e.target.type!=='file')sdirty=true});$('#t4').addEventListener('change',e=>{if(e.target.type!=='file')sdirty=true});
 $('#ss').onclick=async()=>{const bc=textCfg($('#bt').value);if(!bc)return toast('বিল অপশন ঠিকমতো লিখুন (ধরন: কোম্পানি১, কোম্পানি২)।');const lk=$('#al').value.trim();if(lk&&!/^https?:\/\//i.test(lk))return toast('ডাউনলোড লিংক https:// দিয়ে শুরু হতে হবে।');const of=textOff($('#ot').value);if(!of)return toast('অফার ঠিকমতো লিখুন (অপারেটর | অফারের নাম | দাম)।');
-const{error}=await sb.from('settings').upsert([{key:'bill_cfg',value:JSON.stringify(bc)},{key:'bill_months',value:$('#bmn').value},{key:'font',value:$('#fs').value},{key:'news',value:$('#nw').value.trim()},{key:'promo_t',value:$('#p1').value.trim()},{key:'promo_b',value:$('#p2').value.trim()},{key:'app_install',value:$('#ai').value},{key:'app_link',value:lk},{key:'offers',value:JSON.stringify(of)}]);
-toast(error?errMsg(error):'✅ সেটিংস সেভ হয়েছে');if(!error)loadAll()};
+const{error}=await sb.from('settings').upsert([{key:'bill_cfg',value:JSON.stringify(bc)},{key:'bill_months',value:$('#bmn').value},{key:'news',value:$('#nw').value.trim()},{key:'promo_t',value:$('#p1').value.trim()},{key:'promo_b',value:$('#p2').value.trim()},{key:'app_install',value:$('#ai').value},{key:'app_link',value:lk},{key:'offers',value:JSON.stringify(of)}]);
+if(error)return toast(errMsg(error));sdirty=false;toast('✅ সেভ হয়েছে (ফন্ট: '+$('#fs').value+')');loadAll()};
 
 async function boot(s){clearInterval(timer);if(!s){show('lg');return}
 const{data:p,error}=await sb.from('profiles').select('is_admin,name').eq('id',s.user.id).maybeSingle();

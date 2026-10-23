@@ -314,6 +314,7 @@ $('#cs').onclick=async()=>{const{error}=await sb.from('settings').upsert([{key:'
 $('#pns').onclick=async()=>{const{error}=await sb.rpc('update_name',{p_name:$('#pn').value});toast(error?errMsg(error):'✅ নাম বদলানো হয়েছে');load()};
 $('#pps').onclick=async()=>{const v=$('#p1').value;if(v.length<8)return toast('কমপক্ষে ৮ অক্ষর দিন।');const{error}=await sb.auth.updateUser({password:v});if(error)return toast(errMsg(error));$('#p1').value='';toast('✅ পাসওয়ার্ড বদলানো হয়েছে')};
 $('#pout').onclick=()=>sb.auth.signOut();
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&me)load()});
 sb.auth.getSession().then(({data})=>boot(data.session));
 </script>
 </body>
