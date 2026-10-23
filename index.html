@@ -94,7 +94,7 @@ dialog,input,select,textarea,button{font-family:inherit}
 </style>
 </head>
 <body>
-<header><div class="w"><div class="logo">নেটলিংক<b>.</b></div><div class="hr"><span id="who"></span><button class="lk" id="adm" hidden>অ্যাডমিন</button><button class="lk" id="out" hidden>লগআউট</button><button class="lk" id="th" aria-label="থিম">🌓</button></div></div></header>
+<header><div class="w"><div class="logo">নেটলিংক<b>.</b></div><div class="hr"><span id="who"></span><button class="lk" id="bell" hidden aria-label="নোটিফিকেশন">🔔<b id="nbg"></b></button><button class="lk" id="adm" hidden>অ্যাডমিন</button><button class="lk" id="out" hidden>লগআউট</button><button class="lk" id="th" aria-label="থিম">🌓</button></div></div></header>
 
 <section id="lg" class="w login"><div class="box plain">
 <div class="tabs"><button class="on" data-m="in">লগইন</button><button data-m="up">নতুন অ্যাকাউন্ট</button></div>
@@ -141,6 +141,8 @@ dialog,input,select,textarea,button{font-family:inherit}
 <div id="of"></div>
 </form></div>
 <div class="box" id="vh" hidden><h3 style="margin:0 0 4px">লেনদেনের হিস্ট্রি</h3><div id="tx"></div><h3 style="margin:22px 0 4px">ব্যালেন্স রিকোয়েস্ট</h3><div id="rq"></div></div>
+<div class="box" id="vn" hidden><h3 style="margin:0 0 6px">নোটিফিকেশন</h3>
+<button class="sb" id="npm" type="button" hidden>🔔 ফোনে নোটিফিকেশন চালু করুন</button><p class="hint" id="npn" style="margin:6px 0 10px"></p><div id="nl"></div></div>
 <div class="box" id="vc" hidden><div id="cm" class="cm"></div>
 <div class="row" style="grid-template-columns:1fr auto;margin-top:10px"><input id="ci" maxlength="500" placeholder="মেসেজ লিখুন..."><button class="go" id="cs2" style="margin:0;width:auto;padding:0 18px;font-size:16px">পাঠান</button></div>
 <p class="hint">আমরা যত দ্রুত সম্ভব উত্তর দেব।</p></div>
@@ -197,9 +199,21 @@ const errMsg=e=>{const m=e?.message||'';if(/too fast/.test(m))return 'একট�
 
 const DEF_OFF={'গ্রামীণফোন':[['১ জিবি · ৭ দিন',49],['৫ জিবি · ৭ দিন',149],['১৫ জিবি · ৩০ দিন',349],['২০০ মিনিট · ৩০ দিন',179]],'রবি':[['১ জিবি · ৭ দিন',48],['৫ জিবি · ৭ দিন',147],['১৫ জিবি · ৩০ দিন',345],['৩০০ মিনিট · ৩০ দিন',199]],'বাংলালিংক':[['১ জিবি · ৭ দিন',47],['৬ জিবি · ৭ দিন',146],['১৬ জিবি · ৩০ দিন',348],['২৫০ মিনিট · ৩০ দিন',189]],'এয়ারটেল':[['১ জিবি · ৭ দিন',46],['৫ জিবি · ৭ দিন',145],['১৫ জিবি · ৩০ দিন',340]],'টেলিটক':[['১ জিবি · ৭ দিন',39],['৫ জিবি · ৭ দিন',129],['২০ জিবি · ৩০ দিন',299]]};
 function offs(){let o=DEF_OFF;try{if(cfg.offers)o=JSON.parse(cfg.offers)}catch(e){}return o}
-function showOffers(){const l=op?(offs()[op]||[]):[];$('#of').innerHTML=l.length?`<div class="lb" style="margin-top:10px">${E(op)} এর অফার (ট্যাপ করে বেছে নিন)</div><div class="of">`+l.map(x=>`<button type="button" data-p="${+x[1]}"><span>${E(x[0])}</span><b>${M(x[1])}</b></button>`).join('')+'</div>':''}
-$('#of').onclick=e=>{const b=e.target.closest('[data-p]');if(b){$('#ra').value=bn(b.dataset.p);$('#ra').scrollIntoView({behavior:'smooth',block:'center'})}};
-let chT=null;
+function showOffers(){const l=op?(offs()[op]||[]):[];$('#of').innerHTML=l.length?`<div class="lb" style="margin-top:10px">${E(op)} এর অফার (ট্যাপ করে বেছে নিন)</div><div class="of">`+l.map(x=>`<button type="button" data-p="${+x[1]}" data-n="${E(x[0])}"><span>${E(x[0])}</span><b>${M(x[1])}</b></button>`).join('')+'</div>':''}
+$('#of').onclick=e=>{const b=e.target.closest('[data-p]');if(b){selOff=b.dataset.n;selPrice=+b.dataset.p;selOp=op;$('#ra').value=bn(b.dataset.p);$('#ra').scrollIntoView({behavior:'smooth',block:'center'})}};
+let chT=null,selOff='',selPrice=0,selOp='';
+function sysNote(x){if(!('Notification' in window)||Notification.permission!=='granted')return;const o={body:x.body,icon:'icon-192.png',badge:'icon-192.png',tag:'nl'+x.id};
+if(navigator.serviceWorker&&navigator.serviceWorker.ready)navigator.serviceWorker.ready.then(r=>r.showNotification(x.title,o)).catch(()=>{try{new Notification(x.title,o)}catch(e){}});else{try{new Notification(x.title,o)}catch(e){}}}
+function npState(){const sup='Notification' in window,p=sup?Notification.permission:'';$('#npm').hidden=!(sup&&p==='default');
+$('#npn').textContent=!sup?'এই ব্রাউজারে সমর্থন নেই। iPhone-এ অ্যাপটি Home Screen-এ ইনস্টল করে খুলতে হয়।':p==='granted'?'✅ ফোনে নোটিফিকেশন চালু আছে (অ্যাপ খোলা বা ব্যাকগ্রাউন্ডে থাকলে আসবে)।':p==='denied'?'নোটিফিকেশন বন্ধ করা আছে। ব্রাউজার বা ফোনের সেটিংস থেকে চালু করুন।':'নতুন আপডেট ফোনে পেতে চালু করুন।'}
+function notifRender(l){const un=l.filter(x=>!x.read).length;$('#bell').hidden=false;$('#nbg').textContent=un?' '+bn(un):'';$('#nbg').style.color=un?'#ff8a00':'';
+$('#nl').innerHTML=l.length?l.map(x=>`<div class="sm" style="align-items:flex-start"><span><b>${E(x.title)}</b>${x.read?'':' <small class="ps">নতুন</small>'}<br>${E(x.body).replace(/\n/g,'<br>')}<br><small>${dt(x.created_at)}</small></span></div>`).join(''):'<p class="hint">কোনো নোটিফিকেশন নেই।</p>';
+let ln=-1;try{const v=localStorage.getItem('nl_ln');ln=v===null?-1:+v}catch(e){}const mx=l.reduce((m,x)=>Math.max(m,x.id),0);
+if(ln<0)ln=mx;else{l.filter(x=>x.id>ln&&!x.read).reverse().forEach(sysNote);if(mx>ln)ln=mx}
+try{localStorage.setItem('nl_ln',String(ln))}catch(e){}npState()}
+async function markRead(){if(tab!=='n')return;await sb.rpc('mark_notifications_read');load()}
+$('#bell').onclick=()=>{setTab('n');scrollTo(0,0)};
+$('#npm').onclick=()=>{if('Notification' in window)Notification.requestPermission().then(npState)};
 async function chatLoad(){if(!me)return;const{data}=await sb.from('chat_messages').select('*').eq('user_id',me.id).order('created_at').limit(100);const el=$('#cm'),nb=el.scrollTop+el.clientHeight>=el.scrollHeight-40;
 el.innerHTML=(data||[]).length?data.map(m=>`<div class="${m.sender==='user'?'me':''}">${E(m.body)}<small>${m.sender==='admin'?'অ্যাডমিন · ':''}${dt(m.created_at)}</small></div>`).join(''):'<p class="hint">কোনো মেসেজ নেই। নিচে লিখে পাঠান।</p>';if(nb)el.scrollTop=el.scrollHeight}
 function chatOpen(){chatLoad().then(()=>{$('#cm').scrollTop=1e9});clearInterval(chT);chT=setInterval(chatLoad,4000)}
@@ -229,10 +243,10 @@ $('#rn').oninput=e=>{const n=en(e.target.value);if(n.length>=3&&PFX[n[2]]!==unde
 const merch=()=>{const q=cfg.qr_all||'',ok=/^https:\/\//.test(q);$('#qrw').hidden=!ok;if(ok&&$('#qri').getAttribute('src')!==q)$('#qri').src=q;
 $('#mh').textContent=ok?'১) নিচের QR স্ক্যান করে পেমেন্ট করুন। ২) তারপর পেমেন্টের তথ্য দিয়ে রিকোয়েস্ট পাঠান।':'এখনও QR সেট করা হয়নি। অ্যাডমিনের সাথে যোগাযোগ করুন।'};
 $('#qrd').onclick=async()=>{const u=$('#qri').src;try{const r=await fetch(u),b=await r.blob(),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='qr-payment'+(b.type==='image/jpeg'?'.jpg':'.png');document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000)}catch(e){window.open(u,'_blank','noopener');toast('ছবিটা চেপে ধরে "Save image" করুন।')}};
-function setTab(t){tab=t;const f='rbsa'.indexOf(t)>=0,T={r:'মোবাইল রিচার্জ',b:'বিল পে',s:'সেন্ড মানি',a:'অ্যাড মানি',h:'হিস্ট্রি',p:'প্রোফাইল',c:'লাইভ চ্যাট'};
+function setTab(t){tab=t;const f='rbsa'.indexOf(t)>=0,T={r:'মোবাইল রিচার্জ',b:'বিল পে',s:'সেন্ড মানি',a:'অ্যাড মানি',h:'হিস্ট্রি',p:'প্রোফাইল',c:'লাইভ চ্যাট',n:'নোটিফিকেশন'};
 $$('#tb button').forEach(b=>b.classList.toggle('on',b.dataset.t===t&&!b.classList.contains('fab')));
 $('#hero').hidden=$('#vhome').hidden=t!=='home';$('#bar').hidden=t==='home';$('#bt0').textContent=T[t]||'';
-['r','b','s','a'].forEach(k=>$('#v'+k).hidden=k!==t);$('#pay').hidden=!f;$('#vh').hidden=t!=='h';$('#vp').hidden=t!=='p';$('#vc').hidden=t!=='c';$('#of').hidden=t!=='r';if(t==='c')chatOpen();else clearInterval(chT);
+['r','b','s','a'].forEach(k=>$('#v'+k).hidden=k!==t);$('#pay').hidden=!f;$('#vh').hidden=t!=='h';$('#vp').hidden=t!=='p';$('#vc').hidden=t!=='c';$('#vn').hidden=t!=='n';if(t==='n')setTimeout(markRead,1500);$('#of').hidden=t!=='r';if(t==='c')chatOpen();else clearInterval(chT);
 $('#ft').textContent={r:'রিচার্জের তথ্য',b:'বিলের তথ্য',s:'কাকে পাঠাবেন',a:'ব্যালেন্সে টাকা যোগ'}[t]||'';
 $('#go').textContent={r:'রিচার্জ করুন',b:'বিল পরিশোধ করুন',s:'টাকা পাঠান',a:'রিকোয়েস্ট পাঠান'}[t]||''}
 $$('#tb button').forEach(b=>b.onclick=()=>{setTab(b.dataset.t);scrollTo(0,0)});setTab('home');
@@ -252,19 +266,20 @@ $('#out').onclick=()=>sb.auth.signOut();
 sb.auth.onAuthStateChange((ev,s)=>{setTimeout(()=>boot(s),0)});
 
 async function boot(s){clearInterval(timer);
-if(!s){me=null;['app','ad'].forEach(i=>$('#'+i).hidden=true);$('#lg').hidden=false;$('#out').hidden=$('#adm').hidden=true;$('#who').textContent='';return}
+if(!s){me=null;['app','ad'].forEach(i=>$('#'+i).hidden=true);$('#lg').hidden=false;$('#out').hidden=$('#adm').hidden=$('#bell').hidden=true;$('#who').textContent='';return}
 $('#lg').hidden=true;$('#out').hidden=false;if($('#app').hidden&&$('#ad').hidden)$('#app').hidden=false;
 await load();timer=setInterval(load,20000)}
 async function load(){if(busy)return;
 const{data:{session:ss}}=await sb.auth.getSession();if(!ss)return;const{data:p,error}=await sb.from('profiles').select('*').eq('id',ss.user.id).maybeSingle();if(error||!p)return;if(p.blocked){toast('আপনার অ্যাকাউন্ট ব্লক করা হয়েছে। অ্যাডমিনের সাথে যোগাযোগ করুন।');sb.auth.signOut();return}me=p;
 $('#who').textContent=p.name||'';$('#hi').textContent='স্বাগতম, '+(p.name||'');bal=+p.balance;renderBal();$('#adm').hidden=!p.is_admin;$('#pe').textContent=p.email||'';$('#pm').textContent=bn(p.phone||'');$('#pd').textContent=dt(p.created_at);if(document.activeElement!==$('#pn'))$('#pn').value=p.name||'';
 if(!$('#an').value)$('#an').value=bn(p.phone||'');if(!$('#rn').value&&p.phone){$('#rn').value=bn(p.phone);$('#rn').dispatchEvent(new Event('input'))}
-const[st,tx,tp]=await Promise.all([sb.from('settings').select('*'),sb.from('transactions').select('*').eq('user_id',p.id).order('created_at',{ascending:false}).limit(50),sb.from('topups').select('*').eq('user_id',p.id).order('created_at',{ascending:false}).limit(20)]);
+const[st,tx,tp,nt]=await Promise.all([sb.from('settings').select('*'),sb.from('transactions').select('*').eq('user_id',p.id).order('created_at',{ascending:false}).limit(50),sb.from('topups').select('*').eq('user_id',p.id).order('created_at',{ascending:false}).limit(20),sb.from('notifications').select('*').eq('user_id',p.id).order('created_at',{ascending:false}).limit(30)]);
 cfg={};(st.data||[]).forEach(r=>cfg[r.key]=r.value);merch();buildBill();showOffers();promo();instUI();$('#news').hidden=!cfg.news;$('#nt').textContent=cfg.news||'';$('#nt').style.animationDuration=Math.max(14,(cfg.news||'').length*.3)+'s';
 $('#tx').innerHTML=(tx.data||[]).length?tx.data.map(t=>{const c=t.kind==='topup'||t.kind==='refund'||t.kind==='commission'||(t.kind==='adjust'&&t.amount>0),v=t.kind==='adjust'?Math.abs(t.amount):t.kind==='refund'||t.kind==='topup'||t.kind==='commission'?+t.amount:+t.amount+ +t.fee;
-return `<div class="sm"><span>${KIND[t.kind]}<br><small>${E(t.details)} · ${dt(t.created_at)}</small></span><b class="${c?'pa':''}">${c?'+':'−'}${M(v)}<br><small class="${ST[t.status][1]}">${ST[t.status][0]}</small></b></div>`}).join(''):'<p class="hint">এখনও কোনো লেনদেন নেই।</p>';
+return `<div class="sm"><span>${KIND[t.kind]}<br><small>${E(t.details)}${t.txn_ref?' · TrxID: '+E(t.txn_ref):''} · ${dt(t.created_at)}</small>${t.fail_reason?'<br><small class="pr">কারণ: '+E(t.fail_reason)+'</small>':''}</span><b class="${c?'pa':''}">${c?'+':'−'}${M(v)}<br><small class="${ST[t.status][1]}">${ST[t.status][0]}</small></b></div>`}).join(''):'<p class="hint">এখনও কোনো লেনদেন নেই।</p>';
+notifRender(nt.data||[]);
 {const c=[...$('#tx').children];$('#hx').innerHTML=c.length&&c[0].classList.contains('sm')?c.slice(0,3).map(e=>e.outerHTML).join(''):$('#tx').innerHTML}
-$('#rq').innerHTML=(tp.data||[]).length?tp.data.map(t=>`<div class="sm"><span>${PN[t.method]} · ${M(t.amount)}<br><small>${E(t.trx)} · ${dt(t.created_at)}</small></span><b class="${ST[t.status][1]}">${ST[t.status][0]}</b></div>`).join(''):'<p class="hint">কোনো রিকোয়েস্ট নেই।</p>';
+$('#rq').innerHTML=(tp.data||[]).length?tp.data.map(t=>`<div class="sm"><span>${PN[t.method]} · ${M(t.amount)}<br><small>${E(t.trx)} · ${dt(t.created_at)}</small>${t.reject_reason?'<br><small class="pr">কারণ: '+E(t.reject_reason)+'</small>':''}</span><b class="${ST[t.status][1]}">${ST[t.status][0]}</b></div>`).join(''):'<p class="hint">কোনো রিকোয়েস্ট নেই।</p>';
 if(p.is_admin){$('#cb').value=cfg.bkash||'';$('#cn').value=cfg.nagad||'';$('#cr').value=cfg.rocket||'';if(!$('#ad').hidden)loadAdmin()}}
 
 // ---- লেনদেন
@@ -274,8 +289,8 @@ function ovOf(sv,k){const o=me&&me.fee_override;return(o&&o[sv]&&o[sv][k])||null
 function feeOf(sv,a){let o={};try{if(cfg.fees)o=JSON.parse(cfg.fees)}catch(e){}const p=ovOf(sv,'charge')||(o[sv]&&o[sv].charge)||FD[sv]||{type:'fixed',value:0};return calcAmt(p,a)}
 function commOf(sv,a){const p=ovOf(sv,'commission');return p?calcAmt(p,a):0}
 $('#go').onclick=()=>{let rows;
-if(tab==='r'){const n=en($('#rn').value),a=+en($('#ra').value);if(!op)return toast('অপারেটর বেছে নিন।');if(!ok(n))return toast('সঠিক মোবাইল নম্বর দিন।');if(!a||a<10||a>1000)return toast('১০ থেকে ১০০০ টাকার মধ্যে দিন।');
-rows=[['অপারেটর',op+' ('+$('#rt').value+')'],['নম্বর',bn(n)],['পরিমাণ',M(a)]].concat(feeOf('recharge',a)?[['চার্জ',M(feeOf('recharge',a))]]:[]);pend={rpc:'place_order',args:{p_kind:'recharge',p_details:op+' '+n+' '+$('#rt').value,p_amount:a},total:a+feeOf('recharge',a)}}
+if(tab==='r'){const n=en($('#rn').value),a=+en($('#ra').value),pk=(selOff&&selOp===op&&selPrice===a)?selOff:'';if(!op)return toast('অপারেটর বেছে নিন।');if(!ok(n))return toast('সঠিক মোবাইল নম্বর দিন।');if(!a||a<10||a>1000)return toast('১০ থেকে ১০০০ টাকার মধ্যে দিন।');
+rows=[['অপারেটর',op+' ('+$('#rt').value+')'],['নম্বর',bn(n)],['পরিমাণ',M(a)]].concat(pk?[['প্যাকেজ',pk]]:[]).concat(feeOf('recharge',a)?[['চার্জ',M(feeOf('recharge',a))]]:[]);pend={rpc:'place_order',args:{p_kind:'recharge',p_details:op+' '+n+' '+$('#rt').value+(pk?' | প্যাকেজ: '+pk:''),p_amount:a},total:a+feeOf('recharge',a)}}
 else if(tab==='b'){const a=+en($('#bv').value),ac=$('#ba').value.trim();if(!ac)return toast('অ্যাকাউন্ট নম্বর দিন।');if(!ok($('#bn').value))return toast('যোগাযোগের সঠিক নম্বর দিন।');if(!a||a<10)return toast('সঠিক পরিমাণ দিন।');
 const f=feeOf('bill',a),pre=/প্রিপেইড/.test($('#bo').value),mo=pre?'প্রিপেইড':$('#bm').value;rows=[['কোম্পানি',$('#bo').value],['অ্যাকাউন্ট',E(ac)],pre?['ধরন','প্রিপেইড']:['মাস',mo],['বিল',M(a)],['চার্জ',M(f)]];
 pend={rpc:'place_order',args:{p_kind:'bill',p_details:$('#bo').value+' | '+ac+' | '+mo+' | '+en($('#bn').value),p_amount:a},total:a+f}}
