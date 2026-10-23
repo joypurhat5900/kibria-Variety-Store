@@ -110,6 +110,7 @@ dialog{max-height:90vh;overflow:auto}
 <label for="al">ডাউনলোড লিংক (ঐচ্ছিক, https:// দিয়ে শুরু)</label><input id="al" maxlength="300" placeholder="https://..."><p class="hint">লিংক দিলে বাটনে চাপলে ওই লিংক খুলবে (যেমন APK)। না দিলে ফোনে সরাসরি ইনস্টল হবে।</p></div>
 <h2>চলন্ত নিউজ</h2><div class="pk"><label for="nw">গ্রাহকের পেজের ওপরে চলবে (খালি রাখলে বন্ধ)</label><input id="nw" maxlength="300"></div>
 <h2>অপারেটরের অফার</h2><div class="pk"><p class="hint" style="margin:0 0 6px">প্রতি লাইনে: <b>অপারেটর | অফারের নাম | দাম</b> (অপারেটর: গ্রামীণফোন, রবি, বাংলালিংক, এয়ারটেল, টেলিটক)</p><textarea id="ot" style="min-height:220px"></textarea></div>
+<h2>পুশ নোটিফিকেশন (অ্যাপ বন্ধ থাকলেও)</h2><div class="pk"><p class="hint" id="pks" style="margin:0 0 6px"></p><button class="btn2 g" style="width:100%" data-a="pushgen">পুশ কী তৈরি / নতুন করুন</button><p class="hint">একবার চাপলেই হবে। নতুন করলে গ্রাহকের অ্যাপ পরের বার খোলার সময় নিজে আবার যুক্ত হবে। Edge Function ডিপ্লয় করা আলাদা ধাপ।</p></div>
 <button class="go" id="ss">সব সেটিংস সেভ করুন</button>
 <h2>টেলিগ্রাম বট</h2><div class="pk"><p class="hint" id="tgs" style="margin:0 0 6px"></p>
 <label for="tgt">Bot Token (BotFather থেকে)</label><input id="tgt" type="password" autocomplete="off" placeholder="খালি রাখলে আগেরটাই থাকবে">
@@ -209,7 +210,7 @@ $('#k5').textContent=bn(TX.filter(t=>new Date(t.created_at).toDateString()===tod
 $('#nb1').textContent=TP.length+po.length?'('+bn(TP.length+po.length)+')':'';
 $('#r1').innerHTML=TP.length?TP.map(t=>`<div class="sm"><span>${who(t)}<br>${PN[t.method]} · ${M(t.amount)}<br><small>থেকে ${bn(E(t.sender))} · ${E(t.trx)} · ${dt(t.created_at)}</small></span><span><button class="sb g" data-a="ap" data-i="${t.id}">অনুমোদন</button><button class="sb r" data-a="rj" data-i="${t.id}">বাতিল</button></span></div>`).join(''):'<p class="hint">কোনো পেন্ডিং রিকোয়েস্ট নেই।</p>';
 $('#r2').innerHTML=po.length?po.map(t=>`<div class="sm"><span>${who(t)}<br>${KIND[t.kind]} · ${M(t.amount)} (চার্জ ${M(t.fee)})<br><small>${E(t.details)} · ${dt(t.created_at)}</small></span><span><button class="sb g" data-a="dn" data-i="${t.id}">সম্পন্ন</button><button class="sb r" data-a="rf" data-i="${t.id}">ফেল · টাকা ফেরত</button></span></div>`).join(''):'<p class="hint">কোনো পেন্ডিং অর্ডার নেই।</p>';
-rc();rt();rch();rq();ro();rn();
+rc();rt();rch();rq();ro();rn();$('#pks').textContent=cfg.vapid_public?'✅ পুশ কী সেট আছে।':'⚠ পুশ কী এখনও তৈরি করা হয়নি।';
 const f=(id,v)=>{if(!sdirty&&document.activeElement!==$(id))$(id).value=v};
 
 let bc=DEF;try{if(cfg.bill_cfg)bc=JSON.parse(cfg.bill_cfg)}catch(e){}f('#bt',cfgText(bc));f('#bmn',cfg.bill_months||'3');f('#nw',cfg.news||'');f('#p1',cfg.promo_t??'২৪/৭ সেবা');f('#p2',cfg.promo_b??'সমস্যায় হেল্পলাইন ১২১');f('#ai',cfg.app_install||'on');f('#al',cfg.app_link||'');let of=DEF_OFF;try{if(cfg.offers)of=JSON.parse(cfg.offers)}catch(e){}f('#ot',offText(of))}
@@ -245,6 +246,9 @@ if(a==='tgsave'){const t=$('#tgt').value.trim(),c=$('#tgc').value.trim();if(!t&&
 if(a==='tgtest'){const{error}=await sb.rpc('admin_test_telegram');return toast(error?errMsg(error):'টেস্ট মেসেজ পাঠানো হয়েছে। টেলিগ্রাম দেখুন।')}
 if(a==='tgclear'){if(!confirm('বট সরিয়ে দিলে নোটিফিকেশন বন্ধ হবে। নিশ্চিত?'))return;const{error}=await sb.rpc('admin_clear_telegram');toast(error?errMsg(error):'বট সরানো হয়েছে');return loadTg()}
 if(a==='co')return openChat(i);
+if(a==='pushgen'){if(cfg.vapid_public&&!confirm('নতুন কী তৈরি করলে পুরনো সংযোগ বাতিল হবে। চালিয়ে যাবেন?'))return;
+try{const k=await crypto.subtle.generateKey({name:'ECDSA',namedCurve:'P-256'},true,['sign','verify']),raw=new Uint8Array(await crypto.subtle.exportKey('raw',k.publicKey)),jwk=await crypto.subtle.exportKey('jwk',k.privateKey),pub=btoa(String.fromCharCode(...raw)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+const{error}=await sb.rpc('admin_set_push_keys',{p_public:pub,p_private:jwk.d,p_subject:location.origin});if(error)return toast(errMsg(error));toast('✅ পুশ কী তৈরি হয়েছে');return loadAll()}catch(x){return toast('ব্যর্থ: '+(x.message||x))}}
 if(a==='odx')return $('#od').close();
 if(a==='odok'){const v=$('#odi').value.trim();if(!od)return;if(v.length<3)return toast(od.m==='dn'?'ট্রানজেকশন আইডি দিন (কমপক্ষে ৩ অক্ষর)।':'কারণ লিখুন (কমপক্ষে ৩ অক্ষর)।');
 const r=od.m==='dn'?['admin_order',{p_id:od.id,p_status:'completed',p_note:v},'সম্পন্ন হয়েছে, গ্রাহককে জানানো হয়েছে']:od.m==='rf'?['admin_order',{p_id:od.id,p_status:'refunded',p_note:v},'ফেল করা হয়েছে, টাকা ফেরত গেছে']:['admin_topup',{p_id:od.id,p_approve:false,p_note:v},'বাতিল হয়েছে'];
