@@ -206,6 +206,7 @@ function offs(){let o=DEF_OFF;try{if(cfg.offers)o=JSON.parse(cfg.offers)}catch(e
 function showOffers(){const l=op?(offs()[op]||[]):[];$('#of').innerHTML=l.length?`<div class="lb" style="margin-top:10px">${E(op)} এর অফার (ট্যাপ করে বেছে নিন)</div><div class="of">`+l.map(x=>`<button type="button" data-p="${+x[1]}" data-n="${E(x[0])}"><span>${E(x[0])}</span><b>${M(x[1])}</b></button>`).join('')+'</div>':''}
 $('#of').onclick=e=>{const b=e.target.closest('[data-p]');if(b){selOff=b.dataset.n;selPrice=+b.dataset.p;selOp=op;$('#ra').value=bn(b.dataset.p);$('#ra').scrollIntoView({behavior:'smooth',block:'center'})}};
 let chT=null,selOff='',selPrice=0,selOp='';
+
 function sysNote(x){if(!('Notification' in window)||Notification.permission!=='granted')return;const o={body:x.body,icon:'icon-192.png',badge:'icon-192.png',tag:'nl'+x.id};
 if(navigator.serviceWorker&&navigator.serviceWorker.ready)navigator.serviceWorker.ready.then(r=>r.showNotification(x.title,o)).catch(()=>{try{new Notification(x.title,o)}catch(e){}});else{try{new Notification(x.title,o)}catch(e){}}}
 function npState(){const sup='Notification' in window,p=sup?Notification.permission:'';$('#npm').hidden=!(sup&&p==='default');$('#npb').hidden=!(sup&&p==='default'&&!!cfg.vapid_public);
@@ -244,7 +245,7 @@ chips('#ops',OPS,'',v=>{op=v;showOffers()});chips('#sm',Object.keys(PAYS),sm,v=>
 $('#qa').innerHTML=[20,50,100,200,500].map(a=>`<button type="button">${bn(a)}</button>`).join('');
 $('#qa').onclick=e=>{if(e.target.tagName==='BUTTON')$('#ra').value=e.target.textContent};
 $('#bc').innerHTML=Object.keys(BILL).map(k=>`<option>${k}</option>`).join('');
-function mm(){const pre=/প্রিপেইড/.test($('#bo').value);$('#bmw').hidden=pre;$('#bmw').parentElement.style.gridTemplateColumns=pre?'1fr':'';$('#ba').previousElementSibling.textContent=pre?'প্রিপেইড মিটার নম্বর':'অ্যাকাউন্ট/মিটার নম্বর'}
+function mm(){const pre=/প্রিপেইড/.test($('#bo').value);$('#bmw').hidden=pre;$('#bmw').parentElement.style.gridTemplateColumns=pre?'1fr':'';$('#ba').previousElementSibling.textContent=pre?'কনজিউমার/মিটার নম্বর (প্রিপেইড)':'কনজিউমার/অ্যাকাউন্ট নম্বর'}
 const fb=()=>{$('#bo').innerHTML=((window.BL||BILL)[$('#bc').value]||[]).map(k=>`<option>${E(k)}</option>`).join('');mm()};fb();$('#bc').onchange=fb;$('#bo').onchange=mm;
 function buildBill(){let B=BILL;try{if(cfg.bill_cfg)B=JSON.parse(cfg.bill_cfg)}catch(e){}window.BL=B;
 const cs=$('#bc').value;$('#bc').innerHTML=Object.keys(B).map(k=>`<option>${E(k)}</option>`).join('');if(B[cs])$('#bc').value=cs;fb();
