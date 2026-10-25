@@ -124,6 +124,7 @@ dialog{max-height:90vh;overflow:auto}
 </main></div>
 
 <dialog id="cd"><h3 id="ctt" style="margin:0 0 6px"></h3><div id="cin"></div>
+<div class="row" style="margin-top:8px"><button class="btn2" data-a="cedit">✏️ তথ্য এডিট</button><button class="btn2" id="ckyc" data-a="ckyc">🪪 NID ও সেলফি দেখুন</button></div>
 <label for="cam">ব্যালেন্স যোগ / কাটুন (৳)</label><input id="cam" inputmode="numeric"><label for="car">কারণ (বাধ্যতামূলক, গ্রাহক দেখতে পাবেন)</label><input id="car" maxlength="200" autocomplete="off"><div class="row" style="margin-top:6px"><button class="btn2 g" data-a="ca">+ যোগ করুন</button><button class="btn2 r" data-a="cm">− কাটুন</button></div>
 <label for="cpw">নতুন পাসওয়ার্ড/পিন (কমপক্ষে ৮ অক্ষর)</label><input id="cpw" type="text" autocomplete="off"><button class="btn2" style="width:100%" data-a="cp">পাসওয়ার্ড বদলান</button>
 <div class="row" style="margin-top:8px"><button class="btn2" id="cbl" data-a="cbl"></button><button class="btn2 r" data-a="cdel">অ্যাকাউন্ট মুছুন</button></div>
@@ -138,8 +139,17 @@ dialog{max-height:90vh;overflow:auto}
 <div class="bt"><button data-a="odx">বাতিল</button><button class="ok" data-a="odok">নিশ্চিত</button></div></dialog>
 <dialog id="sd"><h3 id="sdn" style="margin:0 0 6px"></h3><div id="sdi"></div>
 <p class="hint" style="margin:10px 0 2px">NID কার্ড</p><img id="sdnid" alt="NID কার্ড" style="width:100%;border-radius:8px;border:1px solid var(--line)">
+<p class="hint" style="margin:10px 0 2px" id="sdnbl">NID কার্ড (পিছনে)</p><img id="sdnb" alt="NID পিছনে" style="width:100%;border-radius:8px;border:1px solid var(--line)">
 <p class="hint" style="margin:10px 0 2px">লাইভ সেলফি</p><img id="sdsf" alt="সেলফি" style="width:100%;border-radius:8px;border:1px solid var(--line)">
-<div class="row" style="margin-top:10px"><button class="btn2 g" data-a="sga2">অনুমোদন</button><button class="btn2 r" data-a="sgr2">বাতিল (কারণ)</button></div><div class="bt"><button data-a="sdx">বন্ধ করুন</button></div></dialog>
+<button class="btn2" style="width:100%;margin-top:10px" data-a="sged2">✏️ তথ্য এডিট করুন</button>
+<div class="row" id="sdact" style="margin-top:6px"><button class="btn2 g" data-a="sga2">অনুমোদন</button><button class="btn2 r" data-a="sgr2">বাতিল (কারণ)</button></div><div class="bt"><button data-a="sdx">বন্ধ করুন</button></div></dialog>
+<dialog id="ed"><h3 style="margin:0 0 6px">গ্রাহকের তথ্য এডিট</h3>
+<label for="edn">নাম</label><input id="edn" maxlength="60">
+<div class="row"><div><label for="edp">মোবাইল</label><input id="edp" inputmode="numeric" maxlength="11"></div><div><label for="edi">NID নম্বর</label><input id="edi" inputmode="numeric" maxlength="17"></div></div>
+<div class="row"><div><label for="edb">জন্ম তারিখ</label><input id="edb" type="date"></div><div><label for="edf">পিতার নাম</label><input id="edf" maxlength="60"></div></div>
+<label for="edm">মাতার নাম</label><input id="edm" maxlength="60"><label for="eda">ঠিকানা</label><input id="eda" maxlength="150">
+<p class="hint">ইমেইল এখান থেকে বদলানো যায় না।</p>
+<div class="bt"><button data-a="edx">বাতিল</button><button class="ok" data-a="edok">সেভ</button></div></dialog>
 <div id="toast"></div>
 
 <script>
@@ -192,7 +202,7 @@ if(v.value<0||(type==='percent'&&v.value>100))bad=true;if(type==='percent'){v.mi
 async function loadEarn(){const{data}=await sb.rpc('admin_earnings');const d=data||{};$('#k7').textContent=M(d.charge||0);$('#k8').textContent=M(d.commission||0);$('#k9').textContent=M(d.today_charge||0);$('#k10').textContent=M(d.today_commission||0)}
 let U=[],TP=[],TX=[],cfg={},cur=null,timer=null;
 const toast=t=>{const x=$('#toast');x.textContent=t;x.style.display='block';clearTimeout(x._t);x._t=setTimeout(()=>x.style.display='none',4000)};
-const errMsg=e=>{const m=e?.message||'';if(/manual add/.test(m))return 'ম্যানুয়াল ব্যালেন্স যোগ বন্ধ করা আছে।';if(/row-level security|Unauthorized/i.test(m))return 'অনুমতি নেই। Supabase-এ সংস্করণ ৫ SQL রান করা হয়েছে কি দেখুন।';if(/note required/.test(m))return 'ট্রানজেকশন আইডি বা কারণ দিতে হবে।';if(/not deletable/.test(m))return 'পেন্ডিং লেনদেন মোছা যায় না।';if(/account pending/.test(m))return 'গ্রাহকের অ্যাকাউন্ট এখনও অনুমোদিত নয়।';if(/forbidden/.test(m))return 'আপনার অনুমতি নেই।';if(/invalid adjustment/.test(m))return 'ব্যালেন্স ঋণাত্মক হবে বা গ্রাহক নেই।';if(/not pending/.test(m))return 'এটা আগেই প্রক্রিয়া হয়েছে।';if(/Invalid login/i.test(m))return 'ইমেইল বা পাসওয়ার্ড ভুল।';if(/not confirmed/i.test(m))return 'ইমেইল কনফার্ম হয়নি।';if(/protected/.test(m))return 'অ্যাডমিন অ্যাকাউন্টে এটা করা যাবে না।';if(/short password/.test(m))return 'পাসওয়ার্ড কমপক্ষে ৮ অক্ষর দিন।';return 'ব্যর্থ: '+(m||'আবার চেষ্টা করুন।')};
+const errMsg=e=>{const m=e?.message||'';if(/manual add/.test(m))return 'ম্যানুয়াল ব্যালেন্স যোগ বন্ধ করা আছে।';if(/row-level security|Unauthorized/i.test(m))return 'অনুমতি নেই। Supabase-এ সংস্করণ ৫ SQL রান করা হয়েছে কি দেখুন।';if(/note required/.test(m))return 'ট্রানজেকশন আইডি বা কারণ দিতে হবে।';if(/not deletable/.test(m))return 'পেন্ডিং লেনদেন মোছা যায় না।';if(/invalid phone/.test(m))return 'মোবাইল নম্বর ঠিক নয় (01XXXXXXXXX)।';if(/invalid nid/.test(m))return 'NID নম্বর ১০, ১৩ বা ১৭ অঙ্কের হতে হবে।';if(/duplicate|unique/i.test(m))return 'এই মোবাইল বা NID অন্য গ্রাহকের আছে।';if(/account pending/.test(m))return 'গ্রাহকের অ্যাকাউন্ট এখনও অনুমোদিত নয়।';if(/forbidden/.test(m))return 'আপনার অনুমতি নেই।';if(/invalid adjustment/.test(m))return 'ব্যালেন্স ঋণাত্মক হবে বা গ্রাহক নেই।';if(/not pending/.test(m))return 'এটা আগেই প্রক্রিয়া হয়েছে।';if(/Invalid login/i.test(m))return 'ইমেইল বা পাসওয়ার্ড ভুল।';if(/not confirmed/i.test(m))return 'ইমেইল কনফার্ম হয়নি।';if(/protected/.test(m))return 'অ্যাডমিন অ্যাকাউন্টে এটা করা যাবে না।';if(/short password/.test(m))return 'পাসওয়ার্ড কমপক্ষে ৮ অক্ষর দিন।';return 'ব্যর্থ: '+(m||'আবার চেষ্টা করুন।')};
 const cfgText=o=>Object.keys(o).map(k=>k+': '+o[k].join(', ')).join('\n');
 const textCfg=t=>{const o={};t.split('\n').forEach(l=>{const i=l.indexOf(':');if(i<1)return;const k=l.slice(0,i).trim(),v=l.slice(i+1).split(',').map(x=>x.trim()).filter(Boolean);if(k&&v.length)o[k]=v});return Object.keys(o).length?o:null};
 $('#bmn').innerHTML=Array.from({length:12},(_,i)=>`<option value="${i+1}">${bn(i+1)} মাস</option>`).join('');
@@ -224,14 +234,16 @@ let bc=DEF;try{if(cfg.bill_cfg)bc=JSON.parse(cfg.bill_cfg)}catch(e){}f('#bt',cfg
 const RSL={pending:['অপেক্ষায়','ps'],approved:['অনুমোদিত (নতুন পাসওয়ার্ড বাকি)','pa'],used:['পাসওয়ার্ড বদলেছে','pa'],rejected:['বাতিল','pr']};
 function rap(){const pend=U.filter(x=>x.status==='pending'&&!x.is_admin),rej=U.filter(x=>x.status==='rejected'),rp=RS.filter(r=>r.status==='pending');
 $('#nb9').textContent=pend.length+rp.length?'('+bn(pend.length+rp.length)+')':'';
-$('#sg').innerHTML=pend.length?pend.map(x=>`<div class="sm" style="align-items:flex-start"><span><b>${E(x.name)}</b> ${bn(E(x.phone))}<br><small>${E(x.email)}</small><br>${x.nid_no?`NID: ${bn(E(x.nid_no))} · জন্ম: ${bn(E(x.dob||'—'))}<br><small>পিতা: ${E(x.father_name||'—')} · মাতা: ${E(x.mother_name||'—')}<br>ঠিকানা: ${E(x.address||'—')}</small>`:'<small class="ps">এখনও NID/সেলফি জমা হয়নি</small>'}<br><small>${x.submitted_at?dt(x.submitted_at):dt(x.created_at)}</small></span><span>${x.nid_path?`<button class="sb" data-a="sgv" data-i="${x.id}">ছবি দেখুন</button><br>`:''}<button class="sb g" data-a="sga" data-i="${x.id}">অনুমোদন</button><br><button class="sb r" data-a="sgr" data-i="${x.id}">বাতিল</button></span></div>`).join(''):'<p class="hint">কোনো নতুন আবেদন নেই।</p>';
+$('#sg').innerHTML=pend.length?pend.map(x=>`<div class="sm" style="align-items:flex-start"><span><b>${E(x.name)}</b> ${bn(E(x.phone))}<br><small>${E(x.email)}</small><br>${x.nid_no?`NID: ${bn(E(x.nid_no))} · জন্ম: ${bn(E(x.dob||'—'))}<br><small>পিতা: ${E(x.father_name||'—')} · মাতা: ${E(x.mother_name||'—')}<br>ঠিকানা: ${E(x.address||'—')}</small>`:'<small class="ps">এখনও NID/সেলফি জমা হয়নি</small>'}<br><small>${x.submitted_at?dt(x.submitted_at):dt(x.created_at)}</small></span><span>${x.nid_path?`<button class="sb" data-a="sgv" data-i="${x.id}">ছবি দেখুন</button><br>`:''}<button class="sb" data-a="sged" data-i="${x.id}">এডিট</button><br><button class="sb g" data-a="sga" data-i="${x.id}">অনুমোদন</button><br><button class="sb r" data-a="sgr" data-i="${x.id}">বাতিল</button></span></div>`).join(''):'<p class="hint">কোনো নতুন আবেদন নেই।</p>';
 if(rej.length)$('#sg').innerHTML+=`<p class="hint" style="margin-top:10px">বাতিল হওয়া (${bn(rej.length)}): `+rej.map(x=>E(x.name)+' '+bn(E(x.phone))).join(', ')+'। পুরোপুরি মুছতে গ্রাহক ট্যাবে গিয়ে অ্যাকাউন্ট মুছুন।</p>';
 $('#rs').innerHTML=RS.length?RS.slice(0,15).map(r=>{const l=RSL[r.status]||[r.status,''];return `<div class="sm" style="align-items:flex-start"><span><b>${E(r.profiles?.name||'—')}</b> ${bn(E(r.phone||''))}<br><small>${E(r.email||'')} · NID: ${bn(E(r.profiles?.nid_no||'—'))}</small><br><small>${dt(r.created_at)}</small>${r.note?`<br><small class="pr">কারণ: ${E(r.note)}</small>`:''}</span><span>${r.status==='pending'?`<button class="sb g" data-a="rsa" data-i="${r.id}">অনুমোদন</button><br><button class="sb r" data-a="rsr" data-i="${r.id}">বাতিল</button>`:`<small class="${l[1]}">${l[0]}</small>`}</span></div>`}).join(''):'<p class="hint">কোনো আবেদন নেই।</p>'}
-async function viewKyc(id){const x=U.find(u=>u.id===id);if(!x)return;sgId=id;$('#sdn').textContent=(x.name||'')+' · '+bn(x.phone||'');
-$('#sdi').innerHTML=`<small>${E(x.email)}<br>NID: ${bn(E(x.nid_no||'—'))} · জন্ম: ${bn(E(x.dob||'—'))}<br>পিতা: ${E(x.father_name||'—')} · মাতা: ${E(x.mother_name||'—')}<br>ঠিকানা: ${E(x.address||'—')}</small>`;
-$('#sdnid').removeAttribute('src');$('#sdsf').removeAttribute('src');$('#sd').showModal();
-const[a,b]=await Promise.all([sb.storage.from('kyc').createSignedUrl(x.nid_path||'x',600),sb.storage.from('kyc').createSignedUrl(x.selfie_path||'x',600)]);
-if(a.data)$('#sdnid').src=a.data.signedUrl;if(b.data)$('#sdsf').src=b.data.signedUrl;if(a.error||b.error)toast('ছবি লোড হয়নি। SQL সংস্করণ ১৪ রান হয়েছে কি দেখুন।')}
+const sdInfo=x=>`<small>${E(x.email)}<br>NID: ${bn(E(x.nid_no||'—'))} · জন্ম: ${bn(E(x.dob||'—'))}<br>পিতা: ${E(x.father_name||'—')} · মাতা: ${E(x.mother_name||'—')}<br>ঠিকানা: ${E(x.address||'—')}</small>`;
+async function viewKyc(id){const x=U.find(u=>u.id===id);if(!x)return;sgId=id;$('#sdn').textContent=(x.name||'')+' · '+bn(x.phone||'');$('#sdi').innerHTML=sdInfo(x);$('#sdact').hidden=x.status!=='pending';
+['sdnid','sdnb','sdsf'].forEach(i=>$('#'+i).removeAttribute('src'));$('#sdnb').hidden=$('#sdnbl').hidden=!x.nid_back_path;$('#sd').showModal();
+const sg=p=>p?sb.storage.from('kyc').createSignedUrl(p,600):Promise.resolve({data:null,error:null});const[a,b,c]=await Promise.all([sg(x.nid_path),sg(x.nid_back_path),sg(x.selfie_path)]);
+if(a.data)$('#sdnid').src=a.data.signedUrl;if(b.data)$('#sdnb').src=b.data.signedUrl;if(c.data)$('#sdsf').src=c.data.signedUrl;if(a.error||c.error)toast('ছবি লোড হয়নি। SQL সংস্করণ ১৪-১৫ রান হয়েছে কি দেখুন।')}
+let edId=null;
+function openEdit(id){const x=U.find(u=>u.id===id);if(!x)return;edId=id;$('#edn').value=x.name||'';$('#edp').value=x.phone||'';$('#edi').value=x.nid_no||'';$('#edb').value=x.dob||'';$('#edf').value=x.father_name||'';$('#edm').value=x.mother_name||'';$('#eda').value=x.address||'';$('#ed').showModal()}
 function rch(){const g={},ord=[];CH.forEach(m=>{if(!g[m.user_id]){g[m.user_id]=m;ord.push(m.user_id)}});
 const nw=ord.filter(i=>g[i].sender==='user').length;$('#nb5').textContent=nw?'('+bn(nw)+')':'';
 const gg={},go=[];GM.forEach(m=>{if(!gg[m.guest]){gg[m.guest]=m;go.push(m.guest)}});const gn=go.filter(i=>gg[i].sender==='user').length;
@@ -251,6 +263,7 @@ $('#cq').oninput=rc;$('#tf').onchange=rt;
 
 function fillC(){$('#ctt').textContent=cur.name||'গ্রাহক';
 $('#cin').innerHTML=`<div class="sm"><span>মোবাইল</span><b>${bn(E(cur.phone))}</b></div><div class="sm"><span>ইমেইল</span><b>${E(cur.email)}</b></div><div class="sm"><span>ব্যালেন্স</span><b>${M(cur.balance)}</b></div><div class="sm"><span>যোগ দিয়েছেন</span><b>${dt(cur.created_at)}</b></div><div class="sm"><span>অবস্থা</span><b class="${cur.blocked?'pr':'pa'}">${cur.blocked?'ব্লকড':'সক্রিয়'}</b></div>`;
+$('#cin').innerHTML+=`<div class="sm"><span>অ্যাকাউন্ট অবস্থা</span><b class="${cur.status==='active'?'pa':'ps'}">${cur.status==='active'?'অনুমোদিত':cur.status==='pending'?'অপেক্ষায়':'বাতিল'}</b></div><div class="sm"><span>NID নম্বর</span><b>${bn(E(cur.nid_no||'—'))}</b></div><div class="sm"><span>জন্ম তারিখ</span><b>${bn(E(cur.dob||'—'))}</b></div><div class="sm"><span>পিতার নাম</span><b>${E(cur.father_name||'—')}</b></div><div class="sm"><span>মাতার নাম</span><b>${E(cur.mother_name||'—')}</b></div><div class="sm"><span>ঠিকানা</span><b>${E(cur.address||'—')}</b></div>${cur.status_note?`<div class="sm"><span>বাতিলের কারণ</span><b class="pr">${E(cur.status_note)}</b></div>`:''}`;$('#ckyc').hidden=!cur.nid_path;
 $('#cbl').textContent=cur.blocked?'আনব্লক করুন':'ব্লক করুন'}
 async function ct(){const{data}=await sb.from('transactions').select('*').eq('user_id',cur.id).order('created_at',{ascending:false}).limit(10);
 $('#cht').innerHTML=(data||[]).map(t=>`<div class="sm"><span>${KIND[t.kind]}<br><small>${E(t.details)} · ${dt(t.created_at)}</small></span><b>${M(t.amount)}<br><small class="${ST[t.status][1]}">${ST[t.status][0]}</small></b></div>`).join('')||'<p class="hint">লেনদেন নেই।</p>'}
@@ -269,6 +282,10 @@ if(a==='tgclear'){if(!confirm('বট সরিয়ে দিলে নোট�
 if(a==='co')return openChat(i);
 if(a==='gco')return openGuest(i);
 if(a==='sgv')return viewKyc(i);
+if(a==='sged')return openEdit(i);
+if(a==='sged2')return openEdit(sgId);
+if(a==='edx')return $('#ed').close();
+if(a==='edok'){const{error}=await sb.rpc('admin_edit_profile',{p_user:edId,p_name:$('#edn').value,p_phone:en($('#edp').value),p_nid:en($('#edi').value),p_dob:$('#edb').value||null,p_father:$('#edf').value,p_mother:$('#edm').value,p_address:$('#eda').value});if(error)return toast(errMsg(error));$('#ed').close();toast('✅ তথ্য সেভ হয়েছে');await loadAll();const x=U.find(u=>u.id===edId);if(x&&$('#sd').open&&sgId===edId){$('#sdi').innerHTML=sdInfo(x);$('#sdn').textContent=(x.name||'')+' · '+bn(x.phone||'')}if(cur&&cur.id===edId){cur=x;fillC()}return}
 if(a==='sga'||a==='sga2'){const id=a==='sga2'?sgId:i,x=U.find(u=>u.id===id);if(!x||!confirm('অনুমোদন দেবেন? '+(x.name||'')+' এখন থেকে সব সেবা ব্যবহার করতে পারবেন।'))return;if(await rpc('admin_signup_decide',{p_user:id,p_approve:true},'অনুমোদিত, গ্রাহক নোটিফিকেশন পাবেন')&&$('#sd').open)$('#sd').close();return}
 if(a==='sgr'||a==='sgr2')return askOrder('sg',a==='sgr2'?sgId:i);
 if(a==='rsa'){if(!confirm('অনুমোদন দিলে গ্রাহক ২৪ ঘণ্টার মধ্যে নিজে নতুন পাসওয়ার্ড দিতে পারবেন। চালিয়ে যাবেন?'))return;return rpc('admin_reset_decide',{p_id:+i,p_approve:true},'অনুমোদিত, গ্রাহক জানতে পাবেন')}
@@ -295,6 +312,8 @@ if(a==='cx')return $('#cd').close();
 if(!cur)return;
 if(a==='ca'||a==='cm'){const v=parseFloat(en($('#cam').value)),why=$('#car').value.trim();if(!v||v<=0)return toast('সঠিক পরিমাণ দিন।');if(why.length<3)return toast('কারণ লিখুন (কমপক্ষে ৩ অক্ষর)।');
 if(!confirm((a==='ca'?'যোগ করবেন: ৳':'কাটবেন: ৳')+bn(v)+'\nকারণ: '+why))return;if(await rpc('admin_adjust',{p_user:cur.id,p_amount:a==='ca'?v:-v,p_note:why})){$('#cam').value=$('#car').value=''}}
+if(a==='cedit')return openEdit(cur.id);
+if(a==='ckyc')return viewKyc(cur.id);
 if(a==='fosave'){const o=fcollect($('#cfo'));if(!o)return toast('মান ঠিক নেই। শতাংশ ০–১০০ হতে হবে এবং সর্বনিম্ন সর্বোচ্চের বেশি হবে না।');await rpc('admin_set_fee_override',{p_user:cur.id,p_cfg:o},'এই গ্রাহকের সেটিং সেভ হয়েছে');fillOv();return}
 if(a==='foclr'){if(!confirm('এই গ্রাহক ডিফল্ট চার্জে ফিরবে এবং কমিশন বন্ধ হবে। নিশ্চিত?'))return;await rpc('admin_set_fee_override',{p_user:cur.id,p_cfg:{}},'ডিফল্টে ফিরেছে');fillOv();return}
 if(a==='cclr'){if(!confirm('এই গ্রাহকের সব সম্পন্ন লেনদেন ও রিকোয়েস্টের হিস্ট্রি মুছবেন? (পেন্ডিং থাকবে, ব্যালেন্স বদলাবে না)'))return;await rpc('admin_clear_user_tx',{p_user:cur.id},'হিস্ট্রি মুছে গেছে');return}
@@ -312,7 +331,7 @@ const{data:p,error}=await sb.from('profiles').select('is_admin,name').eq('id',s.
 if(error){$('#msg').textContent='ডাটাবেস ত্রুটি: '+error.message;show('lg');return}
 if(!p){$('#msg').textContent='প্রোফাইল পাওয়া যায়নি। supabase.sql রান করে ব্যাকফিল অংশ চালান।';show('lg');return}
 if(!p.is_admin){$('#msg').textContent='এই অ্যাকাউন্ট অ্যাডমিন নয়। SQL দিয়ে is_admin = true করুন।';show('lg');return}
-show('ad');await loadAll();timer=setInterval(()=>{if(!$('#cd').open&&!$('#ch').open&&!$('#od').open&&!$('#sd').open)loadAll()},20000)}
+show('ad');await loadAll();timer=setInterval(()=>{if(!$('#cd').open&&!$('#ch').open&&!$('#od').open&&!$('#sd').open&&!$('#ed').open)loadAll()},20000)}
 sb.auth.onAuthStateChange((ev,s)=>{setTimeout(()=>boot(s),0)});
 sb.auth.getSession().then(({data})=>boot(data.session));
 </script></body></html>
