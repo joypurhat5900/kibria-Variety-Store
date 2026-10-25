@@ -93,20 +93,82 @@ dialog,input,select,textarea,button{font-family:inherit}
 .nt{display:block;width:100%;padding:12px 14px;margin-bottom:8px;border:1px solid var(--line);border-radius:12px;background:var(--bg);text-align:left;word-break:break-word;line-height:1.5}
 .nt.un{border-color:var(--pri);background:rgba(226,37,95,.08)}
 .nt b{display:block;font-size:16px}.nt .bd{display:block;margin-top:2px}.nt .tm{display:block;color:var(--mute);font-size:12px;margin-top:6px}
+.news{cursor:pointer}
+.lgp{position:relative;min-height:calc(100vh - 57px);padding:22px 0 110px;background:linear-gradient(160deg,var(--pri2) 0%,var(--pri) 60%,#ff8a00 140%);overflow:hidden}
+.lgp::before,.lgp::after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.08)}
+.lgp::before{width:300px;height:300px;top:-90px;right:-80px}.lgp::after{width:220px;height:220px;bottom:60px;left:-70px}
+.lwrap{position:relative;z-index:1;max-width:440px;margin:auto;padding:0 16px}
+.lhero{text-align:center;color:#fff}.lico{width:72px;height:72px;margin:0 auto 6px;border-radius:22px;background:rgba(255,255,255,.2);display:grid;place-items:center;font-size:36px}
+.lhero h1{margin:0;font-size:30px}.lhero p{margin:2px 0 0;opacity:.92}
+.lgp .news{background:rgba(255,255,255,.18);color:#fff;border:0;border-radius:12px;margin-top:12px}
+.lcard{background:var(--card);color:var(--ink);border-radius:22px;padding:20px;margin-top:14px;box-shadow:0 14px 40px rgba(0,0,0,.22)}
+.lcard h2{margin:0 0 4px;font-size:22px}
+.pwr{position:relative}.pwr input{padding-right:46px}.pwr button{position:absolute;right:6px;top:50%;transform:translateY(-50%);border:0;background:none;font-size:20px}
+.go.alt{background:var(--card);color:var(--pri);border:2px solid var(--pri)}
+.fgl{display:block;margin:10px auto 0;font-size:13px}
+.stp{padding:12px 0;border-top:1px solid var(--line);margin-top:10px}
+.vbox{position:relative;width:100%;max-width:300px;aspect-ratio:3/4;margin:8px auto;border-radius:20px;overflow:hidden;background:#000}
+#vid{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
+.oval{position:absolute;inset:10% 14%;border:3px dashed rgba(255,255,255,.85);border-radius:50%;pointer-events:none}
+#nidp,#sfp{display:block;max-width:100%;max-height:200px;margin:8px auto;border-radius:12px;border:1px solid var(--line)}
+.gchat{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:8;border:0;border-radius:30px;padding:12px 18px;background:#fff;color:var(--pri);font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,.3);font-size:16px}
+.gcp{position:fixed;right:12px;left:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));max-width:420px;margin-left:auto;z-index:9;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:18px;padding:12px;box-shadow:0 14px 40px rgba(0,0,0,.35)}
+.gch{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.btn2{padding:10px;border-radius:10px;border:1px solid var(--line);background:none;color:var(--ink);font-size:15px}.btn2.g{background:var(--ok);color:#fff;border-color:var(--ok)}
 [hidden]{display:none!important}
 </style>
 </head>
 <body>
 <header><div class="w"><div class="logo">নেটলিংক<b>.</b></div><div class="hr"><span id="who"></span><button class="lk" id="bell" hidden aria-label="নোটিফিকেশন">🔔<b id="nbg"></b></button><button class="lk" id="adm" hidden>অ্যাডমিন</button><button class="lk" id="out" hidden>লগআউট</button><button class="lk" id="th" aria-label="থিম">🌓</button></div></div></header>
 
-<section id="lg" class="w login"><div class="box plain">
-<div class="tabs"><button class="on" data-m="in">লগইন</button><button data-m="up">নতুন অ্যাকাউন্ট</button></div>
+<section id="lg" class="lgp"><div class="lwrap">
+<div class="lhero"><div class="lico">📶</div><h1>নেটলিংক</h1><p>রিচার্জ · বিল পে · সেন্ড মানি</p></div>
+<div class="news" id="lnews" hidden role="button" tabindex="0"><span id="lnt"></span></div>
+
+<div class="lcard"><h2>লগইন</h2>
 <form id="af" onsubmit="return false">
-<div id="fu" hidden><div class="row"><div><label for="nm">নাম</label><input id="nm" maxlength="60" autocomplete="name"></div><div><label for="ph">মোবাইল</label><input id="ph" inputmode="numeric" maxlength="11" placeholder="01XXXXXXXXX" autocomplete="tel"></div></div></div>
 <label for="em">ইমেইল</label><input id="em" type="email" autocomplete="email">
-<label for="pw">পাসওয়ার্ড</label><input id="pw" type="password" minlength="8" autocomplete="current-password">
+<label for="pw">পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)</label><div class="pwr"><input id="pw" type="password" minlength="6" autocomplete="current-password"><button type="button" id="pws" aria-label="পাসওয়ার্ড দেখান">👁</button></div>
 <button class="go" id="ag">লগইন</button>
-</form><p class="hint pr" id="st">⚠ স্ক্রিপ্ট চালু হয়নি। ইন্টারনেট/ব্রাউজার চেক করুন বা পেজ রিফ্রেশ করুন।</p></div></section>
+</form>
+<button class="lk fgl" id="fgb" type="button">পাসওয়ার্ড ভুলে গেছেন?</button>
+<div id="fpb" hidden class="stp">
+<p class="hint" style="margin:0">ইমেইল ও রেজিস্টার্ড মোবাইল দিন। অ্যাডমিন যাচাই করে অনুমোদন দিলে নতুন পাসওয়ার্ড দিতে পারবেন।</p>
+<label for="fpe">ইমেইল</label><input id="fpe" type="email" autocomplete="email">
+<label for="fpp">মোবাইল নম্বর</label><input id="fpp" inputmode="numeric" maxlength="11" placeholder="01XXXXXXXXX">
+<div class="row" style="margin-top:10px"><button class="btn2 g" id="fpr" type="button">অনুরোধ পাঠান</button><button class="btn2" id="fpc" type="button">অবস্থা দেখুন</button></div>
+<div id="fpn" hidden><label for="fpw">নতুন পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)</label><input id="fpw" type="password" autocomplete="new-password"><button class="go" id="fpd" type="button">পাসওয়ার্ড বদলান</button></div>
+<p class="hint" id="fpm"></p></div>
+</div>
+
+<div class="lcard"><h2>নতুন অ্যাকাউন্ট</h2>
+<p class="hint" style="margin:0 0 10px">NID ও লাইভ সেলফি দিয়ে যাচাই হয়। অ্যাডমিন অনুমোদন দিলে সব সেবা ব্যবহার করতে পারবেন।</p>
+<button class="go alt" id="sub" type="button" style="margin-top:0">নতুন অ্যাকাউন্ট খুলুন</button>
+<div id="suw" hidden>
+<div class="stp"><b>ধাপ ১: NID কার্ডের সামনের ছবি</b><p class="hint">কার্ড সমতলে রেখে লেখা পরিষ্কার দেখা যায় এমন ছবি তুলুন। নাম, জন্ম তারিখ ও NID নম্বর নিজে থেকে ভরে যাবে।</p>
+<input id="nidf" type="file" accept="image/*" capture="environment"><img id="nidp" hidden alt="NID কার্ড"><div class="hint" id="ocs"></div></div>
+<div class="stp"><b>ধাপ ২: লাইভ সেলফি</b><p class="hint">সামনে সোজা তাকিয়ে চোখের পাতা ফেলুন (ব্লিঙ্ক)। ছবি নিজে থেকে উঠবে।</p>
+<div class="vbox" id="vbox" hidden><video id="vid" playsinline muted></video><div class="oval"></div></div>
+<div class="hint" id="cst"></div><img id="sfp" hidden alt="সেলফি">
+<div class="row"><button type="button" class="btn2" id="cam1">📷 ক্যামেরা চালু করুন</button><button type="button" class="btn2" id="cam2" hidden>ছবি তুলুন (হাতে)</button></div></div>
+<div class="stp"><b>ধাপ ৩: তথ্য (যাচাই করে নিন)</b>
+<label for="sun">নাম (ইংরেজি, NID অনুযায়ী)</label><input id="sun" maxlength="60" autocomplete="name">
+<div class="row"><div><label for="suf">পিতার নাম</label><input id="suf" maxlength="60"></div><div><label for="sumo">মাতার নাম</label><input id="sumo" maxlength="60"></div></div>
+<div class="row"><div><label for="sudb">জন্ম তারিখ</label><input id="sudb" type="date"></div><div><label for="sunid">NID নম্বর</label><input id="sunid" inputmode="numeric" maxlength="17"></div></div>
+<label for="suad">ঠিকানা</label><input id="suad" maxlength="150" autocomplete="street-address">
+<div class="row"><div><label for="suph">মোবাইল নম্বর</label><input id="suph" inputmode="numeric" maxlength="11" placeholder="01XXXXXXXXX" autocomplete="tel"></div><div><label for="suem">ইমেইল</label><input id="suem" type="email" autocomplete="email"></div></div>
+<div class="row"><div><label for="supw">পাসওয়ার্ড (কমপক্ষে ৬)</label><input id="supw" type="password" autocomplete="new-password"></div><div><label for="supw2">আবার দিন</label><input id="supw2" type="password" autocomplete="new-password"></div></div>
+<label style="display:flex;gap:8px;align-items:flex-start;color:var(--ink);margin-top:12px"><input id="suok" type="checkbox" style="width:auto;margin-top:5px"><span>আমি আমার NID ও ছবি পরিচয় যাচাইয়ের জন্য জমা দিতে সম্মত। তথ্য শুধু অ্যাডমিন দেখবেন।</span></label>
+<button class="go" id="susub" type="button">আবেদন জমা দিন</button><p class="hint" id="sust"></p></div>
+</div></div>
+<p class="hint pr" id="st" style="color:#fff">⚠ স্ক্রিপ্ট চালু হয়নি। ইন্টারনেট/ব্রাউজার চেক করুন বা পেজ রিফ্রেশ করুন।</p>
+</div>
+<button class="gchat" id="gcb" type="button">💬 লাইভ চ্যাট</button>
+<div class="gcp" id="gcp" hidden><div class="gch"><b>💬 লাইভ চ্যাট</b><button type="button" class="lk" id="gcx">✕</button></div><div id="gcm" class="cm"></div>
+<input id="gcn" maxlength="40" placeholder="আপনার নাম (ঐচ্ছিক)" style="margin-top:8px"><div class="row" style="grid-template-columns:1fr auto;margin-top:6px"><input id="gci" maxlength="500" placeholder="মেসেজ লিখুন..."><button class="go" id="gcs" type="button" style="margin:0;width:auto;padding:0 16px;font-size:16px">পাঠান</button></div></div>
+</section>
+
+<section id="pend" class="w" hidden><div class="lcard" style="margin-top:20px"><h2 id="pt1"></h2><p class="hint" id="pt2"></p><div id="pnl"></div></div></section>
 
 <div id="app" hidden>
 <div class="news" id="news" hidden><span id="nt"></span></div>
@@ -153,7 +215,7 @@ dialog,input,select,textarea,button{font-family:inherit}
 <div class="box" id="vp" hidden><h3 style="margin:0 0 8px">প্রোফাইল</h3>
 <div class="sm"><span>ইমেইল</span><b id="pe"></b></div><div class="sm"><span>মোবাইল</span><b id="pm"></b></div><div class="sm"><span>যোগ দিয়েছেন</span><b id="pd"></b></div>
 <label for="pn">নাম</label><input id="pn" maxlength="60" autocomplete="name"><button class="go" id="pns" style="padding:10px;font-size:16px;margin-top:10px">নাম সেভ করুন</button>
-<label for="p1">নতুন পাসওয়ার্ড (কমপক্ষে ৮ অক্ষর)</label><input id="p1" type="password" minlength="8" autocomplete="new-password"><button class="go" id="pps" style="padding:10px;font-size:16px;margin-top:10px">পাসওয়ার্ড বদলান</button>
+<label for="p1">নতুন পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)</label><input id="p1" type="password" minlength="6" autocomplete="new-password"><button class="go" id="pps" style="padding:10px;font-size:16px;margin-top:10px">পাসওয়ার্ড বদলান</button>
 <p class="hint" style="text-align:center">অ্যাপ সংস্করণ ৯</p>
 <button class="go" id="pout" style="padding:10px;font-size:16px;background:var(--bad)">লগআউট</button></div>
 </main>
@@ -176,6 +238,7 @@ dialog,input,select,textarea,button{font-family:inherit}
 <dialog id="dg"><h3 style="margin:0 0 8px">নিশ্চিত করুন</h3><div id="sum"></div>
 <label for="cp">আপনার পাসওয়ার্ড দিয়ে নিশ্চিত করুন</label><input id="cp" type="password" autocomplete="current-password">
 <div class="bt"><button id="no">বাতিল</button><button class="ok" id="yes">নিশ্চিত</button></div></dialog>
+<dialog id="nd"><h3 style="margin:0 0 8px">📢 নোটিফিকেশন</h3><div id="ndt" style="white-space:pre-wrap;word-break:break-word"></div><div class="bt"><button id="ndx" type="button">বন্ধ করুন</button></div></dialog>
 <div id="toast"></div>
 
 <script>
@@ -199,7 +262,7 @@ const ST={pending:['প্রক্রিয়াধীন','ps'],completed:['�
 let me=null,tab='r',op='',sm='বিকাশ',am='বিকাশ',mode='in',cfg={},pend=null,timer=null,busy=false;
 const toast=t=>{const x=$('#toast');x.textContent=t;x.style.display='block';clearTimeout(x._t);x._t=setTimeout(()=>x.style.display='none',4000)};
 const chips=(id,list,cur,fn)=>{$(id).innerHTML=list.map(v=>`<button type="button" class="${v===cur?'on':''}">${v}</button>`).join('');$(id).onclick=e=>{if(e.target.tagName==='BUTTON'){$$(id+' button').forEach(b=>b.classList.toggle('on',b===e.target));fn(e.target.textContent)}}};
-const errMsg=e=>{const m=e?.message||'';if(/too fast/.test(m))return 'একটু ধীরে পাঠান।';if(/blocked/.test(m))return 'আপনার অ্যাকাউন্ট ব্লক করা আছে।';if(/insufficient/.test(m))return 'ব্যালেন্স কম। আগে ব্যালেন্স যোগ করুন।';if(/duplicate|unique/.test(m))return 'এই তথ্য আগেই ব্যবহৃত হয়েছে (TrxID/মোবাইল)।';if(/forbidden/.test(m))return 'আপনার অনুমতি নেই।';if(/Invalid login/i.test(m))return 'ইমেইল বা পাসওয়ার্ড ভুল (অথবা এই ইমেইলে অ্যাকাউন্ট নেই)।';if(/not confirmed/i.test(m))return 'ইমেইল কনফার্ম হয়নি। মেইলের লিংকে ক্লিক করুন।';if(/rate limit/i.test(m))return 'অনেকবার চেষ্টা হয়েছে। কিছুক্ষণ পর আবার করুন।';return 'ব্যর্থ: '+(m||'আবার চেষ্টা করুন।')};
+const errMsg=e=>{const m=e?.message||'';if(/already registered/i.test(m))return 'এই ইমেইলে আগেই অ্যাকাউন্ট আছে।';if(/Database error saving/i.test(m))return 'এই মোবাইল নম্বর বা ইমেইলে আগেই অ্যাকাউন্ট আছে।';if(/invalid email/.test(m))return 'সঠিক ইমেইল দিন।';if(/invalid phone/.test(m))return 'সঠিক মোবাইল নম্বর দিন।';if(/invalid nid/.test(m))return 'NID নম্বর ১০, ১৩ বা ১৭ অঙ্কের হতে হবে।';if(/no match/.test(m))return 'এই ইমেইল ও মোবাইলে কোনো গ্রাহক নেই।';if(/not approved/.test(m))return 'অনুরোধ এখনও অনুমোদিত নয় বা সময় শেষ।';if(/too fast/.test(m))return 'একটু ধীরে পাঠান।';if(/Database error saving new user/i.test(m))return 'এই মোবাইল বা ইমেইল দিয়ে আগেই অ্যাকাউন্ট আছে।';if(/account pending/.test(m))return 'আপনার অ্যাকাউন্ট এখনও অনুমোদিত হয়নি।';if(/already registered|User already/i.test(m))return 'এই ইমেইল আগেই ব্যবহৃত।';if(/blocked/.test(m))return 'আপনার অ্যাকাউন্ট ব্লক করা আছে।';if(/insufficient/.test(m))return 'ব্যালেন্স কম। আগে ব্যালেন্স যোগ করুন।';if(/duplicate|unique/.test(m))return 'এই তথ্য আগেই ব্যবহৃত হয়েছে (TrxID/মোবাইল)।';if(/forbidden/.test(m))return 'আপনার অনুমতি নেই।';if(/Invalid login/i.test(m))return 'ইমেইল বা পাসওয়ার্ড ভুল (অথবা এই ইমেইলে অ্যাকাউন্ট নেই)।';if(/not confirmed/i.test(m))return 'ইমেইল কনফার্ম হয়নি। মেইলের লিংকে ক্লিক করুন।';if(/rate limit/i.test(m))return 'অনেকবার চেষ্টা হয়েছে। কিছুক্ষণ পর আবার করুন।';return 'ব্যর্থ: '+(m||'আবার চেষ্টা করুন।')};
 
 const DEF_OFF={'গ্রামীণফোন':[['১ জিবি · ৭ দিন',49],['৫ জিবি · ৭ দিন',149],['১৫ জিবি · ৩০ দিন',349],['২০০ মিনিট · ৩০ দিন',179]],'রবি':[['১ জিবি · ৭ দিন',48],['৫ জিবি · ৭ দিন',147],['১৫ জিবি · ৩০ দিন',345],['৩০০ মিনিট · ৩০ দিন',199]],'বাংলালিংক':[['১ জিবি · ৭ দিন',47],['৬ জিবি · ৭ দিন',146],['১৬ জিবি · ৩০ দিন',348],['২৫০ মিনিট · ৩০ দিন',189]],'এয়ারটেল':[['১ জিবি · ৭ দিন',46],['৫ জিবি · ৭ দিন',145],['১৫ জিবি · ৩০ দিন',340]],'টেলিটক':[['১ জিবি · ৭ দিন',39],['৫ জিবি · ৭ দিন',129],['২০ জিবি · ৩০ দিন',299]]};
 function offs(){let o=DEF_OFF;try{if(cfg.offers)o=JSON.parse(cfg.offers)}catch(e){}return o}
@@ -268,22 +331,92 @@ $('#bc0').onclick=()=>{shown=!shown;renderBal()};$('#bc0').onkeydown=e=>{if(e.ke
 $('#ab').onclick=e=>{e.stopPropagation();setTab('a');scrollTo(0,0)};
 $('#th').onclick=()=>{const r=document.documentElement,d=r.dataset.theme==='dark'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme:dark)').matches);r.dataset.theme=d?'light':'dark'};
 
-// ---- অ্যাকাউন্ট
-$$('.login .tabs button').forEach(b=>b.onclick=()=>{mode=b.dataset.m;$$('.login .tabs button').forEach(x=>x.classList.toggle('on',x===b));$('#fu').hidden=mode==='in';$('#ag').textContent=mode==='in'?'লগইন':'অ্যাকাউন্ট খুলুন';$('#pw').autocomplete=mode==='in'?'current-password':'new-password'});
-$('#ag').onclick=async()=>{const email=$('#em').value.trim(),password=$('#pw').value;if(!email||password.length<8)return toast('ইমেইল ও কমপক্ষে ৮ অক্ষরের পাসওয়ার্ড দিন।');
-$('#ag').disabled=true;try{
-if(mode==='up'){const name=$('#nm').value.trim(),phone=en($('#ph').value);if(name.length<2||!ok(phone))return toast('নাম ও সঠিক মোবাইল নম্বর দিন।');
-const{data,error}=await sb.auth.signUp({email,password,options:{data:{name,phone}}});if(error)throw error;if(!data.session)toast('ইমেইলে পাঠানো লিংকে ক্লিক করে অ্যাকাউন্ট চালু করুন, তারপর লগইন করুন।')}
-else{const{error}=await sb.auth.signInWithPassword({email,password});if(error)throw error}}catch(e){toast(errMsg(e))}finally{$('#ag').disabled=false}};
+// ---- অ্যাকাউন্ট (লগইন, সাইন আপ, পাসওয়ার্ড ভুলে গেলে, অতিথি চ্যাট)
+$('#pws').onclick=()=>{const p=$('#pw');p.type=p.type==='password'?'text':'password'};
+$('#ag').onclick=async()=>{const email=$('#em').value.trim(),password=$('#pw').value;if(!email||password.length<6)return toast('ইমেইল ও কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দিন।');
+$('#ag').disabled=true;try{const{error}=await sb.auth.signInWithPassword({email,password});if(error)throw error}catch(e){toast(errMsg(e))}finally{$('#ag').disabled=false}};
+// লগইনের আগেও নোটিফিকেশন (নিউজ) দেখা
+async function pubLoad(){try{const{data}=await sb.rpc('get_public_info');const n=data&&data.news;$('#lnews').hidden=!n;$('#lnt').textContent=n||'';$('#lnt').style.animationDuration=Math.max(14,(n||'').length*.3)+'s'}catch(e){}}
+function showNews(t){if(!t)return;$('#ndt').textContent=t;$('#nd').showModal()}
+$('#lnews').onclick=()=>showNews($('#lnt').textContent);$('#news').onclick=()=>showNews($('#nt').textContent);$('#ndx').onclick=()=>$('#nd').close();
+pubLoad();setInterval(()=>{if(!$('#lg').hidden)pubLoad()},60000);
+// পাসওয়ার্ড ভুলে গেলে (অ্যাডমিন অনুমোদন লাগে)
+$('#fgb').onclick=()=>{$('#fpb').hidden=!$('#fpb').hidden};
+const fpv=()=>{const e=$('#fpe').value.trim(),p=en($('#fpp').value);if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)||!ok(p)){$('#fpm').textContent='সঠিক ইমেইল ও মোবাইল নম্বর দিন।';return null}return{e,p}};
+$('#fpr').onclick=async()=>{const v=fpv();if(!v)return;$('#fpr').disabled=true;const{error}=await sb.rpc('request_password_reset',{p_email:v.e,p_phone:v.p});$('#fpr').disabled=false;
+$('#fpm').textContent=error?errMsg(error):'✅ অনুরোধ জমা হয়েছে। অ্যাডমিন যাচাই করে অনুমোদন দিলে এখানে "অবস্থা দেখুন" চাপুন।'};
+$('#fpc').onclick=async()=>{const v=fpv();if(!v)return;const{data,error}=await sb.rpc('password_request_status',{p_email:v.e,p_phone:v.p});if(error){$('#fpm').textContent=errMsg(error);return}
+const t=String(data||'none');$('#fpn').hidden=t!=='approved';
+$('#fpm').textContent=t==='approved'?'✅ অনুমোদিত। নিচে নতুন পাসওয়ার্ড দিন (২৪ ঘণ্টার মধ্যে)।':t==='pending'?'⏳ অ্যাডমিনের অনুমোদনের অপেক্ষায়।':t.startsWith('rejected')?'❌ বাতিল হয়েছে। কারণ: '+(t.split(':')[1]||'—'):t==='expired'?'সময় শেষ। নতুন অনুরোধ করুন।':t==='used'?'এই অনুরোধ ব্যবহার হয়ে গেছে। দরকার হলে নতুন অনুরোধ করুন।':'কোনো অনুরোধ পাওয়া যায়নি।'};
+$('#fpd').onclick=async()=>{const v=fpv();if(!v)return;const pw=$('#fpw').value;if(pw.length<6)return toast('কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দিন।');
+const{error}=await sb.rpc('complete_password_reset',{p_email:v.e,p_phone:v.p,p_new:pw});if(error)return toast(errMsg(error));$('#fpw').value='';$('#fpn').hidden=true;$('#fpm').textContent='✅ পাসওয়ার্ড বদলেছে। এখন লগইন করুন।';$('#em').value=v.e};
+// নতুন অ্যাকাউন্ট: NID + লাইভ সেলফি (ব্লিঙ্কে ছবি)
+let nidBlob=null,selfieBlob=null,camStream=null,camOn=false,flm=null;
+$('#sub').onclick=()=>{const w=$('#suw');w.hidden=!w.hidden;$('#sub').textContent=w.hidden?'নতুন অ্যাকাউন্ট খুলুন':'বন্ধ করুন';if(!w.hidden)w.scrollIntoView({behavior:'smooth'})};
+async function toCanvas(f,max){const bm=await createImageBitmap(f),k=Math.min(1,max/Math.max(bm.width,bm.height)),c=document.createElement('canvas');c.width=Math.round(bm.width*k);c.height=Math.round(bm.height*k);c.getContext('2d').drawImage(bm,0,0,c.width,c.height);return c}
+const cBlob=(c,q)=>new Promise(r=>c.toBlob(r,'image/jpeg',q||.82));
+function parseNid(t){const o={};let m=t.match(/(?:ID\s*NO|NID\s*No)[^\d]{0,8}([\d ]{10,22})/i)||t.match(/\b(\d{3}\s?\d{3}\s?\d{4}(?:\s?\d{3})?(?:\s?\d{4})?)\b/);if(m)o.nid=m[1].replace(/\s/g,'');
+m=t.match(/Name[:\s]+([A-Z][A-Za-z.'\- ]{3,60})/);if(m)o.name=m[1].trim().replace(/\s+/g,' ');
+m=t.match(/(\d{1,2})\s*(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*[,\s]+(\d{4})/i);if(m){const i=['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'].indexOf(m[2].toLowerCase());o.dob=m[3]+'-'+String(i+1).padStart(2,'0')+'-'+m[1].padStart(2,'0')}return o}
+async function loadTess(){if(window.Tesseract)return;await new Promise((res,rej)=>{const sc=document.createElement('script');sc.src='https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';sc.onload=res;sc.onerror=rej;document.head.appendChild(sc)})}
+async function readNid(c){try{await loadTess();const g=document.createElement('canvas');g.width=c.width;g.height=c.height;const x=g.getContext('2d');x.filter='grayscale(1) contrast(1.4)';x.drawImage(c,0,0);
+const r=await Tesseract.recognize(g,'eng',{logger:m=>{if(m.status==='recognizing text')$('#ocs').textContent='NID পড়া হচ্ছে... '+bn(Math.round(m.progress*100))+'%'}});
+const o=parseNid(r.data.text||''),got=[];if(o.name){$('#sun').value=o.name;got.push('নাম')}if(o.dob){$('#sudb').value=o.dob;got.push('জন্ম তারিখ')}if(o.nid){$('#sunid').value=o.nid;got.push('NID নম্বর')}
+$('#ocs').textContent=got.length?'✅ NID থেকে পাওয়া গেছে: '+got.join(', ')+'। সঠিক কি না দেখে নিন; পিতা-মাতার নাম হাতে লিখুন।':'⚠ লেখা পড়া যায়নি। আরও পরিষ্কার ছবি দিন বা নিচের ঘরগুলো হাতে লিখুন।'}catch(e){$('#ocs').textContent='⚠ অটো পড়া যায়নি। নিচের ঘরগুলো হাতে লিখুন।'}}
+$('#nidf').onchange=async e=>{const f=e.target.files[0];if(!f)return;$('#ocs').textContent='ছবি প্রস্তুত হচ্ছে...';
+try{const c=await toCanvas(f,1400);nidBlob=await cBlob(c,.8);$('#nidp').src=URL.createObjectURL(nidBlob);$('#nidp').hidden=false;$('#ocs').textContent='NID পড়া হচ্ছে (প্রথমবার ১-২ মিনিট লাগতে পারে)...';await readNid(c)}catch(x){$('#ocs').textContent='ছবি পড়া যায়নি। অন্য ছবি দিন।'}};
+async function loadFL(){if(flm)return flm;const base='https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14',m=await import(base+'/vision_bundle.mjs'),v=await m.FilesetResolver.forVisionTasks(base+'/wasm');
+const mk=d=>m.FaceLandmarker.createFromOptions(v,{baseOptions:{modelAssetPath:'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task',delegate:d},runningMode:'VIDEO',numFaces:1,outputFaceBlendshapes:true});
+try{flm=await mk('GPU')}catch(e){flm=await mk('CPU')}return flm}
+function camStop(){camOn=false;if(camStream)camStream.getTracks().forEach(t=>t.stop());camStream=null;$('#vbox').hidden=true;$('#cam2').hidden=true}
+async function snap(auto){const v=$('#vid');if(!camOn||!v.videoWidth)return;const c=document.createElement('canvas'),k=Math.min(1,720/Math.max(v.videoWidth,v.videoHeight));c.width=Math.round(v.videoWidth*k);c.height=Math.round(v.videoHeight*k);c.getContext('2d').drawImage(v,0,0,c.width,c.height);
+selfieBlob=await cBlob(c,.85);$('#sfp').src=URL.createObjectURL(selfieBlob);$('#sfp').hidden=false;camStop();$('#cst').textContent=auto?'✅ চোখের পাতা ফেলতেই ছবি উঠেছে':'✅ ছবি উঠেছে';$('#cam1').textContent='🔄 আবার তুলুন'}
+$('#cam2').onclick=()=>snap(false);
+$('#cam1').onclick=async()=>{if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){$('#cst').textContent='এই ব্রাউজারে ক্যামেরা চালানো যায় না।';return}
+$('#sfp').hidden=true;selfieBlob=null;$('#cst').textContent='ক্যামেরা চালু হচ্ছে...';
+try{camStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:720},height:{ideal:960}},audio:false})}catch(e){$('#cst').textContent='ক্যামেরার অনুমতি দিন (ব্রাউজার/ফোনের সেটিংস)।';return}
+const v=$('#vid');v.srcObject=camStream;await v.play();$('#vbox').hidden=false;$('#cam2').hidden=false;camOn=true;$('#cst').textContent='ফেস মডেল লোড হচ্ছে...';
+try{const f=await loadFL();$('#cst').textContent='সামনে সোজা তাকান, তারপর চোখের পাতা ফেলুন 👁';let st='wait',n=0;
+const loop=()=>{if(!camOn)return;if(v.readyState>=2){const r=f.detectForVideo(v,performance.now()),b=r.faceBlendshapes&&r.faceBlendshapes[0]&&r.faceBlendshapes[0].categories;
+if(b){const g=k=>(b.find(c=>c.categoryName===k)||{}).score||0,e=(g('eyeBlinkLeft')+g('eyeBlinkRight'))/2;
+if(st==='wait'){if(e<.2&&++n>8)st='open'}else if(st==='open'){if(e>.5)st='closed'}else if(st==='closed'&&e<.25){st='done';setTimeout(()=>snap(true),350)}}else{n=0;if(st==='wait')$('#cst').textContent='মুখ ক্যামেরার সামনে আনুন'}}
+requestAnimationFrame(loop)};loop()}catch(e){$('#cst').textContent='অটো ব্লিঙ্ক চালু হয়নি। "ছবি তুলুন (হাতে)" বাটন চাপুন।'}};
+$('#susub').onclick=async()=>{const g=id=>$('#'+id).value.trim(),name=g('sun'),phone=en(g('suph')),nid=en(g('sunid')),email=g('suem'),pw=$('#supw').value;
+if(!nidBlob)return toast('আগে NID কার্ডের ছবি দিন।');if(!selfieBlob)return toast('লাইভ সেলফি তুলুন।');if(name.length<3)return toast('নাম লিখুন।');
+if(!/^(\d{10}|\d{13}|\d{17})$/.test(nid))return toast('NID নম্বর ১০, ১৩ বা ১৭ অঙ্কের হতে হবে।');if(!g('sudb'))return toast('জন্ম তারিখ দিন।');if(!ok(phone))return toast('সঠিক মোবাইল নম্বর দিন।');
+if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email))return toast('সঠিক ইমেইল দিন।');if(pw.length<6)return toast('পাসওয়ার্ড কমপক্ষে ৬ অক্ষর।');if(pw!==$('#supw2').value)return toast('দুটো পাসওয়ার্ড মেলেনি।');if(!$('#suok').checked)return toast('সম্মতির বক্সে টিক দিন।');
+$('#susub').disabled=true;$('#sust').textContent='জমা হচ্ছে...';
+try{const{data,error}=await sb.auth.signUp({email,password:pw,options:{data:{name,phone}}});if(error)throw error;
+if(!data.session){$('#sust').textContent='⚠ ইমেইল কনফার্মেশন চালু আছে। অ্যাডমিনকে Supabase-এ "Confirm email" বন্ধ করতে বলুন।';return}
+const uid=data.user.id,p1=uid+'/nid.jpg',p2=uid+'/selfie.jpg';
+let r=await sb.storage.from('kyc').upload(p1,nidBlob,{contentType:'image/jpeg'});if(r.error)throw r.error;
+r=await sb.storage.from('kyc').upload(p2,selfieBlob,{contentType:'image/jpeg'});if(r.error)throw r.error;
+r=await sb.rpc('submit_kyc',{p_nid:nid,p_dob:g('sudb'),p_father:g('suf'),p_mother:g('sumo'),p_address:g('suad'),p_nid_path:p1,p_selfie_path:p2});if(r.error)throw r.error;
+$('#sust').textContent='✅ আবেদন জমা হয়েছে। অ্যাডমিন অনুমোদন করলে জানানো হবে।'}catch(e){$('#sust').textContent=errMsg(e)}finally{$('#susub').disabled=false}};
+// লগইন ছাড়া লাইভ চ্যাট (অতিথি)
+const gid=(()=>{let k=null;try{k=localStorage.getItem('nl_gid')}catch(e){}if(!k){k=crypto.randomUUID();try{localStorage.setItem('nl_gid',k)}catch(e){}}return k})();let gT=null;
+async function gcLoad(){const{data}=await sb.rpc('guest_fetch',{p_guest:gid}),el=$('#gcm'),nb=el.scrollTop+el.clientHeight>=el.scrollHeight-40;
+el.innerHTML=(data||[]).length?data.map(m=>`<div class="${m.sender==='user'?'me':''}">${E(m.body)}<small>${m.sender==='admin'?'সাপোর্ট · ':''}${dt(m.created_at)}</small></div>`).join(''):'<p class="hint">প্রশ্ন লিখুন, আমরা উত্তর দেব।</p>';if(nb)el.scrollTop=el.scrollHeight}
+$('#gcb').onclick=()=>{$('#gcp').hidden=false;$('#gcb').hidden=true;gcLoad().then(()=>{$('#gcm').scrollTop=1e9});clearInterval(gT);gT=setInterval(gcLoad,4000)};
+$('#gcx').onclick=()=>{$('#gcp').hidden=true;$('#gcb').hidden=false;clearInterval(gT)};
+$('#gcs').onclick=async()=>{const t=$('#gci').value.trim();if(!t)return;$('#gcs').disabled=true;const{error}=await sb.rpc('guest_send',{p_guest:gid,p_name:$('#gcn').value.trim(),p_body:t});$('#gcs').disabled=false;if(error)return toast(errMsg(error));$('#gci').value='';await gcLoad();$('#gcm').scrollTop=1e9};
+$('#gci').onkeydown=e=>{if(e.key==='Enter')$('#gcs').click()};
 $('#out').onclick=async()=>{await dropPush();sb.auth.signOut()};
 sb.auth.onAuthStateChange((ev,s)=>{setTimeout(()=>boot(s),0)});
 
 async function boot(s){clearInterval(timer);
-if(!s){me=null;['app','ad'].forEach(i=>$('#'+i).hidden=true);$('#lg').hidden=false;$('#out').hidden=$('#adm').hidden=$('#bell').hidden=true;$('#who').textContent='';return}
-$('#lg').hidden=true;$('#out').hidden=false;if($('#app').hidden&&$('#ad').hidden)$('#app').hidden=false;
+if(!s){me=null;['app','ad','pend'].forEach(i=>{const e=document.getElementById(i);if(e)e.hidden=true});$('#lg').hidden=false;$('#gcb').hidden=false;$('#gcp').hidden=true;pubLoad();$('#out').hidden=$('#adm').hidden=$('#bell').hidden=true;$('#who').textContent='';return}
+$('#lg').hidden=true;clearInterval(gT);camStop();$('#out').hidden=false;
 await load();timer=setInterval(load,20000)}
+async function showPending(p){$('#app').hidden=true;$('#pend').hidden=false;$('#who').textContent=p.name||'';$('#out').hidden=false;$('#bell').hidden=true;
+$('#pt1').textContent=p.status==='pending'?'⏳ আপনার আবেদন অ্যাডমিনের অনুমোদনের অপেক্ষায়':'❌ আপনার আবেদন বাতিল হয়েছে';
+$('#pt2').textContent=p.status==='pending'?'অনুমোদন হলে এখানে ও নোটিফিকেশনে জানানো হবে। এই পেজ নিজে থেকে আপডেট হয়।':'কারণ: '+(p.status_note||'—');
+const{data}=await sb.from('notifications').select('*').eq('user_id',p.id).order('created_at',{ascending:false}).limit(5);
+$('#pnl').innerHTML=(data||[]).map(x=>`<div class="nt"><b>${E(x.title)}</b><span class="bd">${E(x.body).replace(/\n/g,'<br>')}</span><span class="tm">${dt(x.created_at)}</span></div>`).join('')}
 async function load(){if(busy)return;
 const{data:{session:ss}}=await sb.auth.getSession();if(!ss)return;const{data:p,error}=await sb.from('profiles').select('*').eq('id',ss.user.id).maybeSingle();if(error||!p)return;if(p.blocked){toast('আপনার অ্যাকাউন্ট ব্লক করা হয়েছে। অ্যাডমিনের সাথে যোগাযোগ করুন।');sb.auth.signOut();return}me=p;
+if(p.status&&p.status!=='active'&&!p.is_admin){await showPending(p);return}
+$('#pend').hidden=true;$('#app').hidden=false;
 $('#who').textContent=p.name||'';$('#hi').textContent='স্বাগতম, '+(p.name||'');bal=+p.balance;renderBal();$('#adm').hidden=!p.is_admin;$('#pe').textContent=p.email||'';$('#pm').textContent=bn(p.phone||'');$('#pd').textContent=dt(p.created_at);if(document.activeElement!==$('#pn'))$('#pn').value=p.name||'';
 if(!$('#an').value)$('#an').value=bn(p.phone||'');if(!$('#rn').value&&p.phone){$('#rn').value=bn(p.phone);$('#rn').dispatchEvent(new Event('input'))}
 const[st,tx,tp,nt]=await Promise.all([sb.from('settings').select('*'),sb.from('transactions').select('*').eq('user_id',p.id).order('created_at',{ascending:false}).limit(50),sb.from('topups').select('*').eq('user_id',p.id).order('created_at',{ascending:false}).limit(20),sb.from('notifications').select('*').eq('user_id',p.id).order('created_at',{ascending:false}).limit(30)]);
@@ -344,7 +477,7 @@ const{error}=await sb.rpc('admin_adjust',{p_user:$('#ju').value,p_amount:a});if(
 $('#cs').onclick=async()=>{const{error}=await sb.from('settings').upsert([{key:'bkash',value:$('#cb').value.trim()},{key:'nagad',value:$('#cn').value.trim()},{key:'rocket',value:$('#cr').value.trim()}]);toast(error?errMsg(error):'✅ সেভ হয়েছে')};
 
 $('#pns').onclick=async()=>{const{error}=await sb.rpc('update_name',{p_name:$('#pn').value});toast(error?errMsg(error):'✅ নাম বদলানো হয়েছে');load()};
-$('#pps').onclick=async()=>{const v=$('#p1').value;if(v.length<8)return toast('কমপক্ষে ৮ অক্ষর দিন।');const{error}=await sb.auth.updateUser({password:v});if(error)return toast(errMsg(error));$('#p1').value='';toast('✅ পাসওয়ার্ড বদলানো হয়েছে')};
+$('#pps').onclick=async()=>{const v=$('#p1').value;if(v.length<6)return toast('কমপক্ষে ৬ অক্ষর দিন।');const{error}=await sb.auth.updateUser({password:v});if(error)return toast(errMsg(error));$('#p1').value='';toast('✅ পাসওয়ার্ড বদলানো হয়েছে')};
 $('#pout').onclick=async()=>{await dropPush();sb.auth.signOut()};
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&me)load()});
 sb.auth.getSession().then(({data})=>boot(data.session));
