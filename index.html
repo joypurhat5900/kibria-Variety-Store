@@ -158,13 +158,13 @@ dialog,input,select,textarea,button{font-family:inherit}
 <button class="go alt" id="sub" type="button" style="margin-top:0">নতুন অ্যাকাউন্ট খুলুন</button>
 <div id="suw" hidden>
 <div class="sprog" id="sprog">ধাপ ১/৩ · NID কার্ডের ছবি</div>
-<div id="sw1" class="stp"><b>NID কার্ডের সামনের পাতা</b><p class="hint">ক্যামেরায় কার্ডটি ফ্রেমের ভেতরে রাখুন। ফ্রেমের বাইরের অংশ বাদ যাবে, শুধু কার্ড থাকবে। নাম, জন্ম তারিখ, NID নম্বর ও পিতা-মাতার নাম নিজে থেকে ভরার চেষ্টা হবে।</p>
-<div class="row"><button type="button" class="btn2" id="nidc">📷 ক্যামেরায় তুলুন</button><button type="button" class="btn2" id="nidg">🖼 গ্যালারি থেকে</button></div>
-<input id="nidf" type="file" accept="image/*" hidden><img id="nidp" hidden alt="NID সামনে"><div class="hint" id="ocs"></div>
-<b style="display:block;margin-top:14px">NID কার্ডের পিছনের পাতা</b><p class="hint">কার্ড উল্টে একইভাবে ফ্রেমের ভেতরে রেখে তুলুন।</p>
-<div class="row"><button type="button" class="btn2" id="nidbc">📷 ক্যামেরায় তুলুন</button><button type="button" class="btn2" id="nidbg">🖼 গ্যালারি থেকে</button></div>
-<input id="nidbf" type="file" accept="image/*" hidden><img id="nidbp" hidden alt="NID পিছনে">
-<button class="go" id="sv1" type="button" disabled>যাচাই করুন</button><p class="hint">দুটো ছবি তোলার পর বাটনটি চালু হবে।</p></div>
+<div id="sw1" class="stp"><b>NID কার্ডের সামনের পাতা</b><p class="hint">ক্যামেরায় কার্ডটি ফ্রেমের ভেতরে রাখুন। ফ্রেমের বাইরের অংশ বাদ যাবে, শুধু কার্ড থাকবে। নাম, জন্ম তারিখ, NID নম্বর ও পিতা-মাতার নাম নিজে থেকে ভরা হবে।</p>
+<div class="row"><button type="button" class="btn2" id="nidc">📷 ক্যামেরায় তুলুন</button></div>
+<img id="nidp" hidden alt="NID সামনে"><div class="hint" id="ocs"></div>
+<b style="display:block;margin-top:14px">NID কার্ডের পিছনের পাতা</b><p class="hint">কার্ড উল্টে একইভাবে ফ্রেমের ভেতরে রেখে তুলুন। পিছনের পাতা থেকে ঠিকানা নিজে থেকে ভরা হবে।</p>
+<div class="row"><button type="button" class="btn2" id="nidbc">📷 ক্যামেরায় তুলুন</button></div>
+<img id="nidbp" hidden alt="NID পিছনে"><div class="hint" id="ocb"></div>
+<button class="go" id="sv1" type="button" disabled>যাচাই করুন</button><p class="hint">দুটো ছবি তোলা ও লেখা পড়া শেষ হলে বাটনটি চালু হবে।</p></div>
 <div id="sw2" class="stp" hidden><b>যাচাই করুন</b><p class="hint">NID থেকে নেওয়া তথ্য ঠিক আছে কি না দেখুন। ভুল থাকলে নিজে ঠিক করুন।</p>
 <label for="sun">নাম (ইংরেজি, NID অনুযায়ী)</label><input id="sun" maxlength="60" autocomplete="name">
 <div class="row"><div><label for="suf">পিতার নাম (বাংলায়)</label><input id="suf" maxlength="60"></div><div><label for="sumo">মাতার নাম (বাংলায়)</label><input id="sumo" maxlength="60"></div></div>
@@ -264,10 +264,6 @@ dialog,input,select,textarea,button{font-family:inherit}
 <dialog id="nd"><h3 style="margin:0 0 8px">📢 নোটিফিকেশন</h3><div id="ndt" style="white-space:pre-wrap;word-break:break-word"></div><div class="bt"><button id="ndx" type="button">বন্ধ করুন</button></div></dialog>
 <div id="ncam" hidden><video id="nvid" playsinline muted></video><div class="nguide" id="ng"></div><div class="nmsg" id="nmsg"></div>
 <div class="nbar"><button type="button" id="nx">বাতিল</button><button type="button" id="nsnap" class="nbtn" aria-label="ছবি তুলুন"></button><span style="width:78px"></span></div></div>
-<dialog id="ncrop"><h3 style="margin:0 0 6px">শুধু কার্ডের অংশ রাখুন</h3><p class="hint" style="margin:0 0 6px">স্লাইডার টেনে কার্ডের বাইরের অংশ বাদ দিন। উজ্জ্বল অংশটাই জমা হবে।</p><canvas id="crc" style="width:100%;border-radius:8px;border:1px solid var(--line)"></canvas>
-<label for="crl">বাঁ দিক</label><input type="range" id="crl" min="0" max="45" value="0"><label for="crr">ডান দিক</label><input type="range" id="crr" min="0" max="45" value="0">
-<label for="crt">ওপর</label><input type="range" id="crt" min="0" max="45" value="0"><label for="crb">নিচ</label><input type="range" id="crb" min="0" max="45" value="0">
-<div class="bt"><button id="crx" type="button">বাতিল</button><button class="ok" id="crok" type="button">ঠিক আছে</button></div></dialog>
 <div id="toast"></div>
 
 <script>
@@ -381,7 +377,7 @@ $('#fpm').textContent=t==='approved'?'✅ অনুমোদিত। নিচ�
 $('#fpd').onclick=async()=>{const v=fpv();if(!v)return;const pw=$('#fpw').value;if(pw.length<6)return toast('কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দিন।');
 const{error}=await sb.rpc('complete_password_reset',{p_email:v.e,p_phone:v.p,p_new:pw});if(error)return toast(errMsg(error));$('#fpw').value='';$('#fpn').hidden=true;$('#fpm').textContent='✅ পাসওয়ার্ড বদলেছে। এখন লগইন করুন।';$('#em').value=v.e};
 // নতুন অ্যাকাউন্ট: NID + লাইভ সেলফি (ব্লিঙ্কে ছবি)
-let nidBlob=null,nidBackBlob=null,selfieBlob=null,camStream=null,camOn=false,flm=null;
+let ocrF=false,ocrB=false,nidBlob=null,nidBackBlob=null,selfieBlob=null,camStream=null,camOn=false,flm=null;
 $('#sub').onclick=()=>{const w=$('#suw');w.hidden=!w.hidden;$('#sub').textContent=w.hidden?'নতুন অ্যাকাউন্ট খুলুন':'বন্ধ করুন';if(!w.hidden)suGo(1)};
 async function toCanvas(f,max){const bm=await createImageBitmap(f),k=Math.min(1,max/Math.max(bm.width,bm.height)),c=document.createElement('canvas');c.width=Math.round(bm.width*k);c.height=Math.round(bm.height*k);c.getContext('2d').drawImage(bm,0,0,c.width,c.height);return c}
 const cBlob=(c,q)=>new Promise(r=>c.toBlob(r,'image/jpeg',q||.82));
@@ -396,25 +392,23 @@ const r=await Tesseract.recognize(g,'eng',{logger:lg('NID পড়া হচ্
 const o=parseNid(r.data.text||''),got=[];if(o.name&&!$('#sun').value){$('#sun').value=o.name;got.push('নাম')}if(o.dob&&!$('#sudb').value){$('#sudb').value=o.dob;got.push('জন্ম তারিখ')}if(o.nid&&!$('#sunid').value){$('#sunid').value=o.nid;got.push('NID নম্বর')}
 try{const rb=await Tesseract.recognize(g,'ben',{logger:lg('বাংলা লেখা (পিতা-মাতা) পড়া হচ্ছে...')});const b=parseBn(rb.data.text||'');if(b.father&&!$('#suf').value){$('#suf').value=b.father;got.push('পিতার নাম')}if(b.mother&&!$('#sumo').value){$('#sumo').value=b.mother;got.push('মাতার নাম')}}catch(e){}
 $('#ocs').textContent=got.length?'✅ NID থেকে পাওয়া গেছে: '+got.join(', ')+'। সঠিক কি না দেখে নিন, ভুল হলে ঠিক করুন।':'⚠ লেখা পড়া যায়নি। আরও পরিষ্কার ছবি দিন বা পরের ধাপে ঘরগুলো হাতে লিখুন।'}catch(e){$('#ocs').textContent='⚠ অটো পড়া যায়নি। পরের ধাপে ঘরগুলো হাতে লিখুন।'}}
-async function setNid(c,w){const b=await cBlob(c,.85);if(w==='f'){nidBlob=b;$('#nidp').src=URL.createObjectURL(b);$('#nidp').hidden=false;chk1();$('#ocs').textContent='NID পড়া হচ্ছে (প্রথমবার ১-২ মিনিট লাগতে পারে)...';await readNid(c)}else{nidBackBlob=b;$('#nidbp').src=URL.createObjectURL(b);$('#nidbp').hidden=false;chk1()}}
+let ocrQ=Promise.resolve();const queueOcr=f=>(ocrQ=ocrQ.then(f,f));
+function parseAddr(t){const lines=t.split('\n').map(x=>x.trim()).filter(Boolean),cl=v=>(v||'').replace(/[^\u0980-\u09FF0-9\s,.\-:\/]/g,' ').replace(/\s+/g,' ').trim(),i=lines.findIndex(l=>/ঠিকানা/.test(l));if(i<0)return '';
+const out=[],first=cl(lines[i].replace(/^.*ঠিকানা\s*[:：।ঃ]?\s*/,''));if(first.length>2)out.push(first);
+for(let j=i+1;j<lines.length&&out.length<5;j++){const l=lines[j];if(/জন্মস্থান|রক্তের|Blood|Place of Birth|মুদ্রণ|প্রদানকারী|Issue|সংশ্লিষ্ট/i.test(l))break;const c=cl(l);if(c.length>2)out.push(c)}
+return out.join(', ').replace(/(,\s*)+/g,', ').slice(0,150)}
+async function readBack(c){try{await loadTess();const g=document.createElement('canvas');g.width=c.width;g.height=c.height;const x=g.getContext('2d');x.filter='grayscale(1) contrast(1.4)';x.drawImage(c,0,0);
+const r=await Tesseract.recognize(g,'ben',{logger:m=>{if(m.status==='recognizing text')$('#ocb').textContent='ঠিকানা পড়া হচ্ছে... '+bn(Math.round(m.progress*100))+'%'}});
+const a=parseAddr(r.data.text||'');if(a&&!$('#suad').value){$('#suad').value=a;$('#ocb').textContent='✅ পিছনের পাতা থেকে ঠিকানা পাওয়া গেছে। সঠিক কি না দেখে নিন, ভুল হলে ঠিক করুন।'}else $('#ocb').textContent=a?'ঠিকানা আগে থেকেই লেখা আছে।':'⚠ ঠিকানা পড়া যায়নি। পরের ধাপে হাতে লিখুন।'}catch(e){$('#ocb').textContent='⚠ ঠিকানা অটো পড়া যায়নি। পরের ধাপে হাতে লিখুন।'}}
+async function setNid(c,w){const b=await cBlob(c,.85);if(w==='f'){nidBlob=b;ocrF=false;$('#nidp').src=URL.createObjectURL(b);$('#nidp').hidden=false;chk1();$('#ocs').textContent='NID পড়া হচ্ছে (প্রথমবার ১-২ মিনিট লাগতে পারে)...';await queueOcr(()=>readNid(c));ocrF=true;chk1()}else{nidBackBlob=b;ocrB=false;$('#nidbp').src=URL.createObjectURL(b);$('#nidbp').hidden=false;chk1();$('#ocb').textContent='ঠিকানা পড়ার অপেক্ষায়...';await queueOcr(()=>readBack(c));ocrB=true;chk1()}}
 let ncS=null,ncW='f';
-async function ncOpen(w){ncW=w;try{ncS=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1080}},audio:false});const v=$('#nvid');v.srcObject=ncS;await v.play();$('#nmsg').textContent=(w==='f'?'NID-এর সামনের পাতা':'NID-এর পিছনের পাতা')+' ফ্রেমের ভেতরে রাখুন';$('#ncam').hidden=false}catch(e){ncStop();toast('ক্যামেরা চালু হয়নি। অনুমতি দিন বা "গ্যালারি থেকে" বাটন ব্যবহার করুন।')}}
+async function ncOpen(w){ncW=w;try{ncS=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1080}},audio:false});const v=$('#nvid');v.srcObject=ncS;await v.play();$('#nmsg').textContent=(w==='f'?'NID-এর সামনের পাতা':'NID-এর পিছনের পাতা')+' ফ্রেমের ভেতরে রাখুন';$('#ncam').hidden=false}catch(e){ncStop();toast('ক্যামেরা চালু হয়নি। ব্রাউজারের ক্যামেরা অনুমতি দিন।')}}
 function ncStop(){if(ncS){ncS.getTracks().forEach(t=>t.stop());ncS=null}$('#ncam').hidden=true}
 $('#nx').onclick=ncStop;
 $('#nsnap').onclick=async()=>{const v=$('#nvid');if(!v.videoWidth)return;const gr=$('#ng').getBoundingClientRect(),vr=v.getBoundingClientRect(),sc=Math.max(vr.width/v.videoWidth,vr.height/v.videoHeight),ox=(vr.width-v.videoWidth*sc)/2,oy=(vr.height-v.videoHeight*sc)/2;
 let sx=Math.max(0,(gr.left-vr.left-ox)/sc),sy=Math.max(0,(gr.top-vr.top-oy)/sc),sw=gr.width/sc,sh=gr.height/sc;sw=Math.min(sw,v.videoWidth-sx);sh=Math.min(sh,v.videoHeight-sy);
 const k=Math.min(1,1400/sw),c=document.createElement('canvas');c.width=Math.round(sw*k);c.height=Math.round(sh*k);c.getContext('2d').drawImage(v,sx,sy,sw,sh,0,0,c.width,c.height);const w=ncW;ncStop();await setNid(c,w)};
-let crC=null,crW='f';
-function crDraw(){const c=$('#crc'),k=Math.min(1,360/crC.width);c.width=Math.round(crC.width*k);c.height=Math.round(crC.height*k);const x=c.getContext('2d');x.drawImage(crC,0,0,c.width,c.height);
-const l=+$('#crl').value/100,r=+$('#crr').value/100,t=+$('#crt').value/100,b=+$('#crb').value/100,rx=l*c.width,ry=t*c.height,rw=(1-l-r)*c.width,rh=(1-t-b)*c.height;
-x.fillStyle='rgba(0,0,0,.62)';x.fillRect(0,0,c.width,c.height);x.drawImage(crC,rx/k,ry/k,rw/k,rh/k,rx,ry,rw,rh);x.strokeStyle='#fff';x.lineWidth=2;x.strokeRect(rx,ry,rw,rh)}
-['crl','crr','crt','crb'].forEach(i=>$('#'+i).oninput=crDraw);
-function crOpen(c,w){crC=c;crW=w;['crl','crr','crt','crb'].forEach(i=>$('#'+i).value=0);$('#ncrop').showModal();crDraw()}
-$('#crx').onclick=()=>$('#ncrop').close();
-$('#crok').onclick=async()=>{const w=crC.width,h=crC.height,l=+$('#crl').value/100,r=+$('#crr').value/100,t=+$('#crt').value/100,b=+$('#crb').value/100,cc=document.createElement('canvas');cc.width=Math.max(50,Math.round((1-l-r)*w));cc.height=Math.max(50,Math.round((1-t-b)*h));cc.getContext('2d').drawImage(crC,l*w,t*h,(1-l-r)*w,(1-t-b)*h,0,0,cc.width,cc.height);$('#ncrop').close();await setNid(cc,crW)};
-$('#nidc').onclick=()=>ncOpen('f');$('#nidbc').onclick=()=>ncOpen('b');$('#nidg').onclick=()=>$('#nidf').click();$('#nidbg').onclick=()=>$('#nidbf').click();
-$('#nidf').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;try{crOpen(await toCanvas(f,1800),'f')}catch(x){toast('ছবি পড়া যায়নি। অন্য ছবি দিন।')}};
-$('#nidbf').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;try{crOpen(await toCanvas(f,1800),'b')}catch(x){toast('ছবি পড়া যায়নি। অন্য ছবি দিন।')}};
+$('#nidc').onclick=()=>ncOpen('f');$('#nidbc').onclick=()=>ncOpen('b');
 async function loadFL(){if(flm)return flm;const base='https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14',m=await import(base+'/vision_bundle.mjs'),v=await m.FilesetResolver.forVisionTasks(base+'/wasm');
 const mk=d=>m.FaceLandmarker.createFromOptions(v,{baseOptions:{modelAssetPath:'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task',delegate:d},runningMode:'VIDEO',numFaces:1,outputFaceBlendshapes:true});
 try{flm=await mk('GPU')}catch(e){flm=await mk('CPU')}return flm}
@@ -431,7 +425,7 @@ const loop=()=>{if(!camOn)return;if(v.readyState>=2){const r=f.detectForVideo(v,
 if(b){const g=k=>(b.find(c=>c.categoryName===k)||{}).score||0,e=(g('eyeBlinkLeft')+g('eyeBlinkRight'))/2;
 if(st==='wait'){if(e<.2&&++n>8)st='open'}else if(st==='open'){if(e>.5)st='closed'}else if(st==='closed'&&e<.25){st='done';setTimeout(()=>snap(true),350)}}else{n=0;if(st==='wait')$('#cst').textContent='মুখ ক্যামেরার সামনে আনুন'}}
 requestAnimationFrame(loop)};loop()}catch(e){$('#cst').textContent='অটো ব্লিঙ্ক চালু হয়নি। "ছবি তুলুন (হাতে)" বাটন চাপুন।'}};
-const chk1=()=>{$('#sv1').disabled=!(nidBlob&&nidBackBlob)};
+const chk1=()=>{$('#sv1').disabled=!(nidBlob&&nidBackBlob&&ocrF&&ocrB)};
 function suGo(n){[1,2,3].forEach(i=>$('#sw'+i).hidden=i!==n);$('#sprog').textContent=['','ধাপ ১/৩ · NID কার্ডের ছবি','ধাপ ২/৩ · যাচাই করুন','ধাপ ৩/৩ · লাইভ সেলফি'][n];if(n!==3)camStop();$('#suw').scrollIntoView({behavior:'smooth'})}
 function suCheck(){const g=id=>$('#'+id).value.trim(),name=g('sun'),phone=en(g('suph')),nid=en(g('sunid')),email=g('suem'),pw=$('#supw').value;
 if(name.length<3)return 'নাম লিখুন।';if(!/^(\d{10}|\d{13}|\d{17})$/.test(nid))return 'NID নম্বর ১০, ১৩ বা ১৭ অঙ্কের হতে হবে।';if(!g('sudb'))return 'জন্ম তারিখ দিন।';if(!ok(phone))return 'সঠিক মোবাইল নম্বর দিন।';
