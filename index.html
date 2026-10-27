@@ -2,6 +2,7 @@
 <html lang="bn">
 <head>
 <meta charset="utf-8">
+<script>if(window.top!==window.self){try{window.top.location=window.self.location}catch(e){document.documentElement.style.display="none"}}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>নেটলিংক টেলিকম</title>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#e2255f"><link rel="apple-touch-icon" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
@@ -191,7 +192,7 @@ dialog,input,select,textarea,button{font-family:inherit}
 <input id="gcn" maxlength="40" placeholder="আপনার নাম (ঐচ্ছিক)" style="margin-top:8px"><div class="row" style="grid-template-columns:1fr auto;margin-top:6px"><input id="gci" maxlength="500" placeholder="মেসেজ লিখুন..."><button class="go" id="gcs" type="button" style="margin:0;width:auto;padding:0 16px;font-size:16px">পাঠান</button></div></div>
 </section>
 
-<section id="pend" class="w" hidden><div class="lcard" style="margin-top:20px"><h2 id="pt1"></h2><p class="hint" id="pt2"></p><div id="pnl"></div></div></section>
+<section id="pend" class="w" hidden><div class="lcard" style="margin-top:20px"><h2 id="pt1"></h2><p class="hint" id="pt2"></p><button class="go" id="pkyc" type="button" hidden>তথ্য আবার জমা দিন</button><div id="pnl"></div></div></section>
 
 <div id="app" hidden>
 <div class="news" id="news" hidden><span id="nt"></span></div>
@@ -287,7 +288,7 @@ const ST={pending:['প্রক্রিয়াধীন','ps'],completed:['�
 let me=null,tab='r',op='',sm='বিকাশ',am='বিকাশ',mode='in',cfg={},pend=null,timer=null,busy=false;
 const toast=t=>{const x=$('#toast');x.textContent=t;x.style.display='block';clearTimeout(x._t);x._t=setTimeout(()=>x.style.display='none',4000)};
 const chips=(id,list,cur,fn)=>{$(id).innerHTML=list.map(v=>`<button type="button" class="${v===cur?'on':''}">${v}</button>`).join('');$(id).onclick=e=>{if(e.target.tagName==='BUTTON'){$$(id+' button').forEach(b=>b.classList.toggle('on',b===e.target));fn(e.target.textContent)}}};
-const errMsg=e=>{const m=e?.message||'';if(/already registered/i.test(m))return 'এই ইমেইলে আগেই অ্যাকাউন্ট আছে।';if(/Database error saving/i.test(m))return 'এই মোবাইল নম্বর বা ইমেইলে আগেই অ্যাকাউন্ট আছে।';if(/invalid email/.test(m))return 'সঠিক ইমেইল দিন।';if(/invalid phone/.test(m))return 'সঠিক মোবাইল নম্বর দিন।';if(/invalid nid/.test(m))return 'NID নম্বর ১০, ১৩ বা ১৭ অঙ্কের হতে হবে।';if(/no match/.test(m))return 'এই ইমেইল ও মোবাইলে কোনো গ্রাহক নেই।';if(/not approved/.test(m))return 'অনুরোধ এখনও অনুমোদিত নয় বা সময় শেষ।';if(/too fast/.test(m))return 'একটু ধীরে পাঠান।';if(/Database error saving new user/i.test(m))return 'এই মোবাইল বা ইমেইল দিয়ে আগেই অ্যাকাউন্ট আছে।';if(/account pending/.test(m))return 'আপনার অ্যাকাউন্ট এখনও অনুমোদিত হয়নি।';if(/already registered|User already/i.test(m))return 'এই ইমেইল আগেই ব্যবহৃত।';if(/blocked/.test(m))return 'আপনার অ্যাকাউন্ট ব্লক করা আছে।';if(/insufficient/.test(m))return 'ব্যালেন্স কম। আগে ব্যালেন্স যোগ করুন।';if(/duplicate|unique/.test(m))return 'এই তথ্য আগেই ব্যবহৃত হয়েছে (TrxID/মোবাইল)।';if(/forbidden/.test(m))return 'আপনার অনুমতি নেই।';if(/Invalid login/i.test(m))return 'ইমেইল বা পাসওয়ার্ড ভুল (অথবা এই ইমেইলে অ্যাকাউন্ট নেই)।';if(/not confirmed/i.test(m))return 'ইমেইল কনফার্ম হয়নি। মেইলের লিংকে ক্লিক করুন।';if(/rate limit/i.test(m))return 'অনেকবার চেষ্টা হয়েছে। কিছুক্ষণ পর আবার করুন।';return 'ব্যর্থ: '+(m||'আবার চেষ্টা করুন।')};
+const errMsg=e=>{const m=e?.message||'';if(/nid used|profiles_nid/i.test(m))return 'এই NID নম্বর দিয়ে আগেই আবেদন বা অ্যাকাউন্ট আছে।';if(/Bucket not found/i.test(m))return 'সার্ভারে ছবি রাখার জায়গা তৈরি হয়নি (অ্যাডমিন SQL সংস্করণ ১৪ রান করুন)।';if(/Could not find the function|schema cache/i.test(m))return 'সার্ভার আপডেট হয়নি (অ্যাডমিন নতুন SQL রান করুন)।';if(/invalid dob/i.test(m))return 'জন্ম তারিখ ঠিক নয় (বয়স ১৮ বছর বা বেশি হতে হবে)।';if(/invalid nid/i.test(m))return 'NID নম্বর ঠিক নয়।';if(/row-level security|Unauthorized/i.test(m)&&/storage|object/i.test(m))return 'ছবি জমা দেওয়ার অনুমতি নেই (SQL সংস্করণ ১৪ রান হয়েছে কি দেখুন)।';if(/already registered/i.test(m))return 'এই ইমেইলে আগেই অ্যাকাউন্ট আছে।';if(/Database error saving/i.test(m))return 'এই মোবাইল নম্বর বা ইমেইলে আগেই অ্যাকাউন্ট আছে।';if(/invalid email/.test(m))return 'সঠিক ইমেইল দিন।';if(/invalid phone/.test(m))return 'সঠিক মোবাইল নম্বর দিন।';if(/invalid nid/.test(m))return 'NID নম্বর ১০, ১৩ বা ১৭ অঙ্কের হতে হবে।';if(/no match/.test(m))return 'এই ইমেইল ও মোবাইলে কোনো গ্রাহক নেই।';if(/not approved/.test(m))return 'অনুরোধ এখনও অনুমোদিত নয় বা সময় শেষ।';if(/too fast/.test(m))return 'একটু ধীরে পাঠান।';if(/Database error saving new user/i.test(m))return 'এই মোবাইল বা ইমেইল দিয়ে আগেই অ্যাকাউন্ট আছে।';if(/account pending/.test(m))return 'আপনার অ্যাকাউন্ট এখনও অনুমোদিত হয়নি।';if(/already registered|User already/i.test(m))return 'এই ইমেইল আগেই ব্যবহৃত।';if(/blocked/.test(m))return 'আপনার অ্যাকাউন্ট ব্লক করা আছে।';if(/insufficient/.test(m))return 'ব্যালেন্স কম। আগে ব্যালেন্স যোগ করুন।';if(/duplicate|unique/.test(m))return 'এই তথ্য আগেই ব্যবহৃত হয়েছে (TrxID/মোবাইল)।';if(/forbidden/.test(m))return 'আপনার অনুমতি নেই।';if(/Invalid login/i.test(m))return 'ইমেইল বা পাসওয়ার্ড ভুল (অথবা এই ইমেইলে অ্যাকাউন্ট নেই)।';if(/not confirmed/i.test(m))return 'ইমেইল কনফার্ম হয়নি। মেইলের লিংকে ক্লিক করুন।';if(/rate limit/i.test(m))return 'অনেকবার চেষ্টা হয়েছে। কিছুক্ষণ পর আবার করুন।';return 'ব্যর্থ: '+(m||'আবার চেষ্টা করুন।')};
 
 const DEF_OFF={'গ্রামীণফোন':[['১ জিবি · ৭ দিন',49],['৫ জিবি · ৭ দিন',149],['১৫ জিবি · ৩০ দিন',349],['২০০ মিনিট · ৩০ দিন',179]],'রবি':[['১ জিবি · ৭ দিন',48],['৫ জিবি · ৭ দিন',147],['১৫ জিবি · ৩০ দিন',345],['৩০০ মিনিট · ৩০ দিন',199]],'বাংলালিংক':[['১ জিবি · ৭ দিন',47],['৬ জিবি · ৭ দিন',146],['১৬ জিবি · ৩০ দিন',348],['২৫০ মিনিট · ৩০ দিন',189]],'এয়ারটেল':[['১ জিবি · ৭ দিন',46],['৫ জিবি · ৭ দিন',145],['১৫ জিবি · ৩০ দিন',340]],'টেলিটক':[['১ জিবি · ৭ দিন',39],['৫ জিবি · ৭ দিন',129],['২০ জিবি · ৩০ দিন',299]]};
 function offs(){let o=DEF_OFF;try{if(cfg.offers)o=JSON.parse(cfg.offers)}catch(e){}return o}
@@ -377,7 +378,8 @@ $('#fpm').textContent=t==='approved'?'✅ অনুমোদিত। নিচ�
 $('#fpd').onclick=async()=>{const v=fpv();if(!v)return;const pw=$('#fpw').value;if(pw.length<6)return toast('কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দিন।');
 const{error}=await sb.rpc('complete_password_reset',{p_email:v.e,p_phone:v.p,p_new:pw});if(error)return toast(errMsg(error));$('#fpw').value='';$('#fpn').hidden=true;$('#fpm').textContent='✅ পাসওয়ার্ড বদলেছে। এখন লগইন করুন।';$('#em').value=v.e};
 // নতুন অ্যাকাউন্ট: NID + লাইভ সেলফি (ব্লিঙ্কে ছবি)
-let ocrF=false,ocrB=false,nidBlob=null,nidBackBlob=null,selfieBlob=null,camStream=null,camOn=false,flm=null;
+let kycBusy=false,ocrF=false,ocrB=false,nidBlob=null,nidBackBlob=null,selfieBlob=null,camStream=null,camOn=false,flm=null;
+$('#pkyc').onclick=async()=>{await sb.auth.signOut();setTimeout(()=>{if($('#suw').hidden)$('#sub').click();toast('একই ইমেইল ও পাসওয়ার্ড দিয়ে আবার তথ্য দিন।');$('#suw').scrollIntoView({behavior:'smooth'})},500)};
 $('#sub').onclick=()=>{const w=$('#suw');w.hidden=!w.hidden;$('#sub').textContent=w.hidden?'নতুন অ্যাকাউন্ট খুলুন':'বন্ধ করুন';if(!w.hidden)suGo(1)};
 async function toCanvas(f,max){const bm=await createImageBitmap(f),k=Math.min(1,max/Math.max(bm.width,bm.height)),c=document.createElement('canvas');c.width=Math.round(bm.width*k);c.height=Math.round(bm.height*k);c.getContext('2d').drawImage(bm,0,0,c.width,c.height);return c}
 const cBlob=(c,q)=>new Promise(r=>c.toBlob(r,'image/jpeg',q||.82));
@@ -432,19 +434,21 @@ if(name.length<3)return 'নাম লিখুন।';if(!/^(\d{10}|\d{13}|\d{1
 if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email))return 'সঠিক ইমেইল দিন।';if(pw.length<6)return 'পাসওয়ার্ড কমপক্ষে ৬ অক্ষর।';if(pw!==$('#supw2').value)return 'দুটো পাসওয়ার্ড মেলেনি।';if(!$('#suok').checked)return 'সম্মতির বক্সে টিক দিন।';return ''}
 $('#sv1').onclick=()=>{if(!nidBlob||!nidBackBlob)return toast('NID-এর সামনে ও পিছনের ছবি দিন।');suGo(2)};
 $('#sb2').onclick=()=>suGo(1);$('#sb3').onclick=()=>suGo(2);
-$('#sv2').onclick=()=>{const er=suCheck();if(er)return toast(er);suGo(3);$('#cam1').click()};
+$('#sv2').onclick=async()=>{const er=suCheck();if(er)return toast(er);$('#sv2').disabled=true;try{const r=await sb.rpc('nid_taken',{p_nid:en($('#sunid').value.trim())});if(r.error&&!/Could not find|schema cache/i.test(r.error.message||''))return toast(errMsg(r.error));if(r.data===true)return toast('এই NID নম্বর দিয়ে আগেই আবেদন বা অ্যাকাউন্ট আছে। একই NID দুইবার ব্যবহার করা যায় না।')}finally{$('#sv2').disabled=false}suGo(3);$('#cam1').click()};
 $('#susub').onclick=async()=>{const g=id=>$('#'+id).value.trim();
 if(!nidBlob||!nidBackBlob)return toast('NID-এর সামনে ও পিছনের ছবি দিন।');if(!selfieBlob)return toast('লাইভ সেলফি তুলুন।');const er=suCheck();if(er)return toast(er);
 const name=g('sun'),phone=en(g('suph')),nid=en(g('sunid')),email=g('suem'),pw=$('#supw').value;
-$('#susub').disabled=true;$('#sust').textContent='জমা হচ্ছে...';
-try{const{data,error}=await sb.auth.signUp({email,password:pw,options:{data:{name,phone}}});if(error)throw error;
+kycBusy=true;$('#susub').disabled=true;$('#sust').textContent='জমা হচ্ছে...';
+try{let{data,error}=await sb.auth.signUp({email,password:pw,options:{data:{name,phone}}});
+if(error&&/already registered|already been registered/i.test(error.message||'')){const r0=await sb.auth.signInWithPassword({email,password:pw});if(r0.error)throw new Error('এই ইমেইল আগেই ব্যবহৃত। আগে দেওয়া পাসওয়ার্ড দিন বা অন্য ইমেইল ব্যবহার করুন।');data=r0.data;error=null}
+if(error)throw error;
 if(!data.session){$('#sust').textContent='⚠ ইমেইল কনফার্মেশন চালু আছে। অ্যাডমিনকে Supabase-এ "Confirm email" বন্ধ করতে বলুন।';return}
 const uid=data.user.id,p1=uid+'/nid.jpg',p3=uid+'/nid_back.jpg',p2=uid+'/selfie.jpg';
 let r=await sb.storage.from('kyc').upload(p1,nidBlob,{contentType:'image/jpeg'});if(r.error)throw r.error;
 r=await sb.storage.from('kyc').upload(p3,nidBackBlob,{contentType:'image/jpeg'});if(r.error)throw r.error;
 r=await sb.storage.from('kyc').upload(p2,selfieBlob,{contentType:'image/jpeg'});if(r.error)throw r.error;
 r=await sb.rpc('submit_kyc',{p_nid:nid,p_dob:g('sudb'),p_father:g('suf'),p_mother:g('sumo'),p_address:g('suad'),p_nid_path:p1,p_nid_back_path:p3,p_selfie_path:p2});if(r.error)throw r.error;
-$('#sust').textContent='✅ আবেদন জমা হয়েছে। অ্যাডমিন অনুমোদন করলে জানানো হবে।'}catch(e){$('#sust').textContent=errMsg(e)}finally{$('#susub').disabled=!selfieBlob}};
+$('#sust').textContent='✅ আবেদন জমা হয়েছে। অ্যাডমিন অনুমোদন করলে জানানো হবে।';kycBusy=false;const{data:{session:s2}}=await sb.auth.getSession();boot(s2)}catch(e){$('#sust').textContent='❌ '+errMsg(e)+' (আবার "জমা দিন" চাপতে পারেন)'}finally{kycBusy=false;$('#susub').disabled=!selfieBlob}};
 // লগইন ছাড়া লাইভ চ্যাট (অতিথি)
 const gid=(()=>{let k=null;try{k=localStorage.getItem('nl_gid')}catch(e){}if(!k){k=crypto.randomUUID();try{localStorage.setItem('nl_gid',k)}catch(e){}}return k})();let gT=null;
 async function gcLoad(){const{data}=await sb.rpc('guest_fetch',{p_guest:gid}),el=$('#gcm'),nb=el.scrollTop+el.clientHeight>=el.scrollHeight-40;
@@ -456,13 +460,14 @@ $('#gci').onkeydown=e=>{if(e.key==='Enter')$('#gcs').click()};
 $('#out').onclick=async()=>{await dropPush();sb.auth.signOut()};
 sb.auth.onAuthStateChange((ev,s)=>{setTimeout(()=>boot(s),0)});
 
-async function boot(s){clearInterval(timer);
+async function boot(s){if(s&&kycBusy)return;clearInterval(timer);
 if(!s){me=null;['app','ad','pend'].forEach(i=>{const e=document.getElementById(i);if(e)e.hidden=true});$('#lg').hidden=false;$('#gcb').hidden=false;$('#gcp').hidden=true;pubLoad();$('#out').hidden=$('#adm').hidden=$('#bell').hidden=true;$('#who').textContent='';return}
 $('#lg').hidden=true;clearInterval(gT);camStop();$('#out').hidden=false;
 await load();timer=setInterval(load,20000)}
 async function showPending(p){$('#app').hidden=true;$('#pend').hidden=false;$('#who').textContent=p.name||'';$('#out').hidden=false;$('#bell').hidden=true;
 $('#pt1').textContent=p.status==='pending'?'⏳ আপনার আবেদন অ্যাডমিনের অনুমোদনের অপেক্ষায়':'❌ আপনার আবেদন বাতিল হয়েছে';
 $('#pt2').textContent=p.status==='pending'?'অনুমোদন হলে এখানে ও নোটিফিকেশনে জানানো হবে। এই পেজ নিজে থেকে আপডেট হয়।':'কারণ: '+(p.status_note||'—');
+const need=(p.status==='pending'&&!p.submitted_at)||p.status==='rejected';$('#pkyc').hidden=!need;if(p.status==='pending'&&!p.submitted_at){$('#pt1').textContent='⚠ আপনার NID ও সেলফি জমা হয়নি';$('#pt2').textContent='আবেদন সম্পূর্ণ করতে নিচের বাটন চেপে আবার তথ্য দিন (একই ইমেইল ও পাসওয়ার্ড ব্যবহার করুন)।'}
 const{data}=await sb.from('notifications').select('*').eq('user_id',p.id).order('created_at',{ascending:false}).limit(5);
 $('#pnl').innerHTML=(data||[]).map(x=>`<div class="nt"><b>${E(x.title)}</b><span class="bd">${E(x.body).replace(/\n/g,'<br>')}</span><span class="tm">${dt(x.created_at)}</span></div>`).join('')}
 async function load(){if(busy)return;
