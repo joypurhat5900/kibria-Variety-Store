@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="bn"><head><meta charset="utf-8">
+<script>if(window.top!==window.self){try{window.top.location=window.self.location}catch(e){document.documentElement.style.display="none"}}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>অ্যাডমিন – নেটলিংক</title>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;700&family=Noto+Sans+Bengali:wght@400;500;700&family=Anek+Bangla:wght@400;500;700&family=Baloo+Da+2:wght@400;500;700&family=Noto+Serif+Bengali:wght@400;500;700&family=Tiro+Bangla&display=swap" rel="stylesheet">
@@ -202,7 +203,26 @@ if(v.value<0||(type==='percent'&&v.value>100))bad=true;if(type==='percent'){v.mi
 async function loadEarn(){const{data}=await sb.rpc('admin_earnings');const d=data||{};$('#k7').textContent=M(d.charge||0);$('#k8').textContent=M(d.commission||0);$('#k9').textContent=M(d.today_charge||0);$('#k10').textContent=M(d.today_commission||0)}
 let U=[],TP=[],TX=[],cfg={},cur=null,timer=null;
 const toast=t=>{const x=$('#toast');x.textContent=t;x.style.display='block';clearTimeout(x._t);x._t=setTimeout(()=>x.style.display='none',4000)};
-const errMsg=e=>{const m=e?.message||'';if(/manual add/.test(m))return 'ম্যানুয়াল ব্যালেন্স যোগ বন্ধ করা আছে।';if(/row-level security|Unauthorized/i.test(m))return 'অনুমতি নেই। Supabase-এ সংস্করণ ৫ SQL রান করা হয়েছে কি দেখুন।';if(/note required/.test(m))return 'ট্রানজেকশন আইডি বা কারণ দিতে হবে।';if(/not deletable/.test(m))return 'পেন্ডিং লেনদেন মোছা যায় না।';if(/invalid phone/.test(m))return 'মোবাইল নম্বর ঠিক নয় (01XXXXXXXXX)।';if(/invalid nid/.test(m))return 'NID নম্বর ১০, ১৩ বা ১৭ অঙ্কের হতে হবে।';if(/duplicate|unique/i.test(m))return 'এই মোবাইল বা NID অন্য গ্রাহকের আছে।';if(/account pending/.test(m))return 'গ্রাহকের অ্যাকাউন্ট এখনও অনুমোদিত নয়।';if(/forbidden/.test(m))return 'আপনার অনুমতি নেই।';if(/invalid adjustment/.test(m))return 'ব্যালেন্স ঋণাত্মক হবে বা গ্রাহক নেই।';if(/not pending/.test(m))return 'এটা আগেই প্রক্রিয়া হয়েছে।';if(/Invalid login/i.test(m))return 'ইমেইল বা পাসওয়ার্ড ভুল।';if(/not confirmed/i.test(m))return 'ইমেইল কনফার্ম হয়নি।';if(/protected/.test(m))return 'অ্যাডমিন অ্যাকাউন্টে এটা করা যাবে না।';if(/short password/.test(m))return 'পাসওয়ার্ড কমপক্ষে ৮ অক্ষর দিন।';return 'ব্যর্থ: '+(m||'আবার চেষ্টা করুন।')};
+function weakPw(p,c){c=c||{};p=String(p||'');const L=p.length,lo=p.toLowerCase(),num=/^\d+$/.test(p);
+const common=['password','password1','123456789','1234567890','qwerty','qwerty123','qwertyuiop','abc123','abcdef','iloveyou','admin123','welcome','letmein','bangladesh','netlink','nesco123','111222','112233','121212','123123','123321','159753','520520','696969','1q2w3e','1q2w3e4r','asdfgh','asdfghjk','zxcvbn'];
+if(common.includes(lo))return 'এটা খুব সহজ ও পরিচিত পাসওয়ার্ড।';
+if(/^(.)\1+$/.test(p))return 'একই অক্ষর বারবার (যেমন ১১১১১১) চলবে না।';
+for(let b=1;b<=L/2;b++){if(L%b===0&&p.slice(0,b).repeat(L/b)===p)return 'একই অংশ বারবার (যেমন ১২১২১২, ১২৩১২৩) চলবে না।'}
+if(L<=10&&p===p.split('').reverse().join(''))return 'সোজা-উল্টো একই (যেমন ১২৩৩২১) চলবে না।';
+if('qwertyuiopasdfghjklzxcvbnm'.includes(lo)||'mnbvcxzlkjhgfdsapoiuytrewq'.includes(lo))return 'কীবোর্ডের সারি (যেমন qwerty) চলবে না।';
+if(num){
+if(new Set(p).size<4)return 'কমপক্ষে ৪টা আলাদা অঙ্ক থাকতে হবে।';
+const d=[...p].map(Number),st=((d[1]-d[0])+10)%10;let ar=true;for(let i=1;i<L;i++){if(((d[i]-d[i-1])+10)%10!==st){ar=false;break}}
+if(ar)return 'ধারাবাহিক সংখ্যা (যেমন ১২৩৪৫৬, ৬৫৪৩২১) চলবে না।';
+for(const k of [2,3]){if(L%k===0&&L/k>=3){const v=[];for(let i=0;i<L;i+=k)v.push(+p.slice(i,i+k));const df=v[1]-v[0];let ok=true;for(let i=2;i<v.length;i++){if(v[i]-v[i-1]!==df){ok=false;break}}if(ok)return 'ধারাবাহিক জোড়া সংখ্যা (যেমন ১০১১১২, ১০২০৩০) চলবে না।'}}}
+if(/^[a-z]+$/.test(lo)){const df=lo.charCodeAt(1)-lo.charCodeAt(0);if(Math.abs(df)===1){let ok=true;for(let i=1;i<L;i++){if(lo.charCodeAt(i)-lo.charCodeAt(i-1)!==df){ok=false;break}}if(ok)return 'ধারাবাহিক অক্ষর (যেমন abcdef) চলবে না।'}}
+const ph=String(c.phone||'').replace(/\D/g,''),nid=String(c.nid||'').replace(/\D/g,''),em=String(c.email||'').split('@')[0].toLowerCase();
+if(ph&&(p===ph||(num&&ph.endsWith(p))||(ph.includes(p)&&L>=6)))return 'মোবাইল নম্বরের অংশ পাসওয়ার্ড হিসেবে চলবে না।';
+if(nid&&num&&(nid.includes(p)||p.includes(nid.slice(-6))))return 'NID নম্বরের অংশ চলবে না।';
+if(em.length>=4&&lo.includes(em))return 'ইমেইলের নাম পাসওয়ার্ডে রাখা যাবে না।';
+return ''}
+const WPM=r=>'⚠ সহজ পাসওয়ার্ড: '+r+' অনুমান করা কঠিন এমন পাসওয়ার্ড দিন।';
+const errMsg=e=>{const m=e?.message||'';if(/weak password/i.test(m))return 'সহজ বা সিরিয়াল পাসওয়ার্ড চলবে না।';if(/manual add/.test(m))return 'ম্যানুয়াল ব্যালেন্স যোগ বন্ধ করা আছে।';if(/row-level security|Unauthorized/i.test(m))return 'অনুমতি নেই। Supabase-এ সংস্করণ ৫ SQL রান করা হয়েছে কি দেখুন।';if(/note required/.test(m))return 'ট্রানজেকশন আইডি বা কারণ দিতে হবে।';if(/not deletable/.test(m))return 'পেন্ডিং লেনদেন মোছা যায় না।';if(/invalid phone/.test(m))return 'মোবাইল নম্বর ঠিক নয় (01XXXXXXXXX)।';if(/invalid nid/.test(m))return 'NID নম্বর ১০, ১৩ বা ১৭ অঙ্কের হতে হবে।';if(/duplicate|unique/i.test(m))return 'এই মোবাইল বা NID অন্য গ্রাহকের আছে।';if(/account pending/.test(m))return 'গ্রাহকের অ্যাকাউন্ট এখনও অনুমোদিত নয়।';if(/forbidden/.test(m))return 'আপনার অনুমতি নেই।';if(/invalid adjustment/.test(m))return 'ব্যালেন্স ঋণাত্মক হবে বা গ্রাহক নেই।';if(/not pending/.test(m))return 'এটা আগেই প্রক্রিয়া হয়েছে।';if(/Invalid login/i.test(m))return 'ইমেইল বা পাসওয়ার্ড ভুল।';if(/not confirmed/i.test(m))return 'ইমেইল কনফার্ম হয়নি।';if(/protected/.test(m))return 'অ্যাডমিন অ্যাকাউন্টে এটা করা যাবে না।';if(/short password/.test(m))return 'পাসওয়ার্ড কমপক্ষে ৮ অক্ষর দিন।';return 'ব্যর্থ: '+(m||'আবার চেষ্টা করুন।')};
 const cfgText=o=>Object.keys(o).map(k=>k+': '+o[k].join(', ')).join('\n');
 const textCfg=t=>{const o={};t.split('\n').forEach(l=>{const i=l.indexOf(':');if(i<1)return;const k=l.slice(0,i).trim(),v=l.slice(i+1).split(',').map(x=>x.trim()).filter(Boolean);if(k&&v.length)o[k]=v});return Object.keys(o).length?o:null};
 $('#bmn').innerHTML=Array.from({length:12},(_,i)=>`<option value="${i+1}">${bn(i+1)} মাস</option>`).join('');
@@ -319,7 +339,7 @@ if(a==='ckyc')return viewKyc(cur.id);
 if(a==='fosave'){const o=fcollect($('#cfo'));if(!o)return toast('মান ঠিক নেই। শতাংশ ০–১০০ হতে হবে এবং সর্বনিম্ন সর্বোচ্চের বেশি হবে না।');await rpc('admin_set_fee_override',{p_user:cur.id,p_cfg:o},'এই গ্রাহকের সেটিং সেভ হয়েছে');fillOv();return}
 if(a==='foclr'){if(!confirm('এই গ্রাহক ডিফল্ট চার্জে ফিরবে এবং কমিশন বন্ধ হবে। নিশ্চিত?'))return;await rpc('admin_set_fee_override',{p_user:cur.id,p_cfg:{}},'ডিফল্টে ফিরেছে');fillOv();return}
 if(a==='cclr'){if(!confirm('এই গ্রাহকের সব সম্পন্ন লেনদেন ও রিকোয়েস্টের হিস্ট্রি মুছবেন? (পেন্ডিং থাকবে, ব্যালেন্স বদলাবে না)'))return;await rpc('admin_clear_user_tx',{p_user:cur.id},'হিস্ট্রি মুছে গেছে');return}
-if(a==='cp'){const p=$('#cpw').value;if(p.length<8)return toast('কমপক্ষে ৮ অক্ষর দিন।');if(await rpc('admin_set_password',{p_user:cur.id,p_password:p},'পাসওয়ার্ড বদলানো হয়েছে'))$('#cpw').value=''}
+if(a==='cp'){const p=$('#cpw').value;if(p.length<6)return toast('কমপক্ষে ৬ অক্ষর দিন।');{const wp=weakPw(p,{phone:cur.phone,email:cur.email});if(wp)return toast(WPM(wp))}if(await rpc('admin_set_password',{p_user:cur.id,p_password:p},'পাসওয়ার্ড বদলানো হয়েছে'))$('#cpw').value=''}
 if(a==='cbl')await rpc('admin_set_blocked',{p_user:cur.id,p_block:!cur.blocked},cur.blocked?'আনব্লক হয়েছে':'ব্লক হয়েছে');
 if(a==='cdel'){if(!confirm('এই গ্রাহকের অ্যাকাউন্ট ও সব লেনদেন চিরতরে মুছে যাবে। নিশ্চিত?'))return;const id=cur.id;cur=null;if(await rpc('admin_delete_user',{p_user:id},'অ্যাকাউন্ট মুছে গেছে'))$('#cd').close();else cur=U.find(x=>x.id===id)}});
 
