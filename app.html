@@ -49,7 +49,7 @@ h2{margin:30px 0 10px;font-size:22px}
 .sm{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);align-items:center}
 .sm:last-child{border:0}.sm small{color:var(--mute)}.sm>b,.sm>span:last-child{text-align:right}
 footer{margin-top:40px;padding:24px 0;border-top:1px solid var(--line);color:var(--mute);font-size:14px;text-align:center}
-#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:14px 18px;border-radius:12px;max-width:92%;display:none;z-index:99}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:14px 18px;border-radius:12px;max-width:92%;display:none;z-index:99;top:auto;right:auto;margin:0;border:0;width:max-content;overflow:visible}
 dialog{border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--ink);width:min(92%,400px);padding:20px}
 dialog::backdrop{background:rgba(0,0,0,.5)}
 .bt{display:flex;gap:8px;margin-top:14px}.bt button{flex:1;padding:12px;border-radius:10px;border:1px solid var(--line);background:none;color:var(--ink);font-size:16px}
@@ -124,6 +124,9 @@ dialog,input,select,textarea,button{font-family:inherit}
 .nbar{position:absolute;bottom:calc(env(safe-area-inset-bottom,0px) + 22px);left:0;right:0;display:flex;justify-content:space-around;align-items:center}
 .nbar button{border:0;background:rgba(255,255,255,.22);color:#fff;font-size:16px;padding:12px 10px;border-radius:12px;width:78px}
 .nbar .nbtn{width:72px;height:72px;border-radius:50%;background:#fff;border:6px solid rgba(255,255,255,.45);padding:0}
+.ads{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;border-radius:16px;scrollbar-width:none}.ads::-webkit-scrollbar{display:none}
+.ads .ad{flex:0 0 100%;scroll-snap-align:center;display:block}.ads img{width:100%;aspect-ratio:16/7;object-fit:cover;border-radius:16px;display:block;background:var(--card)}
+#adw{margin-top:14px}.stabs{display:flex;gap:8px;margin:8px 0}.stabs button{flex:1;padding:10px;border-radius:12px;border:2px solid var(--line);background:none;color:var(--ink);font-weight:700}.stabs button.on{border-color:var(--pri);background:rgba(226,37,95,.1)}
 [hidden]{display:none!important}
 </style>
 </head>
@@ -201,7 +204,8 @@ dialog,input,select,textarea,button{font-family:inherit}
 <main class="w">
 <div id="bar" class="bar" hidden><button id="bkb" type="button" aria-label="পিছনে">←</button><span id="bt0"></span></div>
 <div id="vhome">
-<div id="gr"><button data-t="r"><i>📱</i>মোবাইল রিচার্জ</button><button data-t="b"><i>🧾</i>বিল পে</button><button data-t="s"><i>💸</i>সেন্ড মানি</button><button data-t="a"><i>➕</i>অ্যাড মানি</button><button data-t="h"><i>🕘</i>হিস্ট্রি</button><button data-t="p"><i>👤</i>প্রোফাইল</button><button data-t="c"><i>💬</i>লাইভ চ্যাট</button><button id="inst" type="button" hidden><i>📲</i>অ্যাপ ইনস্টল</button></div>
+<div id="gr"><button data-t="r"><i>📱</i>মোবাইল রিচার্জ</button><button data-t="b"><i>🧾</i>বিল পে</button><button data-t="s"><i>💸</i>সেন্ড মানি</button><button data-t="a"><i>➕</i>অ্যাড মানি</button><button data-t="h"><i>🕘</i>হিস্ট্রি</button><button data-t="p"><i>👤</i>প্রোফাইল</button><button data-t="c"><i>💬</i>লাইভ চ্যাট</button><button data-t="sv"><i>💰</i>সেভিংস</button><button data-t="ln"><i>🏦</i>লোন</button><button id="inst" type="button" hidden><i>📲</i>অ্যাপ ইনস্টল</button></div>
+<div id="adw" hidden><div class="ads" id="adt"></div></div>
 <div class="promo" id="pr"><b id="pr1">২৪/৭ সেবা</b><br><span id="pr2">সমস্যায় হেল্পলাইন ১২১</span></div>
 <div class="promo" id="npb" hidden style="background:linear-gradient(135deg,#0a5cff,#0b3fb3);display:flex;justify-content:space-between;align-items:center;gap:10px"><span>🔔 অর্ডার ও ব্যালেন্সের খবর ফোনে পেতে নোটিফিকেশন চালু করুন</span><button type="button" id="npb2" style="border:0;background:#fff;color:#0b3fb3;font-weight:700;padding:8px 14px;border-radius:10px;white-space:nowrap">চালু করুন</button></div>
 <h2 style="font-size:18px;margin:20px 0 8px">সাম্প্রতিক লেনদেন</h2><div class="pk" id="hx"></div>
@@ -236,6 +240,11 @@ dialog,input,select,textarea,button{font-family:inherit}
 <div class="box" id="vc" hidden><div id="cm" class="cm"></div>
 <div class="row" style="grid-template-columns:1fr auto;margin-top:10px"><input id="ci" maxlength="500" placeholder="মেসেজ লিখুন..."><button class="go" id="cs2" style="margin:0;width:auto;padding:0 18px;font-size:16px">পাঠান</button></div>
 <p class="hint">আমরা যত দ্রুত সম্ভব উত্তর দেব।</p></div>
+<div class="box" id="vsv" hidden><h3 style="margin:0 0 4px">সেভিংস</h3><p class="hint" style="margin:0">ব্যালেন্স থেকে টাকা জমা করুন, মেয়াদ শেষে বেশি পাবেন।</p>
+<div class="stabs" id="svk"><button data-k="dps" class="on">ডিপিএস (মাসিক)</button><button data-k="fdr">এফডিআর (এককালীন)</button></div>
+<div id="svp"></div><h3 style="margin:18px 0 6px;font-size:17px">আমার সঞ্চয়</h3><div id="sva"></div></div>
+<div class="box" id="vln" hidden><h3 style="margin:0 0 4px">লোন</h3><p class="hint" style="margin:0">অনুমোদন পেলে ঋণের টাকা ব্যালেন্সে যোগ হবে। মুনাফাসহ পরিশোধ্য টাকা কিস্তিতে দিন।</p>
+<div id="lnp" style="margin-top:8px"></div><h3 style="margin:18px 0 6px;font-size:17px">আমার ঋণ</h3><div id="lna"></div></div>
 <div class="box" id="vp" hidden><h3 style="margin:0 0 8px">প্রোফাইল</h3>
 <div class="sm"><span>ইমেইল</span><b id="pe"></b></div><div class="sm"><span>মোবাইল</span><b id="pm"></b></div><div class="sm"><span>যোগ দিয়েছেন</span><b id="pd"></b></div>
 <label for="pn">নাম</label><input id="pn" maxlength="60" autocomplete="name"><button class="go" id="pns" style="padding:10px;font-size:16px;margin-top:10px">নাম সেভ করুন</button>
@@ -252,7 +261,7 @@ dialog,input,select,textarea,button{font-family:inherit}
 <h2>ব্যালেন্স রিকোয়েস্ট</h2><div class="pk" id="at1"></div>
 <h2>পেন্ডিং অর্ডার</h2><div class="pk" id="at4"></div>
 <h2>গ্রাহক ও ব্যালেন্স সমন্বয়</h2>
-<div class="pk"><div class="row"><div><label for="ju">গ্রাহক</label><select id="ju"></select></div><div><label for="ja">পরিমাণ (বিয়োগ হলে − দিন)</label><input id="ja" inputmode="numeric"></div></div><button class="go" id="jb" style="margin-top:10px;padding:10px;font-size:16px">সমন্বয় করুন</button></div>
+<div class="pk"><div class="row"><div><label for="ju">গ্রাহক</label><select id="ju"></select></div><div><label for="ja">পরিমাণ (বিয়োগ হলে − দিন)</label><input id="ja" inputmode="decimal"></div></div><button class="go" id="jb" style="margin-top:10px;padding:10px;font-size:16px">সমন্বয় করুন</button></div>
 <div class="pk" id="at2" style="margin-top:10px"></div>
 <h2>সাম্প্রতিক লেনদেন</h2><div class="pk" id="at3"></div>
 <h2>মার্চেন্ট নম্বর</h2><div class="pk"><div class="row"><div><label for="cb">বিকাশ</label><input id="cb" maxlength="11"></div><div><label for="cn">নগদ</label><input id="cn" maxlength="11"></div></div><label for="cr">রকেট</label><input id="cr" maxlength="12"><button class="go" id="cs" style="padding:10px;font-size:16px">সেভ করুন</button></div>
@@ -265,7 +274,7 @@ dialog,input,select,textarea,button{font-family:inherit}
 <dialog id="nd"><h3 style="margin:0 0 8px">📢 নোটিফিকেশন</h3><div id="ndt" style="white-space:pre-wrap;word-break:break-word"></div><div class="bt"><button id="ndx" type="button">বন্ধ করুন</button></div></dialog>
 <div id="ncam" hidden><video id="nvid" playsinline muted></video><div class="nguide" id="ng"></div><div class="nmsg" id="nmsg"></div>
 <div class="nbar"><button type="button" id="nx">বাতিল</button><button type="button" id="nsnap" class="nbtn" aria-label="ছবি তুলুন"></button><span style="width:78px"></span></div></div>
-<div id="toast"></div>
+<div id="toast" popover="manual"></div>
 
 <script>
 document.getElementById('st').textContent='';window.onerror=function(m){document.getElementById('st').textContent='ত্রুটি: '+m};
@@ -283,10 +292,10 @@ const OPS=['গ্রামীণফোন','রবি','বাংলালি�
 const BILL={'বিদ্যুৎ':['নেসকো প্রিপেইড','নেসকো পোস্টপেইড','ডেসকো','ডিপিডিসি','নেসকো','পল্লী বিদ্যুৎ'],'গ্যাস':['তিতাস গ্যাস','বাখরাবাদ গ্যাস','জালালাবাদ গ্যাস'],'পানি':['ঢাকা ওয়াসা','চট্টগ্রাম ওয়াসা','খুলনা ওয়াসা'],'ইন্টারনেট':['লিংক৩','আমরা নেটওয়ার্কস','ক্যারিয়ার ব্রডব্যান্ড'],'ল্যান্ডফোন':['বিটিসিএল']};
 const MN=['জানুয়ারি','ফেব্রুয়ারি','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর'];
 const PAYS={'বিকাশ':'bkash','নগদ':'nagad','রকেট':'rocket'},PN={bkash:'বিকাশ',nagad:'নগদ',rocket:'রকেট',qr:'QR পেমেন্ট'};
-const KIND={recharge:'রিচার্জ',bill:'বিল পে',send:'সেন্ড মানি',topup:'ব্যালেন্স যোগ',adjust:'অ্যাডমিন সমন্বয়',refund:'টাকা ফেরত',commission:'কমিশন'};
+const KIND={recharge:'রিচার্জ',bill:'বিল পে',send:'সেন্ড মানি',topup:'ব্যালেন্স যোগ',adjust:'অ্যাডমিন সমন্বয়',refund:'টাকা ফেরত',commission:'কমিশন',saving:'সঞ্চয় জমা',saving_out:'সঞ্চয় ফেরত/মেয়াদপূর্তি',loan_in:'ঋণ গ্রহণ',loan_pay:'ঋণ পরিশোধ'};
 const ST={pending:['প্রক্রিয়াধীন','ps'],completed:['সম্পন্ন','pa'],refunded:['ফেল · টাকা ফেরত','pr'],approved:['যোগ হয়েছে','pa'],rejected:['বাতিল','pr']};
 let me=null,tab='r',op='',sm='বিকাশ',am='বিকাশ',mode='in',cfg={},pend=null,timer=null,busy=false;
-const toast=t=>{const x=$('#toast');x.textContent=t;x.style.display='block';clearTimeout(x._t);x._t=setTimeout(()=>x.style.display='none',4000)};
+const toast=t=>{const x=$('#toast');x.textContent=t;x.style.display='block';try{if(x.matches(':popover-open'))x.hidePopover();x.showPopover()}catch(e){}clearTimeout(x._t);x._t=setTimeout(()=>{x.style.display='none';try{x.hidePopover()}catch(e){}},4000)};
 const chips=(id,list,cur,fn)=>{$(id).innerHTML=list.map(v=>`<button type="button" class="${v===cur?'on':''}">${v}</button>`).join('');$(id).onclick=e=>{if(e.target.tagName==='BUTTON'){$$(id+' button').forEach(b=>b.classList.toggle('on',b===e.target));fn(e.target.textContent)}}};
 function weakPw(p,c){c=c||{};p=String(p||'');const L=p.length,lo=p.toLowerCase(),num=/^\d+$/.test(p);
 const common=['password','password1','123456789','1234567890','qwerty','qwerty123','qwertyuiop','abc123','abcdef','iloveyou','admin123','welcome','letmein','bangladesh','netlink','nesco123','111222','112233','121212','123123','123321','159753','520520','696969','1q2w3e','1q2w3e4r','asdfgh','asdfghjk','zxcvbn'];
@@ -307,7 +316,7 @@ if(nid&&num&&(nid.includes(p)||p.includes(nid.slice(-6))))return 'NID নম্�
 if(em.length>=4&&lo.includes(em))return 'ইমেইলের নাম পাসওয়ার্ডে রাখা যাবে না।';
 return ''}
 const WPM=r=>'⚠ সহজ পাসওয়ার্ড: '+r+' অনুমান করা কঠিন এমন পাসওয়ার্ড দিন।';
-const errMsg=e=>{const m=e?.message||'';if(/weak password/i.test(m))return 'সহজ বা সিরিয়াল পাসওয়ার্ড চলবে না।';if(/nid used|profiles_nid/i.test(m))return 'এই NID নম্বর দিয়ে আগেই আবেদন বা অ্যাকাউন্ট আছে।';if(/Bucket not found/i.test(m))return 'সার্ভারে ছবি রাখার জায়গা তৈরি হয়নি (অ্যাডমিন SQL সংস্করণ ১৪ রান করুন)।';if(/Could not find the function|schema cache/i.test(m))return 'সার্ভার আপডেট হয়নি (অ্যাডমিন নতুন SQL রান করুন)।';if(/invalid dob/i.test(m))return 'জন্ম তারিখ ঠিক নয় (বয়স ১৮ বছর বা বেশি হতে হবে)।';if(/invalid nid/i.test(m))return 'NID নম্বর ঠিক নয়।';if(/row-level security|Unauthorized/i.test(m)&&/storage|object/i.test(m))return 'ছবি জমা দেওয়ার অনুমতি নেই (SQL সংস্করণ ১৪ রান হয়েছে কি দেখুন)।';if(/already registered/i.test(m))return 'এই ইমেইলে আগেই অ্যাকাউন্ট আছে।';if(/Database error saving/i.test(m))return 'এই মোবাইল নম্বর বা ইমেইলে আগেই অ্যাকাউন্ট আছে।';if(/invalid email/.test(m))return 'সঠিক ইমেইল দিন।';if(/invalid phone/.test(m))return 'সঠিক মোবাইল নম্বর দিন।';if(/invalid nid/.test(m))return 'NID নম্বর ১০, ১৩ বা ১৭ অঙ্কের হতে হবে।';if(/no match/.test(m))return 'এই ইমেইল ও মোবাইলে কোনো গ্রাহক নেই।';if(/not approved/.test(m))return 'অনুরোধ এখনও অনুমোদিত নয় বা সময় শেষ।';if(/too fast/.test(m))return 'একটু ধীরে পাঠান।';if(/Database error saving new user/i.test(m))return 'এই মোবাইল বা ইমেইল দিয়ে আগেই অ্যাকাউন্ট আছে।';if(/account pending/.test(m))return 'আপনার অ্যাকাউন্ট এখনও অনুমোদিত হয়নি।';if(/already registered|User already/i.test(m))return 'এই ইমেইল আগেই ব্যবহৃত।';if(/blocked/.test(m))return 'আপনার অ্যাকাউন্ট ব্লক করা আছে।';if(/insufficient/.test(m))return 'ব্যালেন্স কম। আগে ব্যালেন্স যোগ করুন।';if(/duplicate|unique/.test(m))return 'এই তথ্য আগেই ব্যবহৃত হয়েছে (TrxID/মোবাইল)।';if(/forbidden/.test(m))return 'আপনার অনুমতি নেই।';if(/Invalid login/i.test(m))return 'ইমেইল বা পাসওয়ার্ড ভুল (অথবা এই ইমেইলে অ্যাকাউন্ট নেই)।';if(/not confirmed/i.test(m))return 'ইমেইল কনফার্ম হয়নি। মেইলের লিংকে ক্লিক করুন।';if(/rate limit/i.test(m))return 'অনেকবার চেষ্টা হয়েছে। কিছুক্ষণ পর আবার করুন।';return 'ব্যর্থ: '+(m||'আবার চেষ্টা করুন।')};
+const errMsg=e=>{const m=e?.message||'';if(m==='not due')return 'এখনও কিস্তির সময় হয়নি।';if(m==='completed')return 'সব কিস্তি আগেই দেওয়া হয়েছে।';if(m==='not complete')return 'সব কিস্তি না দিলে টাকা নেওয়া যায় না।';if(m==='not matured')return 'এখনও মেয়াদ পূর্ণ হয়নি।';if(m==='loan exists')return 'আপনার একটা ঋণ আগেই চালু বা আবেদনাধীন আছে।';if(m==='plan not found')return 'প্ল্যানটি আর পাওয়া যাচ্ছে না।';if(m==='limit reached')return 'সর্বোচ্চ ১০টা চালু সঞ্চয় রাখা যায়।';if(/weak password/i.test(m))return 'সহজ বা সিরিয়াল পাসওয়ার্ড চলবে না।';if(/nid used|profiles_nid/i.test(m))return 'এই NID নম্বর দিয়ে আগেই আবেদন বা অ্যাকাউন্ট আছে।';if(/Bucket not found/i.test(m))return 'সার্ভারে ছবি রাখার জায়গা তৈরি হয়নি (অ্যাডমিন SQL সংস্করণ ১৪ রান করুন)।';if(/Could not find the function|schema cache/i.test(m))return 'সার্ভার আপডেট হয়নি (অ্যাডমিন নতুন SQL রান করুন)।';if(/invalid dob/i.test(m))return 'জন্ম তারিখ ঠিক নয় (বয়স ১৮ বছর বা বেশি হতে হবে)।';if(/invalid nid/i.test(m))return 'NID নম্বর ঠিক নয়।';if(/row-level security|Unauthorized/i.test(m)&&/storage|object/i.test(m))return 'ছবি জমা দেওয়ার অনুমতি নেই (SQL সংস্করণ ১৪ রান হয়েছে কি দেখুন)।';if(/already registered/i.test(m))return 'এই ইমেইলে আগেই অ্যাকাউন্ট আছে।';if(/Database error saving/i.test(m))return 'এই মোবাইল নম্বর বা ইমেইলে আগেই অ্যাকাউন্ট আছে।';if(/invalid email/.test(m))return 'সঠিক ইমেইল দিন।';if(/invalid phone/.test(m))return 'সঠিক মোবাইল নম্বর দিন।';if(/invalid nid/.test(m))return 'NID নম্বর ১০, ১৩ বা ১৭ অঙ্কের হতে হবে।';if(/no match/.test(m))return 'এই ইমেইল ও মোবাইলে কোনো গ্রাহক নেই।';if(/not approved/.test(m))return 'অনুরোধ এখনও অনুমোদিত নয় বা সময় শেষ।';if(/too fast/.test(m))return 'একটু ধীরে পাঠান।';if(/Database error saving new user/i.test(m))return 'এই মোবাইল বা ইমেইল দিয়ে আগেই অ্যাকাউন্ট আছে।';if(/account pending/.test(m))return 'আপনার অ্যাকাউন্ট এখনও অনুমোদিত হয়নি।';if(/already registered|User already/i.test(m))return 'এই ইমেইল আগেই ব্যবহৃত।';if(/blocked/.test(m))return 'আপনার অ্যাকাউন্ট ব্লক করা আছে।';if(/insufficient/.test(m))return 'ব্যালেন্স কম। আগে ব্যালেন্স যোগ করুন।';if(/duplicate|unique/.test(m))return 'এই তথ্য আগেই ব্যবহৃত হয়েছে (TrxID/মোবাইল)।';if(/forbidden/.test(m))return 'আপনার অনুমতি নেই।';if(/Invalid login/i.test(m))return 'ইমেইল বা পাসওয়ার্ড ভুল (অথবা এই ইমেইলে অ্যাকাউন্ট নেই)।';if(/not confirmed/i.test(m))return 'ইমেইল কনফার্ম হয়নি। মেইলের লিংকে ক্লিক করুন।';if(/rate limit/i.test(m))return 'অনেকবার চেষ্টা হয়েছে। কিছুক্ষণ পর আবার করুন।';return 'ব্যর্থ: '+(m||'আবার চেষ্টা করুন।')};
 
 const DEF_OFF={'গ্রামীণফোন':[['১ জিবি · ৭ দিন',49],['৫ জিবি · ৭ দিন',149],['১৫ জিবি · ৩০ দিন',349],['২০০ মিনিট · ৩০ দিন',179]],'রবি':[['১ জিবি · ৭ দিন',48],['৫ জিবি · ৭ দিন',147],['১৫ জিবি · ৩০ দিন',345],['৩০০ মিনিট · ৩০ দিন',199]],'বাংলালিংক':[['১ জিবি · ৭ দিন',47],['৬ জিবি · ৭ দিন',146],['১৬ জিবি · ৩০ দিন',348],['২৫০ মিনিট · ৩০ দিন',189]],'এয়ারটেল':[['১ জিবি · ৭ দিন',46],['৫ জিবি · ৭ দিন',145],['১৫ জিবি · ৩০ দিন',340]],'টেলিটক':[['১ জিবি · ৭ দিন',39],['৫ জিবি · ৭ দিন',129],['২০ জিবি · ৩০ দিন',299]]};
 function offs(){let o=DEF_OFF;try{if(cfg.offers)o=JSON.parse(cfg.offers)}catch(e){}return o}
@@ -347,6 +356,33 @@ addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;instUI()});
 addEventListener('appinstalled',()=>{dp=null;$('#inst').hidden=true});
 $('#inst').onclick=async()=>{if(lkOk())window.open(cfg.app_link,'_blank','noopener');else if(dp){dp.prompt();await dp.userChoice;dp=null;instUI()}else toast('Safari-তে নিচের শেয়ার বাটন চেপে "Add to Home Screen" বাছুন।')};
 if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+let SP=[],SA=[],LP=[],LN=[],ADS=[],svk='dps';
+const fd=x=>new Date(x).toLocaleDateString('bn-BD');
+function askPin(rows,fn,args,msg){pend={rpc:fn,args,msg,total:0};$('#sum').innerHTML=rows.map(r=>`<div class="sm"><span>${r[0]}</span><b>${r[1]}</b></div>`).join('');$('#cp').value='';$('#dg').showModal()}
+function renderSV(){$$('#svk button').forEach(b=>b.classList.toggle('on',b.dataset.k===svk));const pl=SP.filter(x=>x.kind===svk);
+$('#svp').innerHTML=pl.length?pl.map(x=>{const dep=x.kind==='dps'?x.amount*x.months:+x.amount;return `<div class="pk" style="margin-bottom:8px"><b>${E(x.title)}</b><br>${x.kind==='dps'?`মাসিক জমা ${M(x.amount)} × ${bn(x.months)} মাস`:`এককালীন জমা ${M(x.amount)} · মেয়াদ ${bn(x.months)} মাস`}<br>মেয়াদ শেষে পাবেন <b class="pa">${M(x.maturity)}</b> <small>(মুনাফা ${M(x.maturity-dep)})</small><br><button class="sb" data-sv="${x.id}" style="margin-top:6px">${x.kind==='dps'?'ডিপিএস':'এফডিআর'} শুরু করুন</button></div>`}).join(''):'<p class="hint">এই ধরনের কোনো প্ল্যান এখন চালু নেই।</p>';
+$('#sva').innerHTML=SA.length?SA.map(a=>{const now=Date.now(),due=new Date(a.started_at);due.setMonth(due.getMonth()+a.paid_count);const left=a.inst_total-a.paid_count,ended=now>=new Date(a.end_at).getTime();let act='';
+if(a.status==='active'){if(a.kind==='dps'&&left>0)act=now>=due.getTime()?`<button class="sb g" data-pay="${a.id}">কিস্তি দিন ${M(a.amount)}</button>`:`<small>পরের কিস্তি: ${fd(due)}</small>`;else if(left<=0)act=ended?`<button class="sb g" data-claim="${a.id}">${M(a.maturity)} নিন</button>`:`<small>মেয়াদ শেষ: ${fd(a.end_at)}</small>`}
+const st={active:['চালু','ps'],paid_out:['টাকা নেওয়া হয়েছে','pa'],closed:['বন্ধ','pr']}[a.status]||[a.status,''];
+return `<div class="sm" style="align-items:flex-start"><span><b>${E(a.title)}</b> <small>${a.kind==='dps'?'ডিপিএস':'এফডিআর'}</small><br><small>জমা ${M(a.paid_total)} · কিস্তি ${bn(a.paid_count)}/${bn(a.inst_total)} · মেয়াদশেষে ${M(a.maturity)}</small><br><small>শুরু ${fd(a.started_at)} · শেষ ${fd(a.end_at)}</small></span><span><small class="${st[1]}">${st[0]}</small><br>${act}</span></div>`}).join(''):'<p class="hint">এখনও কোনো সঞ্চয় শুরু করেননি।</p>'}
+function renderLN(){$('#lnp').innerHTML=LP.length?LP.map(x=>`<div class="pk" style="margin-bottom:8px"><b>${E(x.title)}</b><br>ঋণ <b>${M(x.amount)}</b> · মেয়াদ ${bn(x.months)} মাস<br>মুনাফাসহ মোট পরিশোধ্য <b class="pr">${M(x.payable)}</b> <small>(মুনাফা ${M(x.payable-x.amount)})</small><br>মাসিক কিস্তি প্রায় ${M(Math.ceil(x.payable/x.months))}<br><button class="sb" data-la="${x.id}" style="margin-top:6px">আবেদন করুন</button></div>`).join(''):'<p class="hint">এখন কোনো ঋণ প্ল্যান চালু নেই।</p>';
+$('#lna').innerHTML=LN.length?LN.map(l=>{const left=l.payable-l.paid_total,late=l.status==='active'&&l.next_due&&new Date(l.next_due)<new Date();const st={pending:['অনুমোদনের অপেক্ষায়','ps'],active:[late?'কিস্তি বকেয়া':'চালু',late?'pr':'ps'],paid:['পরিশোধিত','pa'],rejected:['বাতিল','pr']}[l.status]||[l.status,''];
+const act=l.status==='active'?`<button class="sb g" data-lp="${l.id}">কিস্তি ${M(Math.min(l.installment,left))}</button><br><button class="sb" data-lf="${l.id}">সম্পূর্ণ ${M(left)}</button>`:'';
+return `<div class="sm" style="align-items:flex-start"><span><b>${E(l.title)}</b><br><small>ঋণ ${M(l.principal)} · মোট পরিশোধ্য ${M(l.payable)}</small><br><small>পরিশোধ ${M(l.paid_total)} · বাকি ${M(left)}${l.status==='active'&&l.next_due?' · পরের কিস্তি '+fd(l.next_due):''}</small>${l.status==='rejected'&&l.note?`<br><small class="pr">কারণ: ${E(l.note)}</small>`:''}</span><span><small class="${st[1]}">${st[0]}</small><br>${act}</span></div>`}).join(''):'<p class="hint">কোনো ঋণ নেই।</p>'}
+function renderAds(){const l=ADS.filter(x=>/^https:\/\//.test(x.image_url||''));$('#adw').hidden=!l.length;
+$('#adt').innerHTML=l.map(x=>{const lk=/^https?:\/\//i.test(x.link||'')?x.link:'',im=`<img src="${E(x.image_url)}" alt="বিজ্ঞাপন" loading="lazy">`;return lk?`<a class="ad" href="${E(lk)}" target="_blank" rel="noopener">${im}</a>`:`<div class="ad">${im}</div>`}).join('')}
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches)setInterval(()=>{const el=$('#adt');if(!el||$('#adw').hidden||ADS.length<2||document.hidden)return;const w=el.clientWidth,i=Math.round(el.scrollLeft/w);el.scrollTo({left:((i+1)%ADS.length)*w,behavior:'smooth'})},4000);
+$('#vsv').onclick=e=>{const k=e.target.closest('[data-k]');if(k){svk=k.dataset.k;return renderSV()}
+const sv=e.target.closest('[data-sv]'),pay=e.target.closest('[data-pay]'),cl=e.target.closest('[data-claim]');
+if(sv){const x=SP.find(p=>p.id==sv.dataset.sv);if(!x)return;if(me.balance<x.amount)return toast(`ব্যালেন্স কম। দরকার ${M(x.amount)}, আছে ${M(me.balance)}।`);
+return askPin([['প্ল্যান',E(x.title)],['এখনই কাটবে',M(x.amount)],['মেয়াদ',bn(x.months)+' মাস'],['মেয়াদ শেষে পাবেন',M(x.maturity)]],'sav_start',{p_plan:x.id},'সঞ্চয় শুরু হয়েছে')}
+if(pay){const a=SA.find(p=>p.id==pay.dataset.pay);if(!a)return;if(me.balance<a.amount)return toast(`ব্যালেন্স কম। দরকার ${M(a.amount)}।`);return askPin([['সঞ্চয়',E(a.title)],['কিস্তি',M(a.amount)]],'sav_pay',{p_acc:a.id},'কিস্তি জমা হয়েছে')}
+if(cl){const a=SA.find(p=>p.id==cl.dataset.claim);if(!a)return;return askPin([['সঞ্চয়',E(a.title)],['ব্যালেন্সে যোগ হবে',M(a.maturity)]],'sav_claim',{p_acc:a.id},'মেয়াদপূর্তির টাকা ব্যালেন্সে যোগ হয়েছে')}};
+$('#vln').onclick=e=>{const la=e.target.closest('[data-la]'),lp=e.target.closest('[data-lp]'),lf=e.target.closest('[data-lf]');
+if(la){const x=LP.find(p=>p.id==la.dataset.la);if(!x)return;return askPin([['প্ল্যান',E(x.title)],['ঋণ (অনুমোদনে ব্যালেন্সে আসবে)',M(x.amount)],['মোট পরিশোধ্য',M(x.payable)],['মেয়াদ',bn(x.months)+' মাস']],'loan_apply',{p_plan:x.id},'আবেদন জমা হয়েছে। অনুমোদন হলে টাকা ব্যালেন্সে আসবে।')}
+const b=lp||lf;if(!b)return;const l=LN.find(p=>p.id==(b.dataset.lp||b.dataset.lf));if(!l)return;const left=l.payable-l.paid_total,amt=lf?left:Math.min(l.installment,left);
+if(me.balance<amt)return toast(`ব্যালেন্স কম। দরকার ${M(amt)}, আছে ${M(me.balance)}।`);
+return askPin([['ঋণ',E(l.title)],[lf?'সম্পূর্ণ পরিশোধ':'কিস্তি',M(amt)],['পরিশোধের পর বাকি',M(left-amt)]],'loan_pay',{p_loan:l.id,p_full:!!lf},lf?'ঋণ সম্পূর্ণ পরিশোধ হয়েছে':'কিস্তি জমা হয়েছে')};
 let bal=0,shown=false;const renderBal=()=>{$('#bv0').textContent=shown?M(bal):'৳ ••••'};
 // ---- সেটআপ
 chips('#ops',OPS,'',v=>{op=v;showOffers()});chips('#sm',Object.keys(PAYS),sm,v=>sm=v);
@@ -364,10 +400,10 @@ $('#rn').oninput=e=>{const n=en(e.target.value);if(n.length>=3&&PFX[n[2]]!==unde
 const merch=()=>{const q=cfg.qr_all||'',ok=/^https:\/\//.test(q);$('#qrw').hidden=!ok;if(ok&&$('#qri').getAttribute('src')!==q)$('#qri').src=q;
 $('#mh').textContent=ok?'১) নিচের QR স্ক্যান করে পেমেন্ট করুন। ২) তারপর পেমেন্টের তথ্য দিয়ে রিকোয়েস্ট পাঠান।':'এখনও QR সেট করা হয়নি। অ্যাডমিনের সাথে যোগাযোগ করুন।'};
 $('#qrd').onclick=async()=>{const u=$('#qri').src;try{const r=await fetch(u),b=await r.blob(),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='qr-payment'+(b.type==='image/jpeg'?'.jpg':'.png');document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000)}catch(e){window.open(u,'_blank','noopener');toast('ছবিটা চেপে ধরে "Save image" করুন।')}};
-function setTab(t){tab=t;const f='rbsa'.indexOf(t)>=0,T={r:'মোবাইল রিচার্জ',b:'বিল পে',s:'সেন্ড মানি',a:'অ্যাড মানি',h:'হিস্ট্রি',p:'প্রোফাইল',c:'লাইভ চ্যাট',n:'নোটিফিকেশন'};
+function setTab(t){tab=t;const f='rbsa'.indexOf(t)>=0,T={r:'মোবাইল রিচার্জ',b:'বিল পে',s:'সেন্ড মানি',a:'অ্যাড মানি',h:'হিস্ট্রি',p:'প্রোফাইল',c:'লাইভ চ্যাট',n:'নোটিফিকেশন',sv:'সেভিংস',ln:'লোন'};
 $$('#tb button').forEach(b=>b.classList.toggle('on',b.dataset.t===t&&!b.classList.contains('fab')));
 $('#hero').hidden=$('#vhome').hidden=t!=='home';$('#bar').hidden=t==='home';$('#bt0').textContent=T[t]||'';
-['r','b','s','a'].forEach(k=>$('#v'+k).hidden=k!==t);$('#pay').hidden=!f;$('#vh').hidden=t!=='h';$('#vp').hidden=t!=='p';$('#vc').hidden=t!=='c';$('#vn').hidden=t!=='n';if(t==='n')setTimeout(markRead,1500);$('#of').hidden=t!=='r';if(t==='c')chatOpen();else clearInterval(chT);
+['r','b','s','a'].forEach(k=>$('#v'+k).hidden=k!==t);$('#pay').hidden=!f;$('#vh').hidden=t!=='h';$('#vp').hidden=t!=='p';$('#vc').hidden=t!=='c';$('#vn').hidden=t!=='n';$('#vsv').hidden=t!=='sv';$('#vln').hidden=t!=='ln';if(t==='n')setTimeout(markRead,1500);$('#of').hidden=t!=='r';if(t==='c')chatOpen();else clearInterval(chT);
 $('#ft').textContent={r:'রিচার্জের তথ্য',b:'বিলের তথ্য',s:'কাকে পাঠাবেন',a:'ব্যালেন্সে টাকা যোগ'}[t]||'';
 $('#go').textContent={r:'রিচার্জ করুন',b:'বিল পরিশোধ করুন',s:'টাকা পাঠান',a:'রিকোয়েস্ট পাঠান'}[t]||''}
 $$('#tb button').forEach(b=>b.onclick=()=>{setTab(b.dataset.t);scrollTo(0,0)});setTab('home');
@@ -495,11 +531,11 @@ if(p.status&&p.status!=='active'&&!p.is_admin){await showPending(p);return}
 $('#pend').hidden=true;$('#app').hidden=false;
 $('#who').textContent=p.name||'';$('#hi').textContent='স্বাগতম, '+(p.name||'');bal=+p.balance;renderBal();$('#adm').hidden=!p.is_admin;$('#pe').textContent=p.email||'';$('#pm').textContent=bn(p.phone||'');$('#pd').textContent=dt(p.created_at);if(document.activeElement!==$('#pn'))$('#pn').value=p.name||'';
 if(!$('#an').value)$('#an').value=bn(p.phone||'');if(!$('#rn').value&&p.phone){$('#rn').value=bn(p.phone);$('#rn').dispatchEvent(new Event('input'))}
-const[st,tx,tp,nt]=await Promise.all([sb.from('settings').select('*'),sb.from('transactions').select('*').eq('user_id',p.id).order('created_at',{ascending:false}).limit(50),sb.from('topups').select('*').eq('user_id',p.id).order('created_at',{ascending:false}).limit(20),sb.from('notifications').select('*').eq('user_id',p.id).order('created_at',{ascending:false}).limit(30)]);
+const[st,tx,tp,nt,spq,saq,lpq,lnq,adq]=await Promise.all([sb.from('settings').select('*'),sb.from('transactions').select('*').eq('user_id',p.id).order('created_at',{ascending:false}).limit(50),sb.from('topups').select('*').eq('user_id',p.id).order('created_at',{ascending:false}).limit(20),sb.from('notifications').select('*').eq('user_id',p.id).order('created_at',{ascending:false}).limit(30),sb.from('savings_plans').select('*').eq('active',true).order('sort').order('id'),sb.from('savings_accounts').select('*').eq('user_id',p.id).order('id',{ascending:false}),sb.from('loan_plans').select('*').eq('active',true).order('sort').order('id'),sb.from('loans').select('*').eq('user_id',p.id).order('id',{ascending:false}),sb.from('ads').select('*').eq('active',true).order('sort').order('id',{ascending:false})]);
 cfg={};(st.data||[]).forEach(r=>cfg[r.key]=r.value);merch();buildBill();showOffers();promo();instUI();$('#news').hidden=!cfg.news;$('#nt').textContent=cfg.news||'';$('#nt').style.animationDuration=Math.max(14,(cfg.news||'').length*.3)+'s';
-$('#tx').innerHTML=(tx.data||[]).length?tx.data.map(t=>{const c=t.kind==='topup'||t.kind==='refund'||t.kind==='commission'||(t.kind==='adjust'&&t.amount>0),v=t.kind==='adjust'?Math.abs(t.amount):t.kind==='refund'||t.kind==='topup'||t.kind==='commission'?+t.amount:+t.amount+ +t.fee;
+$('#tx').innerHTML=(tx.data||[]).length?tx.data.map(t=>{const c=['topup','refund','commission','saving_out','loan_in'].includes(t.kind)||(t.kind==='adjust'&&t.amount>0),v=t.kind==='adjust'?Math.abs(t.amount):['refund','topup','commission','saving','saving_out','loan_in','loan_pay'].includes(t.kind)?+t.amount:+t.amount+ +t.fee;
 return `<div class="sm"><span>${KIND[t.kind]}<br><small>${E(t.details)}${t.txn_ref?' · TrxID: '+E(t.txn_ref):''} · ${dt(t.created_at)}</small>${t.fail_reason?'<br><small class="pr">কারণ: '+E(t.fail_reason)+'</small>':''}</span><b class="${c?'pa':''}">${c?'+':'−'}${M(v)}<br><small class="${ST[t.status][1]}">${ST[t.status][0]}</small></b></div>`}).join(''):'<p class="hint">এখনও কোনো লেনদেন নেই।</p>';
-notifRender(nt.data||[]);if(!window._ps){window._ps=1;pushSub().catch(()=>{})}
+notifRender(nt.data||[]);SP=spq.data||[];SA=saq.data||[];LP=lpq.data||[];LN=lnq.data||[];ADS=adq.data||[];renderSV();renderLN();renderAds();if(!window._ps){window._ps=1;pushSub().catch(()=>{})}
 {const c=[...$('#tx').children];$('#hx').innerHTML=c.length&&c[0].classList.contains('sm')?c.slice(0,3).map(e=>e.outerHTML).join(''):$('#tx').innerHTML}
 $('#rq').innerHTML=(tp.data||[]).length?tp.data.map(t=>`<div class="sm"><span>${PN[t.method]} · ${M(t.amount)}<br><small>${E(t.trx)} · ${dt(t.created_at)}</small>${t.reject_reason?'<br><small class="pr">কারণ: '+E(t.reject_reason)+'</small>':''}</span><b class="${ST[t.status][1]}">${ST[t.status][0]}</b></div>`).join(''):'<p class="hint">কোনো রিকোয়েস্ট নেই।</p>';
 if(p.is_admin){$('#cb').value=cfg.bkash||'';$('#cn').value=cfg.nagad||'';$('#cr').value=cfg.rocket||'';if(!$('#ad').hidden)loadAdmin()}}
@@ -527,7 +563,7 @@ $('#no').onclick=()=>$('#dg').close();
 $('#yes').onclick=async()=>{const p=pend;if(!$('#cp').value)return toast('পাসওয়ার্ড দিন।');$('#yes').disabled=true;busy=true;
 try{const v=await sb.auth.signInWithPassword({email:me.email,password:$('#cp').value});if(v.error)return toast('পাসওয়ার্ড ভুল।');
 const{error}=await sb.rpc(p.rpc,p.args);if(error)throw error;$('#dg').close();
-toast(p.top?'✅ রিকোয়েস্ট পাঠানো হয়েছে। অ্যাডমিন যাচাই করবেন।':'✅ অর্ডার জমা হয়েছে। '+M(p.total)+' কাটা হয়েছে।');
+toast(p.msg?('✅ '+p.msg):p.top?'✅ রিকোয়েস্ট পাঠানো হয়েছে। অ্যাডমিন যাচাই করবেন।':'✅ অর্ডার জমা হয়েছে। '+M(p.total)+' কাটা হয়েছে।');
 $$('#pay input').forEach(i=>{if(['ra','bv','ba','sn','sa','aa','at'].includes(i.id))i.value=''})}
 catch(e){toast(errMsg(e))}finally{$('#yes').disabled=false;busy=false;load()}};
 
@@ -544,12 +580,16 @@ $('#at4').innerHTML=po.length?po.map(t=>`<div class="sm"><span>${who(t)}<br>${KI
 const sel=$('#ju').value;$('#ju').innerHTML=us.map(x=>`<option value="${x.id}">${E(x.name)} ${bn(E(x.phone))}</option>`).join('');if(sel)$('#ju').value=sel;
 $('#at2').innerHTML=us.map(x=>`<div class="sm"><span>${E(x.name)} ${x.is_admin?'⭐':''}<br><small>${bn(E(x.phone))} · ${E(x.email)}</small></span><b>${M(x.balance)}</b></div>`).join('');
 $('#at3').innerHTML=txs.slice(0,25).map(t=>`<div class="sm"><span>${who(t)}<br><small>${KIND[t.kind]} · ${E(t.details)} · ${dt(t.created_at)}</small></span><b>${M(t.amount)}<br><small class="${ST[t.status][1]}">${ST[t.status][0]}</small></b></div>`).join('')}
-$('#ad').onclick=async e=>{const b=e.target.closest('[data-a]');if(!b)return;const i=+b.dataset.i,a=b.dataset.a;b.disabled=true;
-const m={ap:['admin_topup',{p_id:i,p_approve:true}],rj:['admin_topup',{p_id:i,p_approve:false}],dn:['admin_order',{p_id:i,p_status:'completed'}],rf:['admin_order',{p_id:i,p_status:'refunded'}]}[a];
-if(a==='rf'&&!confirm('গ্রাহককে টাকা ফেরত দেবেন?')){b.disabled=false;return}
+$('#ad').onclick=async e=>{const b=e.target.closest('[data-a]');if(!b)return;const i=+b.dataset.i,a=b.dataset.a;
+let note=null;
+if(a==='dn'){note=(prompt('ট্রানজেকশন আইডি দিন (কমপক্ষে ৩ অক্ষর)')||'').trim();if(note.length<3)return toast('ট্রানজেকশন আইডি দিতে হবে।')}
+if(a==='rf'||a==='rj'){note=(prompt(a==='rf'?'ফেল করার কারণ লিখুন (টাকা গ্রাহকের ব্যালেন্সে ফেরত যাবে)':'বাতিলের কারণ লিখুন')||'').trim();if(note.length<3)return toast('কারণ লিখতে হবে (কমপক্ষে ৩ অক্ষর)।')}
+b.disabled=true;
+const m={ap:['admin_topup',{p_id:i,p_approve:true}],rj:['admin_topup',{p_id:i,p_approve:false,p_note:note}],dn:['admin_order',{p_id:i,p_status:'completed',p_note:note}],rf:['admin_order',{p_id:i,p_status:'refunded',p_note:note}]}[a];
 const{error}=await sb.rpc(...m);if(error)toast(errMsg(error));else toast('✅ হয়েছে');loadAdmin()};
-$('#jb').onclick=async()=>{const a=parseFloat(en($('#ja').value).replace('−','-'));if(!$('#ju').value||!a)return toast('গ্রাহক ও পরিমাণ দিন।');
-const{error}=await sb.rpc('admin_adjust',{p_user:$('#ju').value,p_amount:a});if(error)return toast(errMsg(error));$('#ja').value='';toast('✅ হয়েছে');loadAdmin()};
+$('#jb').onclick=async()=>{const a=parseFloat(en($('#ja').value).replace('−','-').replace('–','-'));if(!$('#ju').value||!a)return toast('গ্রাহক ও পরিমাণ দিন।');
+const why=(prompt((a>0?'৳'+bn(a)+' যোগ হবে। ':'৳'+bn(Math.abs(a))+' কাটা হবে। ')+'কারণ লিখুন (গ্রাহক দেখতে পাবেন)')||'').trim();if(why.length<3)return toast('কারণ লিখতে হবে (কমপক্ষে ৩ অক্ষর)।');
+$('#jb').disabled=true;const{error}=await sb.rpc('admin_adjust',{p_user:$('#ju').value,p_amount:Math.round(a*100)/100,p_note:why});$('#jb').disabled=false;if(error)return toast(errMsg(error));$('#ja').value='';toast('✅ ব্যালেন্স আপডেট হয়েছে');loadAdmin()};
 $('#cs').onclick=async()=>{const{error}=await sb.from('settings').upsert([{key:'bkash',value:$('#cb').value.trim()},{key:'nagad',value:$('#cn').value.trim()},{key:'rocket',value:$('#cr').value.trim()}]);toast(error?errMsg(error):'✅ সেভ হয়েছে')};
 
 $('#pns').onclick=async()=>{const{error}=await sb.rpc('update_name',{p_name:$('#pn').value});toast(error?errMsg(error):'✅ নাম বদলানো হয়েছে');load()};

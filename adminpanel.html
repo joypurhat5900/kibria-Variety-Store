@@ -46,7 +46,7 @@ h2{margin:30px 0 10px;font-size:22px}
 .sm{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);align-items:center}
 .sm:last-child{border:0}.sm small{color:var(--mute)}.sm>b,.sm>span:last-child{text-align:right}
 footer{margin-top:40px;padding:24px 0;border-top:1px solid var(--line);color:var(--mute);font-size:14px;text-align:center}
-#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:14px 18px;border-radius:12px;max-width:92%;display:none;z-index:99}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:14px 18px;border-radius:12px;max-width:92%;display:none;z-index:99;top:auto;right:auto;margin:0;border:0;width:max-content;overflow:visible}
 dialog{border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--ink);width:min(92%,400px);padding:20px}
 dialog::backdrop{background:rgba(0,0,0,.5)}
 .bt{display:flex;gap:8px;margin-top:14px}.bt button{flex:1;padding:12px;border-radius:10px;border:1px solid var(--line);background:none;color:var(--ink);font-size:16px}
@@ -87,9 +87,9 @@ dialog{max-height:90vh;overflow:auto}
 <h2>ব্যালেন্স রিকোয়েস্ট</h2><div class="pk" id="r1"></div>
 <h2>পেন্ডিং অর্ডার</h2><p class="hint">কাজ শেষ হলে "সম্পন্ন" চাপুন। না পারলে "ফেল" চাপুন, গ্রাহকের টাকা নিজে থেকে ব্যালেন্সে ফিরে যাবে।</p><div class="pk" id="r2"></div></div>
 
-<div class="tp" id="t2" hidden><h2>গ্রাহক</h2><input id="cq" placeholder="নাম, মোবাইল বা ইমেইল দিয়ে খুঁজুন"><div class="pk" id="cl" style="margin-top:10px"></div></div>
+<div class="tp" id="t2" hidden><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><h2 style="margin:0">গ্রাহক</h2><button class="btn2 g" data-a="ncopen" style="margin:0">➕ নতুন গ্রাহক</button></div><input id="cq" style="margin-top:10px" placeholder="নাম, মোবাইল বা ইমেইল দিয়ে খুঁজুন"><div class="pk" id="cl" style="margin-top:10px"></div></div>
 
-<div class="tp" id="t3" hidden><h2>লেনদেন</h2><select id="tf"><option value="">সব ধরন</option><option value="recharge">রিচার্জ</option><option value="bill">বিল পে</option><option value="send">সেন্ড মানি</option><option value="topup">ব্যালেন্স যোগ</option><option value="adjust">অ্যাডমিন সমন্বয়</option><option value="refund">টাকা ফেরত</option></select><div class="pk" id="r3" style="margin-top:10px"></div></div>
+<div class="tp" id="t3" hidden><h2>লেনদেন</h2><select id="tf"><option value="">সব ধরন</option><option value="recharge">রিচার্জ</option><option value="bill">বিল পে</option><option value="send">সেন্ড মানি</option><option value="topup">ব্যালেন্স যোগ</option><option value="adjust">অ্যাডমিন সমন্বয়</option><option value="refund">টাকা ফেরত</option><option value="commission">কমিশন</option><option value="saving">সঞ্চয় জমা</option><option value="saving_out">সঞ্চয় ফেরত</option><option value="loan_in">ঋণ গ্রহণ</option><option value="loan_pay">ঋণ পরিশোধ</option></select><div class="pk" id="r3" style="margin-top:10px"></div></div>
 
 <div class="tp" id="t5" hidden><h2>লাইভ চ্যাট</h2><div class="pk" id="cv"></div></div>
 
@@ -126,7 +126,7 @@ dialog{max-height:90vh;overflow:auto}
 
 <dialog id="cd"><h3 id="ctt" style="margin:0 0 6px"></h3><div id="cin"></div>
 <div class="row" style="margin-top:8px"><button class="btn2" data-a="cedit">✏️ তথ্য এডিট</button><button class="btn2" id="ckyc" data-a="ckyc">🪪 NID ও সেলফি দেখুন</button></div>
-<label for="cam">ব্যালেন্স যোগ / কাটুন (৳)</label><input id="cam" inputmode="numeric"><label for="car">কারণ (বাধ্যতামূলক, গ্রাহক দেখতে পাবেন)</label><input id="car" maxlength="200" autocomplete="off"><div class="row" style="margin-top:6px"><button class="btn2 g" data-a="ca">+ যোগ করুন</button><button class="btn2 r" data-a="cm">− কাটুন</button></div>
+<label for="cam">ব্যালেন্স যোগ / কাটুন (৳)</label><input id="cam" inputmode="decimal"><label for="car">কারণ (বাধ্যতামূলক, গ্রাহক দেখতে পাবেন)</label><input id="car" maxlength="200" autocomplete="off"><div class="row" style="margin-top:6px"><button class="btn2 g" data-a="ca">+ যোগ করুন</button><button class="btn2 r" data-a="cm">− কাটুন</button></div>
 <label for="cpw">নতুন পাসওয়ার্ড/পিন (কমপক্ষে ৮ অক্ষর)</label><input id="cpw" type="text" autocomplete="off"><button class="btn2" style="width:100%" data-a="cp">পাসওয়ার্ড বদলান</button>
 <div class="row" style="margin-top:8px"><button class="btn2" id="cbl" data-a="cbl"></button><button class="btn2 r" data-a="cdel">অ্যাকাউন্ট মুছুন</button></div>
 <h3 style="margin:14px 0 4px;font-size:16px">এই গ্রাহকের চার্জ ও কমিশন</h3><p class="hint" style="margin:0 0 4px">চার্জে "ডিফল্ট" মানে সবার মতো। কমিশনে "নেই" মানে কমিশন নেই।</p><div id="cfo"></div>
@@ -144,6 +144,16 @@ dialog{max-height:90vh;overflow:auto}
 <p class="hint" style="margin:10px 0 2px">লাইভ সেলফি</p><img id="sdsf" alt="সেলফি" style="width:100%;border-radius:8px;border:1px solid var(--line)">
 <button class="btn2" style="width:100%;margin-top:10px" data-a="sged2">✏️ তথ্য এডিট করুন</button>
 <div class="row" id="sdact" style="margin-top:6px"><button class="btn2 g" data-a="sga2">অনুমোদন</button><button class="btn2 r" data-a="sgr2">বাতিল (কারণ)</button></div><div class="bt"><button data-a="sdx">বন্ধ করুন</button></div></dialog>
+<dialog id="nc"><h3 style="margin:0 0 6px">নতুন গ্রাহক যোগ করুন</h3>
+<p class="hint" style="margin:0 0 4px">অ্যাডমিনের যোগ করা গ্রাহক সাথে সাথে অনুমোদিত (সক্রিয়) হবে; NID/সেলফি লাগবে না।</p>
+<label for="ncn">নাম *</label><input id="ncn" maxlength="60" autocomplete="off">
+<div class="row"><div><label for="ncp">মোবাইল *</label><input id="ncp" inputmode="numeric" maxlength="11" placeholder="01XXXXXXXXX" autocomplete="off"></div><div><label for="nci">NID (ঐচ্ছিক)</label><input id="nci" inputmode="numeric" maxlength="17" autocomplete="off"></div></div>
+<label for="nce">ইমেইল * (লগইনে লাগবে)</label><input id="nce" type="email" autocomplete="off">
+<label for="ncw">পাসওয়ার্ড * (কমপক্ষে ৬ অক্ষর, সহজ/সিরিয়াল চলবে না)</label><input id="ncw" type="text" autocomplete="off">
+<div class="row"><div><label for="ncd">জন্ম তারিখ (ঐচ্ছিক)</label><input id="ncd" type="date"></div><div><label for="ncb">শুরুর ব্যালেন্স ৳ (ঐচ্ছিক)</label><input id="ncb" inputmode="decimal" autocomplete="off"></div></div>
+<div class="row"><div><label for="ncf">পিতার নাম</label><input id="ncf" maxlength="60"></div><div><label for="ncm">মাতার নাম</label><input id="ncm" maxlength="60"></div></div>
+<label for="nca">ঠিকানা</label><input id="nca" maxlength="150">
+<div class="bt"><button data-a="ncx">বাতিল</button><button class="ok" data-a="ncok">গ্রাহক তৈরি করুন</button></div></dialog>
 <dialog id="ed"><h3 style="margin:0 0 6px">গ্রাহকের তথ্য এডিট</h3>
 <label for="edn">নাম</label><input id="edn" maxlength="60">
 <div class="row"><div><label for="edp">মোবাইল</label><input id="edp" inputmode="numeric" maxlength="11"></div><div><label for="edi">NID নম্বর</label><input id="edi" inputmode="numeric" maxlength="17"></div></div>
@@ -151,7 +161,7 @@ dialog{max-height:90vh;overflow:auto}
 <label for="edm">মাতার নাম</label><input id="edm" maxlength="60"><label for="eda">ঠিকানা</label><input id="eda" maxlength="150">
 <p class="hint">ইমেইল এখান থেকে বদলানো যায় না।</p>
 <div class="bt"><button data-a="edx">বাতিল</button><button class="ok" data-a="edok">সেভ</button></div></dialog>
-<div id="toast"></div>
+<div id="toast" popover="manual"></div>
 
 <script>
 document.getElementById('st').textContent='';window.onerror=function(m){document.getElementById('st').textContent='ত্রুটি: '+m};
@@ -162,7 +172,7 @@ const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const D='০১২৩৪৫৬৭৮৯',bn=n=>String(n).replace(/\d/g,d=>D[d]),en=s=>String(s).replace(/[০-৯]/g,d=>D.indexOf(d));
 const E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const M=n=>'৳'+bn(+n),dt=t=>new Date(t).toLocaleString('bn-BD');
-const KIND={recharge:'রিচার্জ',bill:'বিল পে',send:'সেন্ড মানি',topup:'ব্যালেন্স যোগ',adjust:'অ্যাডমিন সমন্বয়',refund:'টাকা ফেরত',commission:'কমিশন'};
+const KIND={recharge:'রিচার্জ',bill:'বিল পে',send:'সেন্ড মানি',topup:'ব্যালেন্স যোগ',adjust:'অ্যাডমিন সমন্বয়',refund:'টাকা ফেরত',commission:'কমিশন',saving:'সঞ্চয় জমা',saving_out:'সঞ্চয় ফেরত',loan_in:'ঋণ গ্রহণ',loan_pay:'ঋণ পরিশোধ'};
 const ST={pending:['প্রক্রিয়াধীন','ps'],completed:['সম্পন্ন','pa'],refunded:['ফেল · ফেরত','pr'],approved:['যোগ হয়েছে','pa'],rejected:['বাতিল','pr']};
 const PN={bkash:'বিকাশ',nagad:'নগদ',rocket:'রকেট',qr:'QR পেমেন্ট'};
 const DEF={'বিদ্যুৎ':['নেসকো প্রিপেইড','নেসকো পোস্টপেইড','ডেসকো','ডিপিডিসি','পল্লী বিদ্যুৎ'],'গ্যাস':['তিতাস গ্যাস','বাখরাবাদ গ্যাস','জালালাবাদ গ্যাস'],'পানি':['ঢাকা ওয়াসা','চট্টগ্রাম ওয়াসা','খুলনা ওয়াসা'],'ইন্টারনেট':['লিংক৩','আমরা নেটওয়ার্কস','ক্যারিয়ার ব্রডব্যান্ড'],'ল্যান্ডফোন':['বিটিসিএল']};
@@ -202,7 +212,7 @@ if(v.value<0||(type==='percent'&&v.value>100))bad=true;if(type==='percent'){v.mi
 (o[r.dataset.s]=o[r.dataset.s]||{})[r.dataset.k]=v});return bad?null:o}
 async function loadEarn(){const{data}=await sb.rpc('admin_earnings');const d=data||{};$('#k7').textContent=M(d.charge||0);$('#k8').textContent=M(d.commission||0);$('#k9').textContent=M(d.today_charge||0);$('#k10').textContent=M(d.today_commission||0)}
 let U=[],TP=[],TX=[],cfg={},cur=null,timer=null;
-const toast=t=>{const x=$('#toast');x.textContent=t;x.style.display='block';clearTimeout(x._t);x._t=setTimeout(()=>x.style.display='none',4000)};
+const toast=t=>{const x=$('#toast');x.textContent=t;x.style.display='block';try{if(x.matches(':popover-open'))x.hidePopover();x.showPopover()}catch(e){}clearTimeout(x._t);x._t=setTimeout(()=>{x.style.display='none';try{x.hidePopover()}catch(e){}},4000)};
 function weakPw(p,c){c=c||{};p=String(p||'');const L=p.length,lo=p.toLowerCase(),num=/^\d+$/.test(p);
 const common=['password','password1','123456789','1234567890','qwerty','qwerty123','qwertyuiop','abc123','abcdef','iloveyou','admin123','welcome','letmein','bangladesh','netlink','nesco123','111222','112233','121212','123123','123321','159753','520520','696969','1q2w3e','1q2w3e4r','asdfgh','asdfghjk','zxcvbn'];
 if(common.includes(lo))return 'এটা খুব সহজ ও পরিচিত পাসওয়ার্ড।';
@@ -222,7 +232,7 @@ if(nid&&num&&(nid.includes(p)||p.includes(nid.slice(-6))))return 'NID নম্�
 if(em.length>=4&&lo.includes(em))return 'ইমেইলের নাম পাসওয়ার্ডে রাখা যাবে না।';
 return ''}
 const WPM=r=>'⚠ সহজ পাসওয়ার্ড: '+r+' অনুমান করা কঠিন এমন পাসওয়ার্ড দিন।';
-const errMsg=e=>{const m=e?.message||'';if(/weak password/i.test(m))return 'সহজ বা সিরিয়াল পাসওয়ার্ড চলবে না।';if(/manual add/.test(m))return 'ম্যানুয়াল ব্যালেন্স যোগ বন্ধ করা আছে।';if(/row-level security|Unauthorized/i.test(m))return 'অনুমতি নেই। Supabase-এ সংস্করণ ৫ SQL রান করা হয়েছে কি দেখুন।';if(/note required/.test(m))return 'ট্রানজেকশন আইডি বা কারণ দিতে হবে।';if(/not deletable/.test(m))return 'পেন্ডিং লেনদেন মোছা যায় না।';if(/invalid phone/.test(m))return 'মোবাইল নম্বর ঠিক নয় (01XXXXXXXXX)।';if(/invalid nid/.test(m))return 'NID নম্বর ১০, ১৩ বা ১৭ অঙ্কের হতে হবে।';if(/duplicate|unique/i.test(m))return 'এই মোবাইল বা NID অন্য গ্রাহকের আছে।';if(/account pending/.test(m))return 'গ্রাহকের অ্যাকাউন্ট এখনও অনুমোদিত নয়।';if(/forbidden/.test(m))return 'আপনার অনুমতি নেই।';if(/invalid adjustment/.test(m))return 'ব্যালেন্স ঋণাত্মক হবে বা গ্রাহক নেই।';if(/not pending/.test(m))return 'এটা আগেই প্রক্রিয়া হয়েছে।';if(/Invalid login/i.test(m))return 'ইমেইল বা পাসওয়ার্ড ভুল।';if(/not confirmed/i.test(m))return 'ইমেইল কনফার্ম হয়নি।';if(/protected/.test(m))return 'অ্যাডমিন অ্যাকাউন্টে এটা করা যাবে না।';if(/short password/.test(m))return 'পাসওয়ার্ড কমপক্ষে ৮ অক্ষর দিন।';return 'ব্যর্থ: '+(m||'আবার চেষ্টা করুন।')};
+const errMsg=e=>{const m=e?.message||'';if(/weak password/i.test(m))return 'সহজ বা সিরিয়াল পাসওয়ার্ড চলবে না।';if(/manual add/.test(m))return 'ম্যানুয়াল ব্যালেন্স যোগ বন্ধ করা আছে।';if(/row-level security|Unauthorized/i.test(m))return 'অনুমতি নেই। Supabase-এ সংস্করণ ৫ SQL রান করা হয়েছে কি দেখুন।';if(/note required/.test(m))return 'ট্রানজেকশন আইডি বা কারণ দিতে হবে।';if(/not deletable/.test(m))return 'পেন্ডিং লেনদেন মোছা যায় না।';if(/invalid phone/.test(m))return 'মোবাইল নম্বর ঠিক নয় (01XXXXXXXXX)।';if(/invalid nid/.test(m))return 'NID নম্বর ১০, ১৩ বা ১৭ অঙ্কের হতে হবে।';if(/duplicate|unique/i.test(m))return 'এই মোবাইল বা NID অন্য গ্রাহকের আছে।';if(/account pending/.test(m))return 'গ্রাহকের অ্যাকাউন্ট এখনও অনুমোদিত নয়।';if(/forbidden/.test(m))return 'আপনার অনুমতি নেই।';if(/invalid adjustment/.test(m))return 'ব্যালেন্স ঋণাত্মক হবে বা গ্রাহক নেই।';if(/not pending/.test(m))return 'এটা আগেই প্রক্রিয়া হয়েছে।';if(/Invalid login/i.test(m))return 'ইমেইল বা পাসওয়ার্ড ভুল।';if(/not confirmed/i.test(m))return 'ইমেইল কনফার্ম হয়নি।';if(/protected/.test(m))return 'অ্যাডমিন অ্যাকাউন্টে এটা করা যাবে না।';if(/short password/.test(m))return 'পাসওয়ার্ড কমপক্ষে ৬ অক্ষর দিন।';if(/email exists/.test(m))return 'এই ইমেইল দিয়ে আগেই অ্যাকাউন্ট আছে।';if(/phone exists/.test(m))return 'এই মোবাইল নম্বর অন্য গ্রাহকের আছে।';if(/nid used/.test(m))return 'এই NID অন্য গ্রাহকের আছে।';if(/invalid email/.test(m))return 'ইমেইল ঠিক নয়।';if(/invalid balance/.test(m))return 'শুরুর ব্যালেন্স ঠিক নয়।';if(/Could not find the function/i.test(m))return 'Supabase-এ সংস্করণ ২২ SQL রান করা হয়নি।';return 'ব্যর্থ: '+(m||'আবার চেষ্টা করুন।')};
 const cfgText=o=>Object.keys(o).map(k=>k+': '+o[k].join(', ')).join('\n');
 const textCfg=t=>{const o={};t.split('\n').forEach(l=>{const i=l.indexOf(':');if(i<1)return;const k=l.slice(0,i).trim(),v=l.slice(i+1).split(',').map(x=>x.trim()).filter(Boolean);if(k&&v.length)o[k]=v});return Object.keys(o).length?o:null};
 $('#bmn').innerHTML=Array.from({length:12},(_,i)=>`<option value="${i+1}">${bn(i+1)} মাস</option>`).join('');
@@ -324,6 +334,15 @@ const R={dn:['admin_order',{p_id:od.id,p_status:'completed',p_note:v},'সম্
 if(await rpc(r[0],r[1],r[2])){$('#od').close();if($('#sd').open)$('#sd').close()}return}
 if(a==='nsend'){const t=$('#ntt').value.trim(),b=$('#nbd').value.trim();if(!t||!b)return toast('শিরোনাম ও বার্তা দিন।');const{data,error}=await sb.rpc('admin_notify',{p_user:$('#nu').value||null,p_title:t,p_body:b});if(error)return toast(errMsg(error));$('#ntt').value=$('#nbd').value='';toast('✅ '+bn(data||0)+' জনকে পাঠানো হয়েছে');return loadAll()}
 if(a==='oo'){if(!$('#ou').value)return;return openC($('#ou').value)}
+if(a==='ncopen'){['#ncn','#ncp','#nci','#nce','#ncw','#ncd','#ncb','#ncf','#ncm','#nca'].forEach(s=>$(s).value='');return $('#nc').showModal()}
+if(a==='ncx')return $('#nc').close();
+if(a==='ncok'){const nm=$('#ncn').value.trim(),ph=en($('#ncp').value).trim(),em=$('#nce').value.trim().toLowerCase(),pw=$('#ncw').value,nid=en($('#nci').value).trim(),bal=parseFloat(en($('#ncb').value||'0'))||0;
+if(nm.length<2)return toast('নাম দিন।');if(!/^01[3-9][0-9]{8}$/.test(ph))return toast('মোবাইল নম্বর ঠিক নয় (01XXXXXXXXX)।');
+if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em))return toast('সঠিক ইমেইল দিন।');if(nid&&!/^(\d{10}|\d{13}|\d{17})$/.test(nid))return toast('NID নম্বর ১০, ১৩ বা ১৭ অঙ্কের হতে হবে।');
+if(pw.length<6)return toast('পাসওয়ার্ড কমপক্ষে ৬ অক্ষর দিন।');{const wp=weakPw(pw,{phone:ph,email:em,nid});if(wp)return toast(WPM(wp))}
+if(bal<0)return toast('শুরুর ব্যালেন্স ঋণাত্মক হতে পারে না।');if(!confirm('নতুন গ্রাহক তৈরি করবেন?\n'+nm+' · '+bn(ph)+'\n'+em+(bal>0?'\nশুরুর ব্যালেন্স: ৳'+bn(bal):'')))return;
+b.disabled=true;try{const{error}=await sb.rpc('admin_create_user',{p_name:nm,p_phone:ph,p_email:em,p_password:pw,p_nid:nid||null,p_dob:$('#ncd').value||null,p_father:$('#ncf').value,p_mother:$('#ncm').value,p_address:$('#nca').value,p_balance:bal});
+if(error)return toast(errMsg(error));$('#nc').close();toast('✅ নতুন গ্রাহক তৈরি হয়েছে। ইমেইল ও পাসওয়ার্ড গ্রাহককে জানিয়ে দিন।');await loadAll()}finally{b.disabled=false}return}
 if(a==='fsave'){const o=fcollect($('#t6'));if(!o)return toast('মান ঠিক নেই। শতাংশ ০–১০০ হতে হবে এবং সর্বনিম্ন সর্বোচ্চের বেশি হবে না।');const{error}=await sb.from('settings').upsert({key:'fees',value:JSON.stringify(o)});if(error)return toast(errMsg(error));fdirty=false;toast('✅ সেভ হয়েছে। নতুন লেনদেন থেকে প্রযোজ্য।');return loadAll()}
 if(a==='qrdel'){if(!confirm('এই QR মুছে ফেলবেন?'))return;const old=qpath(cfg[i]);const{error}=await sb.from('settings').upsert({key:i,value:''});if(error)return toast(errMsg(error));if(old)sb.storage.from('qr').remove([old]);toast('✅ মুছে গেছে');return loadAll()}
 if(a==='dtx'){if(!confirm('এই লেনদেন হিস্ট্রি থেকে মুছবেন? (ব্যালেন্সে কোনো পরিবর্তন হবে না)'))return;return rpc('admin_delete_tx',{p_id:+i},'মুছে গেছে')}
@@ -333,7 +352,7 @@ if(a==='chx')return $('#ch').close();
 if(a==='cx')return $('#cd').close();
 if(!cur)return;
 if(a==='ca'||a==='cm'){const v=parseFloat(en($('#cam').value)),why=$('#car').value.trim();if(!v||v<=0)return toast('সঠিক পরিমাণ দিন।');if(why.length<3)return toast('কারণ লিখুন (কমপক্ষে ৩ অক্ষর)।');
-if(!confirm((a==='ca'?'যোগ করবেন: ৳':'কাটবেন: ৳')+bn(v)+'\nকারণ: '+why))return;if(await rpc('admin_adjust',{p_user:cur.id,p_amount:a==='ca'?v:-v,p_note:why})){$('#cam').value=$('#car').value=''}}
+if(!confirm((a==='ca'?'যোগ করবেন: ৳':'কাটবেন: ৳')+bn(v)+'\nকারণ: '+why))return;b.disabled=true;try{if(await rpc('admin_adjust',{p_user:cur.id,p_amount:Math.round((a==='ca'?v:-v)*100)/100,p_note:why},a==='ca'?'ব্যালেন্সে ৳'+bn(v)+' যোগ হয়েছে':'ব্যালেন্স থেকে ৳'+bn(v)+' কাটা হয়েছে')){$('#cam').value=$('#car').value=''}}finally{b.disabled=false}return}
 if(a==='cedit')return openEdit(cur.id);
 if(a==='ckyc')return viewKyc(cur.id);
 if(a==='fosave'){const o=fcollect($('#cfo'));if(!o)return toast('মান ঠিক নেই। শতাংশ ০–১০০ হতে হবে এবং সর্বনিম্ন সর্বোচ্চের বেশি হবে না।');await rpc('admin_set_fee_override',{p_user:cur.id,p_cfg:o},'এই গ্রাহকের সেটিং সেভ হয়েছে');fillOv();return}
