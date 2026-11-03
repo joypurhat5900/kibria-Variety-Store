@@ -100,8 +100,8 @@ dialog{max-height:90vh;overflow:auto}
 
 <div class="tp" id="t8" hidden><h2>নোটিফিকেশন পাঠান</h2><p class="hint">গ্রাহকের ফোনে ও অ্যাপে যাবে। অর্ডার সম্পন্ন, ফেল ও রিকোয়েস্টের নোটিফিকেশন নিজে থেকেই যায়।</p>
 <div class="pk"><label for="nu">কাকে</label><select id="nu"></select><label for="ntt">শিরোনাম</label><input id="ntt" maxlength="80"><label for="nbd">বার্তা</label><textarea id="nbd" maxlength="500" style="min-height:90px"></textarea><button class="go" data-a="nsend">পাঠান</button></div>
-<h2>সাম্প্রতিক নোটিফিকেশন</h2><button class="btn2 r" style="width:100%;margin-bottom:8px" data-a="nclr">সব নোটিফিকেশন মুছুন</button><div class="pk" id="nlst"></div><h2>বিজ্ঞাপন ব্যানার</h2><div class="pk"><p class="hint" style="margin:0 0 6px">গ্রাহকের হোম পেজে স্লাইড হয়ে দেখাবে। চওড়া ছবি দিন (১৬:৭ মাপ ভালো)।</p>
-<label for="wf">ছবি</label><input id="wf" type="file" accept="image/png,image/jpeg,image/webp"><label for="wl">লিংক (ঐচ্ছিক, https://...)</label><input id="wl" autocomplete="off">
+<h2>সাম্প্রতিক নোটিফিকেশন</h2><button class="btn2 r" style="width:100%;margin-bottom:8px" data-a="nclr">সব নোটিফিকেশন মুছুন</button><div class="pk" id="nlst"></div><h2>বিজ্ঞাপন ব্যানার</h2><div class="pk"><p class="hint" style="margin:0 0 6px">গ্রাহকের হোম পেজে স্লাইড হয়ে দেখাবে। যেকোনো মাপের ছবি দিন, নিজে থেকেই ১৬:৭ মাপে (১২৮০×৫৬০) ঠিক হয়ে যাবে।</p>
+<label for="wf">ছবি</label><input id="wf" type="file" accept="image/png,image/jpeg,image/webp"><label for="wfit">ছবি বসানোর ধরন</label><select id="wfit"><option value="cover">ভরাট (প্রয়োজনে কিনারা কাটা যাবে)</option><option value="fit">পুরো ছবি (পাশে ঝাপসা ব্যাকগ্রাউন্ড)</option></select><img id="wpv" alt="প্রিভিউ" style="display:none;width:100%;max-width:340px;aspect-ratio:16/7;object-fit:cover;border-radius:10px;margin:8px 0"><label for="wl">লিংক (ঐচ্ছিক, https://...)</label><input id="wl" autocomplete="off">
 <button class="btn2 g" style="width:100%" data-a="adadd">বিজ্ঞাপন যোগ করুন</button><div id="wlist" style="margin-top:8px"></div></div>
 </div>
 
@@ -321,7 +321,13 @@ const rpc=async(n,a,okm)=>{const{error}=await sb.rpc(n,a);if(error){toast(errMsg
 
 
 const FQ={daily:['দৈনিক','দিন'],weekly:['সাপ্তাহিক','সপ্তাহ'],monthly:['মাসিক','মাস']},fq=f=>FQ[f]||FQ.monthly;
-document.addEventListener('change',e=>{const t=e.target;if(t.id==='zf')$('#zml').textContent='মেয়াদ (কত '+fq(t.value)[1]+')';if(t.id==='yf')$('#yml').textContent='মেয়াদ (কত '+fq(t.value)[1]+')'});
+document.addEventListener('change',e=>{const t=e.target;if(t.id==='wf'||t.id==='wfit')prevAd();if(t.id==='zf')$('#zml').textContent='মেয়াদ (কত '+fq(t.value)[1]+')';if(t.id==='yf')$('#yml').textContent='মেয়াদ (কত '+fq(t.value)[1]+')'});
+const BW=1280,BH=560;
+async function toBanner(f,mode){const bm=await createImageBitmap(f),c=document.createElement('canvas');c.width=BW;c.height=BH;const x=c.getContext('2d');x.fillStyle='#eef2f7';x.fillRect(0,0,BW,BH);
+const dr=(sc,bl)=>{const w=bm.width*sc,h=bm.height*sc;x.filter=bl?'blur(22px)':'none';x.drawImage(bm,(BW-w)/2,(BH-h)/2,w,h);x.filter='none'},cv=Math.max(BW/bm.width,BH/bm.height);
+if(mode==='fit'){if('filter' in x)dr(cv*1.1,true);dr(Math.min(BW/bm.width,BH/bm.height),false)}else dr(cv,false);
+return new Promise(r=>c.toBlob(r,'image/jpeg',0.86))}
+let _pv=null;async function prevAd(){const f=$('#wf').files[0],im=$('#wpv');if(!f||!/^image\//.test(f.type)){im.style.display='none';return}try{const bl=await toBanner(f,$('#wfit').value);if(_pv)URL.revokeObjectURL(_pv);_pv=URL.createObjectURL(bl);im.src=_pv;im.style.display='block'}catch(e){im.style.display='none'}}
 const SAS={active:['চলমান','ps'],paid_out:['মেয়াদ পূর্ণ, টাকা নিয়েছেন','pa'],closed:['বন্ধ করা হয়েছে','pr']},LNST={pending:['অপেক্ষায়','ps'],active:['চলমান','ps'],paid:['পরিশোধিত','pa'],rejected:['বাতিল','pr']};
 let SPL=[],SAC=[],LPL=[],LNS=[],ADL=[];
 const nv=id=>parseFloat(en($(id).value||'0'))||0,ceil2=x=>Math.ceil(x);
@@ -386,10 +392,10 @@ if(a==='lnr')return askOrder('lr',+i);
 if(a==='sam'){if(!confirm('সঞ্চয়ের মেয়াদ এখনই পূর্ণ করবেন? (সব কিস্তি জমা থাকলে গ্রাহক টাকা তুলতে পারবেন)'))return;return rpc('admin_sav_mature',{p_acc:+i},'মেয়াদ পূর্ণ করা হয়েছে')}
 if(a==='sac')return askOrder('sc',+i);
 if(a==='adadd'){const f=$('#wf').files[0],lk=$('#wl').value.trim();if(!f)return toast('ছবি বাছুন।');if(!/^image\//.test(f.type))return toast('শুধু ছবি দিন।');if(lk&&!/^https?:\/\//i.test(lk))return toast('লিংক http:// বা https:// দিয়ে শুরু হতে হবে।');
-b.disabled=true;try{toast('আপলোড হচ্ছে...');const bl=await toBlob(f,1400,'image/jpeg');if(!bl||bl.size>1900000)throw new Error('ছবি বেশি বড়, ছোট ছবি দিন');
+b.disabled=true;try{toast('আপলোড হচ্ছে...');const bl=await toBanner(f,$('#wfit').value);if(!bl||bl.size>1900000)throw new Error('ছবি বেশি বড়, ছোট ছবি দিন');
 const path='ad-'+Date.now()+'.jpg',up=await sb.storage.from('ads').upload(path,bl,{contentType:'image/jpeg',cacheControl:'3600'});if(up.error)throw up.error;
 const url=sb.storage.from('ads').getPublicUrl(path).data.publicUrl,{error}=await sb.from('ads').insert({image_url:url,link:lk||null});if(error)throw error;
-$('#wf').value=$('#wl').value='';toast('✅ বিজ্ঞাপন যোগ হয়েছে');await loadSL()}catch(x){toast(errMsg(x))}finally{b.disabled=false}return}
+$('#wf').value=$('#wl').value='';$('#wpv').style.display='none';toast('✅ বিজ্ঞাপন যোগ হয়েছে');await loadSL()}catch(x){toast(errMsg(x))}finally{b.disabled=false}return}
 if(a==='adt'){const x=ADL.find(v=>String(v.id)===i);if(!x)return;const{error}=await sb.from('ads').update({active:!x.active}).eq('id',x.id);if(error)return toast(errMsg(error));toast('✅ হয়েছে');return loadSL()}
 if(a==='addel'){const x=ADL.find(v=>String(v.id)===i);if(!x||!confirm('এই বিজ্ঞাপন মুছবেন?'))return;const old=x.image_url&&x.image_url.includes('/ads/')?decodeURIComponent(x.image_url.split('/ads/')[1].split('?')[0]):null;
 b.disabled=true;try{let r=await sb.rpc('admin_ad_delete',{p_id:String(x.id)});
