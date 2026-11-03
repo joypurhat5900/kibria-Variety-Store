@@ -100,7 +100,10 @@ dialog{max-height:90vh;overflow:auto}
 
 <div class="tp" id="t8" hidden><h2>নোটিফিকেশন পাঠান</h2><p class="hint">গ্রাহকের ফোনে ও অ্যাপে যাবে। অর্ডার সম্পন্ন, ফেল ও রিকোয়েস্টের নোটিফিকেশন নিজে থেকেই যায়।</p>
 <div class="pk"><label for="nu">কাকে</label><select id="nu"></select><label for="ntt">শিরোনাম</label><input id="ntt" maxlength="80"><label for="nbd">বার্তা</label><textarea id="nbd" maxlength="500" style="min-height:90px"></textarea><button class="go" data-a="nsend">পাঠান</button></div>
-<h2>সাম্প্রতিক নোটিফিকেশন</h2><button class="btn2 r" style="width:100%;margin-bottom:8px" data-a="nclr">সব নোটিফিকেশন মুছুন</button><div class="pk" id="nlst"></div></div>
+<h2>সাম্প্রতিক নোটিফিকেশন</h2><button class="btn2 r" style="width:100%;margin-bottom:8px" data-a="nclr">সব নোটিফিকেশন মুছুন</button><div class="pk" id="nlst"></div><h2>বিজ্ঞাপন ব্যানার</h2><div class="pk"><p class="hint" style="margin:0 0 6px">গ্রাহকের হোম পেজে স্লাইড হয়ে দেখাবে। চওড়া ছবি দিন (১৬:৭ মাপ ভালো)।</p>
+<label for="wf">ছবি</label><input id="wf" type="file" accept="image/png,image/jpeg,image/webp"><label for="wl">লিংক (ঐচ্ছিক, https://...)</label><input id="wl" autocomplete="off">
+<button class="btn2 g" style="width:100%" data-a="adadd">বিজ্ঞাপন যোগ করুন</button><div id="wlist" style="margin-top:8px"></div></div>
+</div>
 
 <div class="tp" id="t9" hidden><h2>সাইন আপ আবেদন</h2><p class="hint">NID ও সেলফি দেখে অনুমোদন বা বাতিল করুন। অনুমোদন না হওয়া পর্যন্ত গ্রাহক কোনো সেবা ব্যবহার করতে পারেন না।</p><div class="pk" id="sg"></div>
 <h2>পাসওয়ার্ড রিসেট আবেদন</h2><p class="hint">যাচাই করে অনুমোদন দিলে গ্রাহক ২৪ ঘণ্টার মধ্যে নিজে নতুন পাসওয়ার্ড দিতে পারবেন।</p><button class="btn2 r" style="width:100%;margin-bottom:8px" data-a="rsc">নিষ্পন্ন সব আবেদন মুছুন</button><div class="pk" id="rs"></div></div>
@@ -119,9 +122,6 @@ dialog{max-height:90vh;overflow:auto}
 <label for="zf">জমার ধরন</label><select id="zf"><option value="daily">দৈনিক</option><option value="weekly">সাপ্তাহিক</option><option value="monthly" selected>মাসিক</option></select><div class="row"><div><label for="zm" id="zml">মেয়াদ (কত মাস)</label><input id="zm" inputmode="numeric" autocomplete="off"></div><div><label for="za">কিস্তি / জমা (৳)</label><input id="za" inputmode="decimal" autocomplete="off"></div></div>
 <label for="zv">মেয়াদ শেষে মোট প্রাপ্য (৳)</label><input id="zv" inputmode="decimal" autocomplete="off">
 <button class="btn2 g" style="width:100%" data-a="spadd">সঞ্চয় প্ল্যান যোগ করুন</button><div id="zl" style="margin-top:8px"></div></div>
-<h2>বিজ্ঞাপন ব্যানার</h2><div class="pk"><p class="hint" style="margin:0 0 6px">গ্রাহকের হোম পেজে স্লাইড হয়ে দেখাবে। চওড়া ছবি দিন (১৬:৭ মাপ ভালো)।</p>
-<label for="wf">ছবি</label><input id="wf" type="file" accept="image/png,image/jpeg,image/webp"><label for="wl">লিংক (ঐচ্ছিক, https://...)</label><input id="wl" autocomplete="off">
-<button class="btn2 g" style="width:100%" data-a="adadd">বিজ্ঞাপন যোগ করুন</button><div id="wlist" style="margin-top:8px"></div></div>
 </div>
 
 <div class="tp" id="t4" hidden>
@@ -392,7 +392,10 @@ const url=sb.storage.from('ads').getPublicUrl(path).data.publicUrl,{error}=await
 $('#wf').value=$('#wl').value='';toast('✅ বিজ্ঞাপন যোগ হয়েছে');await loadSL()}catch(x){toast(errMsg(x))}finally{b.disabled=false}return}
 if(a==='adt'){const x=ADL.find(v=>String(v.id)===i);if(!x)return;const{error}=await sb.from('ads').update({active:!x.active}).eq('id',x.id);if(error)return toast(errMsg(error));toast('✅ হয়েছে');return loadSL()}
 if(a==='addel'){const x=ADL.find(v=>String(v.id)===i);if(!x||!confirm('এই বিজ্ঞাপন মুছবেন?'))return;const old=x.image_url&&x.image_url.includes('/ads/')?decodeURIComponent(x.image_url.split('/ads/')[1].split('?')[0]):null;
-const{error}=await sb.from('ads').delete().eq('id',x.id);if(error)return toast(errMsg(error));if(old)sb.storage.from('ads').remove([old]);toast('✅ মুছে গেছে');return loadSL()}
+b.disabled=true;try{let r=await sb.rpc('admin_ad_delete',{p_id:String(x.id)});
+if(r.error&&/Could not find the function/i.test(r.error.message||'')){const d=await sb.from('ads').delete().eq('id',x.id).select('id');if(d.error)return toast(errMsg(d.error));if(!d.data||!d.data.length)return toast('মুছতে পারেনি। Supabase-এ supabase_ad_delete_fix.sql রান করুন।')}
+else if(r.error)return toast(errMsg(r.error));
+if(old)sb.storage.from('ads').remove([old]);toast('✅ বিজ্ঞাপন মুছে গেছে');await loadSL()}finally{b.disabled=false}return}
 if(a==='ncopen'){['#ncn','#ncp','#nci','#nce','#ncw','#ncd','#ncb','#ncf','#ncm','#nca'].forEach(s=>$(s).value='');return $('#nc').showModal()}
 if(a==='ncx')return $('#nc').close();
 if(a==='ncok'){const nm=$('#ncn').value.trim(),ph=en($('#ncp').value).trim(),em=$('#nce').value.trim().toLowerCase(),pw=$('#ncw').value,nid=en($('#nci').value).trim(),bal=parseFloat(en($('#ncb').value||'0'))||0;
