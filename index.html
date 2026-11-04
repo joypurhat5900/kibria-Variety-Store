@@ -187,7 +187,7 @@ dialog,input,select,textarea,button{font-family:inherit}
 <section id="lg" class="lgp"><div class="lwrap">
 <div class="lhero"><div class="lico"><svg aria-hidden="true"><use href="#logo"/></svg></div><h1>নেটলিংক</h1><p>রিচার্জ · বিল পে · সেন্ড মানি</p></div>
 
-<div class="lcard"><h2>লগইন</h2>
+<div class="lcard"><div id="lkn" hidden style="background:rgba(229,56,79,.12);border:1px solid rgba(229,56,79,.45);color:var(--bad);border-radius:12px;padding:12px;margin:0 0 12px;font-size:14px;line-height:1.6;font-weight:600">🔒 এই অ্যাকাউন্ট আগের ডিভাইসে লক করা আছে। নতুন ডিভাইসে লগইন করতে নিচের লাইভ চ্যাটে বা ফোনে অ্যাডমিনকে জানান, তিনি লক খুলে দেবেন।</div><h2>লগইন</h2>
 <form id="af" onsubmit="return false">
 <label for="em">ইমেইল</label><input id="em" type="email" autocomplete="email">
 <label for="pw">পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)</label><div class="pwr"><input id="pw" type="password" minlength="6" autocomplete="current-password"><button type="button" id="pws" aria-label="পাসওয়ার্ড দেখান">👁</button></div>
@@ -256,7 +256,14 @@ document.getElementById('st').textContent='';window.onerror=function(m){document
 const SUPABASE_URL='https://hdyzypxswjopyagouwpw.supabase.co';
 const SUPABASE_ANON_KEY='sb_publishable_WMry2OnjCdMuah2eQPboxA_idjWksIC';
 // ==================================================================
-const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{global:{fetch:(u,o)=>fetch(u,{...o,cache:'no-store'})}});
+// ডিভাইস আইডি: এই ব্রাউজারে একবার তৈরি হয়ে থেকে যায়; অ্যাকাউন্ট এই ডিভাইসে লক হয়
+const DEV=(()=>{let d='';try{d=localStorage.getItem('nl_dev')||''}catch(e){}
+if(!d){const m=document.cookie.match(/(?:^|; )nl_dev=([^;]+)/);if(m)d=m[1]}
+if(!d||d.length<16){d=((window.crypto&&crypto.randomUUID)?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2)).replace(/[^\w-]/g,'')}
+try{localStorage.setItem('nl_dev',d)}catch(e){}
+document.cookie='nl_dev='+d+';max-age=63072000;path=/;SameSite=Lax';return d})();
+const DEVINFO=(()=>{const u=navigator.userAgent||'',m=u.match(/\(([^)]*)\)/),br=/Edg\//.test(u)?'Edge':/OPR\//.test(u)?'Opera':/SamsungBrowser/.test(u)?'Samsung':/Chrome\//.test(u)?'Chrome':/Firefox\//.test(u)?'Firefox':/Safari\//.test(u)?'Safari':'Browser';return((m?m[1]:'').replace(/; wv|U; /g,'')+' · '+br+' · '+screen.width+'×'+screen.height).slice(0,180)})();
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{global:{headers:{'x-device-id':DEV},fetch:(u,o)=>fetch(u,{...o,cache:'no-store'})}});
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const D='০১২৩৪৫৬৭৮৯',bn=n=>String(n).replace(/\d/g,d=>D[d]),en=s=>String(s).replace(/[০-৯]/g,d=>D.indexOf(d));
 const E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -391,6 +398,7 @@ $('#gcs').onclick=async()=>{const t=$('#gci').value.trim();if(!t)return;$('#gcs'
 $('#gci').onkeydown=e=>{if(e.key==='Enter')$('#gcs').click()};
 sb.auth.onAuthStateChange((ev,s)=>{if(s&&!kycBusy)setTimeout(()=>location.replace('app.html'),0)});
 sb.auth.getSession().then(({data})=>{if(data.session&&!kycBusy)location.replace('app.html')});
+if(location.hash==='#locked')$('#lkn').hidden=false;
 if(location.hash==='#signup'){setTimeout(()=>{if($('#suw').hidden)$('#sub').click();toast('একই ইমেইল ও পাসওয়ার্ড দিয়ে আবার তথ্য দিন।');$('#suw').scrollIntoView({behavior:'smooth'})},400)}
 </script>
 </body>

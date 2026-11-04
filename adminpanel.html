@@ -145,7 +145,7 @@ dialog{max-height:90vh;overflow:auto}
 
 <dialog id="cd"><h3 id="ctt" style="margin:0 0 6px"></h3><div id="cin"></div>
 <div class="row" style="margin-top:8px"><button class="btn2" data-a="cedit">✏️ তথ্য এডিট</button><button class="btn2" id="ckyc" data-a="ckyc">🪪 NID ও সেলফি দেখুন</button></div>
-<label for="cam">ব্যালেন্স যোগ / কাটুন (৳)</label><input id="cam" inputmode="decimal"><label for="car">কারণ (বাধ্যতামূলক, গ্রাহক দেখতে পাবেন)</label><input id="car" maxlength="200" autocomplete="off"><div class="row" style="margin-top:6px"><button class="btn2 g" data-a="ca">+ যোগ করুন</button><button class="btn2 r" data-a="cm">− কাটুন</button></div>
+<div id="cdv" class="hint" style="margin:10px 0 4px"></div><button class="btn2" id="cdr" data-a="cdr" style="width:100%" hidden>🔓 ডিভাইস লক খুলুন</button><label for="cam">ব্যালেন্স যোগ / কাটুন (৳)</label><input id="cam" inputmode="decimal"><label for="car">কারণ (বাধ্যতামূলক, গ্রাহক দেখতে পাবেন)</label><input id="car" maxlength="200" autocomplete="off"><div class="row" style="margin-top:6px"><button class="btn2 g" data-a="ca">+ যোগ করুন</button><button class="btn2 r" data-a="cm">− কাটুন</button></div>
 <label for="cpw">নতুন পাসওয়ার্ড/পিন (কমপক্ষে ৮ অক্ষর)</label><input id="cpw" type="text" autocomplete="off"><button class="btn2" style="width:100%" data-a="cp">পাসওয়ার্ড বদলান</button>
 <div class="row" style="margin-top:8px"><button class="btn2" id="cbl" data-a="cbl"></button><button class="btn2 r" data-a="cdel">অ্যাকাউন্ট মুছুন</button></div>
 <h3 style="margin:14px 0 4px;font-size:16px">এই গ্রাহকের চার্জ ও কমিশন</h3><p class="hint" style="margin:0 0 4px">চার্জে "ডিফল্ট" মানে সবার মতো। কমিশনে "নেই" মানে কমিশন নেই।</p><div id="cfo"></div>
@@ -311,6 +311,7 @@ $('#r3').innerHTML=l.length?l.map(t=>`<div class="sm"><span>${who(t)}<br><small>
 $('#cq').oninput=rc;$('#tf').onchange=rt;
 
 function fillC(){$('#ctt').textContent=cur.name||'গ্রাহক';
+{const dv=$('#cdv'),db=$('#cdr');if(cur.is_admin){dv.innerHTML='';db.hidden=true}else if(cur.device_id){dv.innerHTML='🔒 <b>ডিভাইস লক আছে:</b> '+E(cur.device_info||'অজানা ডিভাইস')+(cur.device_at?'<br><small>লক হয়েছে: '+dt(cur.device_at)+'</small>':'');db.hidden=false}else{dv.innerHTML='🔓 কোনো ডিভাইস লক নেই। পরের লগইনে যে ডিভাইস থেকে ঢুকবেন সেটাই লক হবে।';db.hidden=true}}
 $('#cin').innerHTML=`<div class="sm"><span>মোবাইল</span><b>${bn(E(cur.phone))}</b></div><div class="sm"><span>ইমেইল</span><b>${E(cur.email)}</b></div><div class="sm"><span>ব্যালেন্স</span><b>${M(cur.balance)}</b></div><div class="sm"><span>যোগ দিয়েছেন</span><b>${dt(cur.created_at)}</b></div><div class="sm"><span>অবস্থা</span><b class="${cur.blocked?'pr':'pa'}">${cur.blocked?'ব্লকড':'সক্রিয়'}</b></div>`;
 $('#cin').innerHTML+=`<div class="sm"><span>অ্যাকাউন্ট অবস্থা</span><b class="${cur.status==='active'?'pa':'ps'}">${cur.status==='active'?'অনুমোদিত':cur.status==='pending'?'অপেক্ষায়':'বাতিল'}</b></div><div class="sm"><span>NID নম্বর</span><b>${bn(E(cur.nid_no||'—'))}</b></div><div class="sm"><span>জন্ম তারিখ</span><b>${bn(E(cur.dob||'—'))}</b></div><div class="sm"><span>পিতার নাম</span><b>${E(cur.father_name||'—')}</b></div><div class="sm"><span>মাতার নাম</span><b>${E(cur.mother_name||'—')}</b></div><div class="sm"><span>ঠিকানা</span><b>${E(cur.address||'—')}</b></div>${cur.status_note?`<div class="sm"><span>বাতিলের কারণ</span><b class="pr">${E(cur.status_note)}</b></div>`:''}`;$('#ckyc').hidden=!cur.nid_path;
 $('#cbl').textContent=cur.blocked?'আনব্লক করুন':'ব্লক করুন'}
@@ -402,6 +403,7 @@ b.disabled=true;try{let r=await sb.rpc('admin_ad_delete',{p_id:String(x.id)});
 if(r.error&&/Could not find the function/i.test(r.error.message||'')){const d=await sb.from('ads').delete().eq('id',x.id).select('id');if(d.error)return toast(errMsg(d.error));if(!d.data||!d.data.length)return toast('মুছতে পারেনি। Supabase-এ supabase_ad_delete_fix.sql রান করুন।')}
 else if(r.error)return toast(errMsg(r.error));
 if(old)sb.storage.from('ads').remove([old]);toast('✅ বিজ্ঞাপন মুছে গেছে');await loadSL()}finally{b.disabled=false}return}
+if(a==='cdr'){if(!cur||!confirm('এই গ্রাহকের ডিভাইস লক খুলবেন?\nএরপর যে ডিভাইসে প্রথম লগইন করবেন সেটাই নতুন করে লক হবে।'))return;return rpc('admin_reset_device',{p_user:cur.id},'ডিভাইস লক খোলা হয়েছে')}
 if(a==='ncopen'){['#ncn','#ncp','#nci','#nce','#ncw','#ncd','#ncb','#ncf','#ncm','#nca'].forEach(s=>$(s).value='');return $('#nc').showModal()}
 if(a==='ncx')return $('#nc').close();
 if(a==='ncok'){const nm=$('#ncn').value.trim(),ph=en($('#ncp').value).trim(),em=$('#nce').value.trim().toLowerCase(),pw=$('#ncw').value,nid=en($('#nci').value).trim(),bal=parseFloat(en($('#ncb').value||'0'))||0;
