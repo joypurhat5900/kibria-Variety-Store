@@ -7,80 +7,126 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.min.js"></script>
 <script>window.supabase||document.write('<script src="https://unpkg.com/@supabase/supabase-js@2.58.0/dist/umd/supabase.min.js"><\/script>')</script>
 <style>
-:root{--bg:#f4f8fb;--card:#fff;--ink:#10243a;--mute:#5b6b7c;--pri:#0a5cff;--pri2:#0b3fb3;--acc:#ff7a1a;--line:#dde6ee;--ok:#12a150;--bad:#d93025;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1522;--card:#13243a;--ink:#eaf1f9;--mute:#9db0c4;--line:#243a55}}
-:root[data-theme="dark"]{--bg:#0b1522;--card:#13243a;--ink:#eaf1f9;--mute:#9db0c4;--line:#243a55}
+:root{--bg:#f5f3ff;--card:#fff;--ink:#1a1238;--mute:#6b6590;--pri:#6a3df0;--pri2:#2d1a94;--acc:#ffb020;--line:#e6e1fb;--ok:#12a150;--bad:#e5384f;--sh:0 6px 20px rgba(45,26,148,.08);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d0a24;--card:#17133a;--ink:#f1eeff;--mute:#a9a3d0;--line:#2b2660;--sh:0 6px 20px rgba(0,0,0,.35)}}
+:root[data-theme="dark"]{--bg:#0d0a24;--card:#17133a;--ink:#f1eeff;--mute:#a9a3d0;--line:#2b2660;--sh:0 6px 20px rgba(0,0,0,.35)}
 *{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:'Baloo Da 2','Hind Siliguri',system-ui,sans-serif;line-height:1.6}
 .w{max-width:980px;margin:auto;padding:0 16px}
-header{position:sticky;top:env(safe-area-inset-top,0px);background:var(--card);border-bottom:1px solid var(--line);z-index:5}
-header .w{display:flex;align-items:center;justify-content:space-between;height:56px}
-.logo{font-weight:700;font-size:20px;color:var(--pri)}.logo b{color:var(--acc)}
-.hr{display:flex;gap:8px;align-items:center;font-size:14px}
+.ic{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none;display:block}
 button{font-family:inherit;cursor:pointer}
+header{position:sticky;top:env(safe-area-inset-top,0px);background:var(--card);border-bottom:1px solid var(--line);z-index:5;box-shadow:0 2px 12px rgba(45,26,148,.05)}
+header .w{display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;color:var(--ink)}.logo b{color:var(--acc)}
+.lm{width:34px;height:34px;flex:none;filter:drop-shadow(0 3px 6px rgba(106,61,240,.35))}
+.tag{font-size:12px;font-weight:700;background:linear-gradient(135deg,#ffb020,#ff7a18);color:#fff;border-radius:999px;padding:2px 10px;margin-left:2px}
+.hr{display:flex;gap:8px;align-items:center;font-size:14px}
+.ib{width:40px;height:40px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);display:grid;place-items:center}.ib .ic{width:20px;height:20px}
 .lk{background:none;border:0;color:var(--pri);font-size:14px;padding:4px}
-.hero{background:linear-gradient(135deg,var(--pri2),var(--pri));color:#fff;padding:28px 0 70px}
-.hero h1{font-size:clamp(24px,6vw,36px);line-height:1.25;margin:0 0 4px}
-.bal{margin-top:14px;display:flex;justify-content:space-between;align-items:center;gap:12px;background:rgba(255,255,255,.15);border-radius:14px;padding:12px 16px;max-width:420px}
-.bal small{display:block;opacity:.85}.bal b{font-size:28px}
-.bal button{border:0;background:#fff;color:var(--pri2);padding:9px 14px;border-radius:10px;font-weight:700}
-.box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-top:-50px;box-shadow:0 10px 30px rgba(0,0,0,.12)}
-.plain{margin-top:0}.login{max-width:420px;margin:40px auto}
-.tabs{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:12px}
-.tabs button{padding:10px 4px;border:1px solid var(--line);background:none;color:var(--ink);border-radius:10px;font-size:15px;font-weight:500}
-.tabs button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
-label,.lb{display:block;font-size:14px;color:var(--mute);margin:10px 0 4px}
-input,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font:inherit;background:var(--bg);color:var(--ink)}
-input:focus,select:focus,button:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;margin-top:-50px;box-shadow:var(--sh)}
+.plain{margin-top:0}.login{max-width:420px;margin:44px auto}
+.lgh{display:flex;align-items:center;gap:12px;margin-bottom:10px}.lgh .lm{width:52px;height:52px}.lgh b{font-size:22px;display:block;line-height:1.2}.lgh small{color:var(--mute)}
+label,.lb{display:block;font-size:14px;color:var(--mute);margin:12px 0 4px;font-weight:500}
+input,select{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;font:inherit;background:var(--bg);color:var(--ink);transition:border-color .15s,box-shadow .15s}
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--pri);box-shadow:0 0 0 3px rgba(106,61,240,.18)}
+button:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chips button{padding:8px 14px;border-radius:20px;border:2px solid var(--line);background:none;color:var(--ink);font-size:15px}
-.chips button.on{border-color:var(--pri);background:rgba(10,92,255,.12);font-weight:700}
-.go{width:100%;margin-top:16px;padding:14px;border:0;border-radius:12px;background:var(--acc);color:#fff;font-size:18px;font-weight:700}
+.chips button.on{border-color:var(--pri);background:rgba(106,61,240,.12);font-weight:700}
+.go{width:100%;margin-top:16px;padding:14px;border:0;border-radius:14px;background:linear-gradient(135deg,#6a3df0,#8a5cff);color:#fff;font-size:17px;font-weight:700;box-shadow:0 10px 20px -8px rgba(106,61,240,.65)}
 .go:disabled{opacity:.6}
-.sb{padding:7px 12px;border-radius:8px;border:1px solid var(--line);background:none;color:var(--ink);font-size:14px;margin:2px}
-.sb.g{background:var(--ok);color:#fff;border-color:var(--ok)}.sb.r{color:var(--bad);border-color:var(--bad)}
+.sb{padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:13px;font-weight:600;margin:2px;white-space:nowrap}
+.sb.g{background:var(--ok);color:#fff;border-color:var(--ok)}.sb.r{color:var(--bad);border-color:rgba(229,56,79,.5);background:transparent}
 .hint{font-size:13px;color:var(--mute);margin:6px 0 0}
-h2{margin:30px 0 10px;font-size:22px}
-.pk{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 16px}
-.sm{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);align-items:center}
-.sm:last-child{border:0}.sm small{color:var(--mute)}.sm>b,.sm>span:last-child{text-align:right}
+h2{margin:28px 0 10px;font-size:18px;display:flex;align-items:center;gap:9px}
+h2::before{content:"";width:4px;height:20px;border-radius:4px;background:linear-gradient(var(--pri),#ff4d8d);flex:none}
+.tp>h2:first-child{margin-top:6px}
+.pk{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:8px 16px 12px;box-shadow:var(--sh)}
+.sm{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);align-items:center}
+.sm:last-child{border:0}.sm small{color:var(--mute)}
+.sm>span:first-child,.sm .cn{flex:1;min-width:0;word-break:break-word}
+.sm>span:last-child{display:flex;flex-direction:column;align-items:flex-end;gap:4px;text-align:right}.sm>span:last-child br{display:none}
+.sm>b{text-align:right;white-space:nowrap}
+.sm[data-a="cu"]{cursor:pointer;border-radius:12px;transition:background .15s}.sm[data-a="cu"]:hover{background:rgba(106,61,240,.06)}
+.av{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;font-style:normal;font-weight:700;font-size:18px;color:#fff;background:linear-gradient(135deg,#8a5cff,#ff4d9d);flex:none}
 footer{margin-top:40px;padding:24px 0;border-top:1px solid var(--line);color:var(--mute);font-size:14px;text-align:center}
-#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:14px 18px;border-radius:12px;max-width:92%;display:none;z-index:99;top:auto;right:auto;margin:0;border:0;width:max-content;overflow:visible}
-dialog{border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--ink);width:min(92%,400px);padding:20px}
-dialog::backdrop{background:rgba(0,0,0,.5)}
-.bt{display:flex;gap:8px;margin-top:14px}.bt button{flex:1;padding:12px;border-radius:10px;border:1px solid var(--line);background:none;color:var(--ink);font-size:16px}
-.bt .ok{background:var(--pri);color:#fff;border-color:var(--pri);font-weight:700}
-.ps{color:var(--acc)}.pa{color:var(--ok)}.pr{color:var(--bad)}
-#tb{position:fixed;left:0;right:0;bottom:0;z-index:6;display:grid;grid-template-columns:repeat(6,1fr);gap:0;margin:0;background:var(--card);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));box-shadow:0 -4px 16px rgba(0,0,0,.08)}
-#tb button{border:0;border-radius:12px;background:none;display:flex;flex-direction:column;align-items:center;padding:4px 1px;font-size:11px;color:var(--mute);font-weight:500}
-#tb button span{font-size:20px;line-height:1.3;filter:grayscale(1);opacity:.7}
-#tb button.on{background:none;color:var(--pri);font-weight:700}#tb button.on span{filter:none;opacity:1}
-#app main{padding-bottom:96px}
+#toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:14px 18px;border-radius:14px;max-width:92%;display:none;z-index:99;top:auto;right:auto;margin:0;border:0;width:max-content;overflow:visible;box-shadow:0 12px 30px rgba(0,0,0,.3)}
+dialog{border:0;border-radius:22px;background:var(--card);color:var(--ink);width:min(92%,420px);padding:22px;box-shadow:0 24px 60px rgba(0,0,0,.4);max-height:90vh;overflow:auto}
+dialog h3{font-size:19px}
+dialog::backdrop{background:rgba(20,10,60,.55);backdrop-filter:blur(2px)}
+.bt{display:flex;gap:8px;margin-top:14px}.bt button{flex:1;padding:12px;border-radius:12px;border:1px solid var(--line);background:none;color:var(--ink);font-size:16px}
+.bt .ok{background:linear-gradient(135deg,#6a3df0,#8a5cff);color:#fff;border-color:transparent;font-weight:700}
+.ps{color:#e08a00}.pa{color:var(--ok)}.pr{color:var(--bad)}
 dialog,input,select,textarea,button{font-family:inherit}
 [hidden]{display:none!important}
-textarea{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font:inherit;background:var(--bg);color:var(--ink);min-height:130px}
-.st{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}.st div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}.st b{font-size:22px;display:block;color:var(--pri)}.st small{color:var(--mute)}
-.an{position:sticky;top:calc(56px + env(safe-area-inset-top,0px));background:var(--bg);padding:10px 0;z-index:4;overflow-x:auto;flex-wrap:nowrap}.an button{white-space:nowrap}
-.btn2{padding:10px;border-radius:10px;border:1px solid var(--line);background:none;color:var(--ink);font-size:15px;margin:3px 0}.btn2.g{background:var(--ok);color:#fff;border-color:var(--ok)}.btn2.r{color:var(--bad);border-color:var(--bad)}
-dialog{max-height:90vh;overflow:auto}
-
+textarea{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;font:inherit;background:var(--bg);color:var(--ink);min-height:130px}
+.btn2{padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:15px;font-weight:600;margin:3px 0}.btn2.g{background:var(--ok);color:#fff;border-color:var(--ok)}.btn2.r{color:var(--bad);border-color:rgba(229,56,79,.5);background:transparent}
 .cm{display:flex;flex-direction:column;gap:6px;max-height:52vh;overflow:auto;padding:4px}
-.cm div{max-width:82%;padding:8px 12px;border-radius:14px;background:var(--bg);border:1px solid var(--line);align-self:flex-start;word-break:break-word}
+.cm div{max-width:82%;padding:8px 12px;border-radius:16px;background:var(--bg);border:1px solid var(--line);align-self:flex-start;word-break:break-word}
 .cm div.me{align-self:flex-end;background:var(--pri);color:#fff;border-color:var(--pri)}
 .cm small{display:block;opacity:.7;font-size:11px}
 .qrr{padding:10px 0;border-bottom:1px solid var(--line)}.qrr:last-child{border:0}.qrr img{display:block;max-width:150px;margin:6px 0;border:1px solid var(--line);border-radius:8px;background:#fff}
+/* ওভারভিউ */
+.ovh{background:linear-gradient(140deg,#22116f 0%,#5b34e6 58%,#9d4ef2 100%);color:#fff;border-radius:22px;padding:20px 22px;position:relative;overflow:hidden;box-shadow:0 16px 32px -12px rgba(91,52,230,.65)}
+.ovh::before{content:"";position:absolute;right:-60px;top:-80px;width:230px;height:230px;border-radius:50%;background:radial-gradient(circle,rgba(255,176,32,.42),transparent 70%)}
+.ovh>*{position:relative}.ovh small{display:block;opacity:.85}.ovh b{display:block;font-size:34px;line-height:1.25}
+.sec{margin:24px 0 10px;font-size:14px;color:var(--mute);font-weight:700;letter-spacing:.3px;display:flex;align-items:center;gap:10px}.sec::after{content:"";flex:1;height:1px;background:var(--line)}
+.kg{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}@media(min-width:680px){.kg{grid-template-columns:repeat(4,1fr)}}
+.kc{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px 12px 18px;text-align:left;box-shadow:var(--sh);position:relative;overflow:hidden;color:var(--ink);display:block;width:100%;font:inherit}
+.kc::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:4px;border-radius:0 4px 4px 0;background:var(--c,var(--pri))}
+.kc small{display:block;color:var(--mute);font-size:13px;line-height:1.35}.kc b{display:block;font-size:21px;line-height:1.35;color:var(--ink)}
+.kc.hot{border-color:rgba(229,56,79,.5)}.kc.hot b{color:var(--bad)}
+div.kc{cursor:default}
+/* নিচের নেভিগেশন */
+#ad main{padding-bottom:110px}
+#bn{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--card);border-top:1px solid var(--line);box-shadow:0 -8px 24px rgba(45,26,148,.1);padding:6px 0 calc(6px + env(safe-area-inset-bottom,0px))}
+#bn .w{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;padding:0 6px}
+#bn button{border:0;background:none;color:var(--mute);display:flex;flex-direction:column;align-items:center;gap:1px;padding:5px 2px;font-size:11px;font-weight:600;position:relative;border-radius:12px}
+#bn button em{font-style:normal}#bn button .ic{width:23px;height:23px}
+#bn button.on{color:var(--pri)}#bn button.on::after{content:"";position:absolute;top:-7px;width:28px;height:3px;border-radius:0 0 4px 4px;background:var(--pri)}
+.bd{position:absolute;top:0;right:calc(50% - 26px);background:var(--bad);color:#fff;font-size:10px;font-weight:700;line-height:1;padding:3px 6px;border-radius:10px;min-width:17px;text-align:center;font-style:normal}.bd:empty{display:none}
+#mmenu{position:fixed;inset:0;z-index:7}
+.mnb{position:absolute;inset:0;background:rgba(20,10,60,.45);backdrop-filter:blur(2px)}
+.mnp{position:absolute;left:12px;right:12px;bottom:calc(74px + env(safe-area-inset-bottom,0px));max-width:560px;margin:auto;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:16px 10px 10px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px 4px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.mnp button{border:0;background:none;color:var(--ink);display:flex;flex-direction:column;align-items:center;gap:6px;padding:6px 2px;font-size:12px;font-weight:600;border-radius:14px}.mnp button em{font-style:normal;text-align:center;line-height:1.25}
+.mnp button.on em{color:var(--pri)}
+.mi{width:50px;height:50px;border-radius:17px;display:grid;place-items:center;color:#fff;background:var(--g,linear-gradient(135deg,#8a5cff,#5b34e6));box-shadow:0 8px 14px -6px rgba(45,26,148,.55);position:relative;font-style:normal}.mi .ic{width:25px;height:25px}.mi .bd{top:-5px;right:-5px}
 </style></head><body>
-<header><div class="w"><div class="logo">নেটলিংক<b>.</b> অ্যাডমিন</div><div class="hr"><button class="lk" id="out" hidden>লগআউট</button></div></div></header>
-<section id="lg" class="w login"><div class="box plain"><h2 style="margin:0 0 4px">অ্যাডমিন লগইন</h2>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><linearGradient id="lgrad1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8a5cff"/><stop offset=".55" stop-color="#5b34e6"/><stop offset="1" stop-color="#ff4d9d"/></linearGradient><linearGradient id="lgrad2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="19" fill="url(#lgrad1)"/><path d="M0 19Q0 0 19 0H45Q64 0 64 19V26Q32 14 0 34Z" fill="url(#lgrad2)"/><g fill="none" stroke="#fff" stroke-width="5.2" stroke-linecap="round"><rect x="11" y="28" width="25" height="17" rx="8.5" transform="rotate(-35 23.5 36.5)"/><rect x="28" y="19" width="25" height="17" rx="8.5" transform="rotate(-35 40.5 27.5)"/></g><circle cx="49" cy="14" r="4.2" fill="#ffc83d"/><circle cx="49" cy="14" r="7.4" fill="none" stroke="#ffc83d" stroke-opacity=".45" stroke-width="1.6"/></symbol>
+<symbol id="a-dash" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7.5" height="9" rx="2"/><rect x="13" y="3.5" width="7.5" height="5.5" rx="2"/><rect x="13" y="11.5" width="7.5" height="9" rx="2"/><rect x="3.5" y="15" width="7.5" height="5.5" rx="2"/></symbol>
+<symbol id="a-inbox" viewBox="0 0 24 24"><path d="M3.5 13l2.4-7.2A2 2 0 0 1 7.8 4.5h8.4a2 2 0 0 1 1.9 1.3L20.5 13"/><path d="M3.5 13v4.5a2 2 0 0 0 2 2h13a2 2 0 0 0 2-2V13h-5l-1.3 2.2h-4.4L8.5 13z"/></symbol>
+<symbol id="a-users" viewBox="0 0 24 24"><circle cx="9" cy="8.2" r="3.3"/><path d="M2.8 19.5c.5-3.3 3-5.2 6.2-5.2s5.7 1.9 6.2 5.2"/><path d="M16 5.2a3.1 3.1 0 0 1 0 6M18.4 14.6c1.6.7 2.6 2.2 2.8 4.4"/></symbol>
+<symbol id="a-swap" viewBox="0 0 24 24"><path d="M4 8h13l-3.2-3.2M20 16H7l3.2 3.2"/></symbol>
+<symbol id="a-more" viewBox="0 0 24 24"><circle cx="5.5" cy="12" r="1.7" fill="currentColor"/><circle cx="12" cy="12" r="1.7" fill="currentColor"/><circle cx="18.5" cy="12" r="1.7" fill="currentColor"/></symbol>
+<symbol id="a-chat" viewBox="0 0 24 24"><path d="M6 4.5h12a2.5 2.5 0 0 1 2.5 2.5v7.6a2.5 2.5 0 0 1-2.5 2.5h-6.3L7.2 20.6v-3.5H6A2.5 2.5 0 0 1 3.5 14.6V7A2.5 2.5 0 0 1 6 4.5z"/><path d="M8.3 10.8h.01M12 10.8h.01M15.7 10.8h.01" stroke-width="2.6"/></symbol>
+<symbol id="a-coin" viewBox="0 0 24 24"><ellipse cx="12" cy="6.2" rx="6.8" ry="2.9"/><path d="M5.2 6.2v4.9c0 1.6 3 2.9 6.8 2.9s6.8-1.3 6.8-2.9V6.2"/><path d="M5.2 11.1v4.9c0 1.6 3 2.9 6.8 2.9s6.8-1.3 6.8-2.9v-4.9"/></symbol>
+<symbol id="a-shield" viewBox="0 0 24 24"><path d="M12 3.5l7 2.6v5.4c0 4.3-2.9 7.6-7 9-4.1-1.4-7-4.7-7-9V6.1z"/><path d="M8.8 12.2l2.2 2.2 4.2-4.4"/></symbol>
+<symbol id="a-bell" viewBox="0 0 24 24"><path d="M6 16.4V11a6 6 0 0 1 12 0v5.4l1.6 2.1H4.4z"/><path d="M10 20.8a2.1 2.1 0 0 0 4 0"/></symbol>
+<symbol id="a-pct" viewBox="0 0 24 24"><path d="M18.5 5.5l-13 13"/><circle cx="7.3" cy="7.3" r="2.3"/><circle cx="16.7" cy="16.7" r="2.3"/></symbol>
+<symbol id="a-star" viewBox="0 0 24 24"><circle cx="12" cy="9" r="5"/><path d="M8.8 13.6L7.5 20.5 12 18.2l4.5 2.3-1.3-6.9"/></symbol>
+<symbol id="a-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7"/></symbol>
+<symbol id="a-out" viewBox="0 0 24 24"><path d="M9 4.5H6.5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2H9"/><path d="M14 8l4 4-4 4M18 12H9.5"/></symbol>
+</svg>
+<header><div class="w"><div class="logo"><svg class="lm" aria-hidden="true"><use href="#logo"/></svg><span>নেটলিংক<b>.</b></span><span class="tag">অ্যাডমিন</span></div><div class="hr"><button class="ib" id="out" hidden aria-label="লগআউট"><svg class="ic"><use href="#a-out"/></svg></button></div></div></header>
+<section id="lg" class="w login"><div class="box plain"><div class="lgh"><svg class="lm" aria-hidden="true"><use href="#logo"/></svg><div><b>নেটলিংক</b><small>অ্যাডমিন প্যানেল</small></div></div><h2 style="margin:6px 0 4px">লগইন করুন</h2>
 <form onsubmit="return false"><label for="em">ইমেইল</label><input id="em" type="email" autocomplete="email"><label for="pw">পাসওয়ার্ড</label><input id="pw" type="password" autocomplete="current-password">
 <p class="hint pr" id="msg"></p><button class="go" id="ag">লগইন</button></form><p class="hint pr" id="st">⚠ স্ক্রিপ্ট চালু হয়নি। ইন্টারনেট/ব্রাউজার চেক করুন বা পেজ রিফ্রেশ করুন।</p></div></section>
 
 <div id="ad" hidden><main class="w">
-<div class="chips an" id="an"><button class="on" data-tab="t0">ওভারভিউ</button><button data-tab="t1">রিকোয়েস্ট <span id="nb1"></span></button><button data-tab="t2">গ্রাহক</button><button data-tab="t3">লেনদেন</button><button data-tab="t5">চ্যাট <span id="nb5"></span></button><button data-tab="t6">চার্জ</button><button data-tab="t7">কমিশন</button><button data-tab="t8">নোটিফিকেশন</button><button data-tab="t9">অনুমোদন <span id="nb9"></span></button><button data-tab="t10">সঞ্চয় ও ঋণ <span id="nb10"></span></button><button data-tab="t4">সেটিংস</button></div>
-
 <div class="tp" id="t0">
-<div class="st"><div><small>মোট গ্রাহক</small><b id="k1"></b></div><div><small>মোট ব্যালেন্স</small><b id="k2"></b></div><div><small>পেন্ডিং রিকোয়েস্ট</small><b id="k3"></b></div><div><small>পেন্ডিং অর্ডার</small><b id="k4"></b></div><div><small>আজকের লেনদেন</small><b id="k5"></b></div><div><small>ব্লক করা গ্রাহক</small><b id="k6"></b></div><div><small>মোট চার্জ আয়</small><b id="k7"></b></div><div><small>মোট কমিশন প্রদান</small><b id="k8"></b></div><div><small>আজকের চার্জ</small><b id="k9"></b></div><div><small>আজকের কমিশন প্রদান</small><b id="k10"></b></div></div>
+<div class="ovh"><small>গ্রাহকদের মোট ব্যালেন্স</small><b id="k2">—</b><small id="kd" style="margin-top:2px"></small></div>
+<h3 class="sec">অপেক্ষমাণ কাজ</h3>
+<div class="kg"><button class="kc" data-tab="t1" type="button" style="--c:#ff8a3d"><small>ব্যালেন্স রিকোয়েস্ট</small><b id="k3">—</b></button><button class="kc" data-tab="t1" type="button" style="--c:#ff8a3d"><small>পেন্ডিং অর্ডার</small><b id="k4">—</b></button><button class="kc" data-tab="t10" type="button" style="--c:#9333ea"><small>ঋণের আবেদন</small><b id="o1">—</b></button><button class="kc" data-tab="t9" type="button" style="--c:#0ea5e9"><small>সাইন আপ আবেদন</small><b id="o2">—</b></button><button class="kc" data-tab="t9" type="button" style="--c:#0ea5e9"><small>পাসওয়ার্ড রিসেট</small><b id="o3">—</b></button></div>
+<h3 class="sec">গ্রাহক ও লেনদেন</h3>
+<div class="kg"><button class="kc" data-tab="t2" type="button" style="--c:#6a3df0"><small>মোট গ্রাহক</small><b id="k1">—</b></button><button class="kc" data-tab="t3" type="button" style="--c:#6a3df0"><small>আজকের লেনদেন</small><b id="k5">—</b></button><button class="kc" data-tab="t2" type="button" style="--c:#e5384f"><small>ব্লক করা গ্রাহক</small><b id="k6">—</b></button><button class="kc" data-tab="t2" type="button" style="--c:#475569"><small>ডিভাইস লক করা গ্রাহক</small><b id="o5">—</b></button></div>
+<h3 class="sec">আয় ও কমিশন</h3>
+<div class="kg"><div class="kc" style="--c:#12a150"><small>মোট চার্জ আয়</small><b id="k7">—</b></div><div class="kc" style="--c:#12a150"><small>আজকের চার্জ আয়</small><b id="k9">—</b></div><div class="kc" style="--c:#ffb020"><small>মোট কমিশন প্রদান</small><b id="k8">—</b></div><div class="kc" style="--c:#ffb020"><small>আজকের কমিশন প্রদান</small><b id="k10">—</b></div></div>
+<h3 class="sec">সঞ্চয় (DPS / FDR)</h3>
+<div class="kg"><button class="kc" data-tab="t10" type="button" style="--c:#ff9d1a"><small>চলমান সঞ্চয় হিসাব</small><b id="s1">—</b></button><button class="kc" data-tab="t10" type="button" style="--c:#ff9d1a"><small>এখন জমা থাকা টাকা</small><b id="s2">—</b></button><button class="kc" data-tab="t10" type="button" style="--c:#ff9d1a"><small>মেয়াদ শেষে গ্রাহকের প্রাপ্য</small><b id="s3">—</b></button><button class="kc" data-tab="t10" type="button" style="--c:#e5384f"><small>কিস্তির সময় হয়েছে</small><b id="s4">—</b></button><button class="kc" data-tab="t10" type="button" style="--c:#ff9d1a"><small>৭ দিনে মেয়াদ শেষ হবে</small><b id="s5">—</b></button><button class="kc" data-tab="t10" type="button" style="--c:#12a150"><small>টাকা তুলে নিয়েছেন</small><b id="s6">—</b></button></div>
+<h3 class="sec">ঋণ</h3>
+<div class="kg"><button class="kc" data-tab="t10" type="button" style="--c:#9333ea"><small>চলমান ঋণ</small><b id="l1">—</b></button><button class="kc" data-tab="t10" type="button" style="--c:#9333ea"><small>মোট দেওয়া ঋণ</small><b id="l2">—</b></button><button class="kc" data-tab="t10" type="button" style="--c:#9333ea"><small>মোট পরিশোধ্য (মুনাফাসহ)</small><b id="l3">—</b></button><button class="kc" data-tab="t10" type="button" style="--c:#12a150"><small>এ পর্যন্ত আদায়</small><b id="l4">—</b></button><button class="kc" data-tab="t10" type="button" style="--c:#ff8a3d"><small>বাকি আদায়</small><b id="l5">—</b></button><button class="kc" data-tab="t10" type="button" style="--c:#e5384f"><small>বকেয়া কিস্তি</small><b id="l6">—</b></button><button class="kc" data-tab="t10" type="button" style="--c:#12a150"><small>পরিশোধিত ঋণ</small><b id="l7">—</b></button><button class="kc" data-tab="t10" type="button" style="--c:#12a150"><small>প্রত্যাশিত মুনাফা</small><b id="l8">—</b></button></div>
 </div>
 
 <div class="tp" id="t1" hidden>
@@ -141,7 +187,24 @@ dialog{max-height:90vh;overflow:auto}
 <div class="row"><button class="btn2 g" data-a="tgsave">সেভ</button><button class="btn2" data-a="tgtest">টেস্ট মেসেজ</button></div><button class="btn2 r" style="width:100%" data-a="tgclear">বট সরিয়ে দিন</button>
 <p class="hint">বটকে টেলিগ্রামে /start পাঠান। Chat ID পেতে @userinfobot কে মেসেজ দিন বা getUpdates লিংক খুলুন।</p></div>
 </div>
-</main></div>
+</main>
+<nav id="bn" aria-label="প্রধান মেনু"><div class="w">
+<button data-tab="t0" class="on"><svg class="ic"><use href="#a-dash"/></svg><em>ওভারভিউ</em></button>
+<button data-tab="t1"><svg class="ic"><use href="#a-inbox"/></svg><em>রিকোয়েস্ট</em><span id="nb1" class="bd"></span></button>
+<button data-tab="t2"><svg class="ic"><use href="#a-users"/></svg><em>গ্রাহক</em></button>
+<button data-tab="t3"><svg class="ic"><use href="#a-swap"/></svg><em>লেনদেন</em></button>
+<button id="bmore" type="button"><svg class="ic"><use href="#a-more"/></svg><em>আরও</em></button>
+</div></nav>
+<div id="mmenu" hidden><div class="mnb" data-close></div><div class="mnp">
+<button data-tab="t5"><i class="mi" style="--g:linear-gradient(135deg,#06b6d4,#3b82f6)"><svg class="ic"><use href="#a-chat"/></svg><span id="nb5" class="bd"></span></i><em>লাইভ চ্যাট</em></button>
+<button data-tab="t10"><i class="mi" style="--g:linear-gradient(135deg,#ffb020,#ff7a18)"><svg class="ic"><use href="#a-coin"/></svg><span id="nb10" class="bd"></span></i><em>সঞ্চয় ও ঋণ</em></button>
+<button data-tab="t9"><i class="mi" style="--g:linear-gradient(135deg,#0fb5a2,#22c55e)"><svg class="ic"><use href="#a-shield"/></svg><span id="nb9" class="bd"></span></i><em>অনুমোদন</em></button>
+<button data-tab="t8"><i class="mi" style="--g:linear-gradient(135deg,#ff4d8d,#ff8a3d)"><svg class="ic"><use href="#a-bell"/></svg></i><em>নোটিফিকেশন ও বিজ্ঞাপন</em></button>
+<button data-tab="t6"><i class="mi" style="--g:linear-gradient(135deg,#9333ea,#ec4899)"><svg class="ic"><use href="#a-pct"/></svg></i><em>চার্জ</em></button>
+<button data-tab="t7"><i class="mi" style="--g:linear-gradient(135deg,#4f46e5,#8b5cf6)"><svg class="ic"><use href="#a-star"/></svg></i><em>কমিশন</em></button>
+<button data-tab="t4"><i class="mi" style="--g:linear-gradient(135deg,#334155,#6366f1)"><svg class="ic"><use href="#a-gear"/></svg></i><em>সেটিংস</em></button>
+</div></div>
+</div>
 
 <dialog id="cd"><h3 id="ctt" style="margin:0 0 6px"></h3><div id="cin"></div>
 <div class="row" style="margin-top:8px"><button class="btn2" data-a="cedit">✏️ তথ্য এডিট</button><button class="btn2" id="ckyc" data-a="ckyc">🪪 NID ও সেলফি দেখুন</button></div>
@@ -259,8 +322,9 @@ $('#bmn').innerHTML=Array.from({length:12},(_,i)=>`<option value="${i+1}">${bn(i
 const show=id=>{['lg','ad'].forEach(i=>$('#'+i).hidden=i!==id);$('#out').hidden=id!=='ad'};
 $('#ag').onclick=async()=>{$('#msg').textContent='অপেক্ষা করুন...';try{const{error}=await sb.auth.signInWithPassword({email:$('#em').value.trim(),password:$('#pw').value});$('#msg').textContent=error?errMsg(error):''}catch(e){$('#msg').textContent='সংযোগ ব্যর্থ: '+(e.message||e)}};
 $('#out').onclick=()=>sb.auth.signOut();
-const tabTo=t=>{$$('#an button').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));$$('.tp').forEach(x=>x.hidden=x.id!==t)};
-$('#an').onclick=e=>{const b=e.target.closest('[data-tab]');if(b)tabTo(b.dataset.tab)};
+const MORE=['t5','t6','t7','t8','t9','t10','t4'];
+const tabTo=t=>{$$('#bn [data-tab],#mmenu [data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));$$('.tp').forEach(x=>x.hidden=x.id!==t);$('#bmore').classList.toggle('on',MORE.includes(t));$('#mmenu').hidden=true;window.scrollTo({top:0,behavior:'smooth'})};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(b){tabTo(b.dataset.tab);return}if(e.target.closest('#bmore')){$('#mmenu').hidden=!$('#mmenu').hidden;return}if(e.target.closest('[data-close]'))$('#mmenu').hidden=true});
 
 async function loadAll(){
 const[u,tp,tx,st,chq,ntq,rsq,gmq]=await Promise.all([sb.from('profiles').select('*').order('created_at',{ascending:false}),
@@ -273,7 +337,7 @@ function render(){
 const po=TX.filter(t=>t.status==='pending'&&['recharge','bill','send'].includes(t.kind)),today=new Date().toDateString();
 $('#k1').textContent=bn(U.filter(x=>x.status!=='pending'&&x.status!=='rejected').length);$('#k2').textContent=M(U.reduce((s,a)=>s+ +a.balance,0));$('#k3').textContent=bn(TP.length);$('#k4').textContent=bn(po.length);
 $('#k5').textContent=bn(TX.filter(t=>new Date(t.created_at).toDateString()===today).length);$('#k6').textContent=bn(U.filter(x=>x.blocked).length);
-$('#nb1').textContent=TP.length+po.length?'('+bn(TP.length+po.length)+')':'';
+$('#nb1').textContent=TP.length+po.length?bn(TP.length+po.length):'';
 $('#r1').innerHTML=TP.length?TP.map(t=>`<div class="sm"><span>${who(t)}<br>${PN[t.method]} · ${M(t.amount)}<br><small>থেকে ${bn(E(t.sender))} · ${E(t.trx)} · ${dt(t.created_at)}</small></span><span><button class="sb g" data-a="ap" data-i="${t.id}">অনুমোদন</button><button class="sb r" data-a="rj" data-i="${t.id}">বাতিল</button></span></div>`).join(''):'<p class="hint">কোনো পেন্ডিং রিকোয়েস্ট নেই।</p>';
 $('#r2').innerHTML=po.length?po.map(t=>`<div class="sm"><span>${who(t)}<br>${KIND[t.kind]} · ${M(t.amount)} (চার্জ ${M(t.fee)})<br><small>${E(t.details)} · ${dt(t.created_at)}</small></span><span><button class="sb g" data-a="dn" data-i="${t.id}">সম্পন্ন</button><button class="sb r" data-a="rf" data-i="${t.id}">ফেল · টাকা ফেরত</button></span></div>`).join(''):'<p class="hint">কোনো পেন্ডিং অর্ডার নেই।</p>';
 rc();rt();rch();rq();ro();rn();rap();$('#pks').textContent=cfg.vapid_public?'✅ পুশ কী সেট আছে।':'⚠ পুশ কী এখনও তৈরি করা হয়নি।';
@@ -282,7 +346,7 @@ const f=(id,v)=>{if(!sdirty&&document.activeElement!==$(id))$(id).value=v};
 let bc=DEF;try{if(cfg.bill_cfg)bc=JSON.parse(cfg.bill_cfg)}catch(e){}f('#bt',cfgText(bc));f('#bmn',cfg.bill_months||'3');f('#nw',cfg.news||'');f('#p1',cfg.promo_t??'২৪/৭ সেবা');f('#p2',cfg.promo_b??'সমস্যায় হেল্পলাইন ১২১');f('#ai',cfg.app_install||'on');f('#al',cfg.app_link||'');let of=DEF_OFF;try{if(cfg.offers)of=JSON.parse(cfg.offers)}catch(e){}f('#ot',offText(of))}
 const RSL={pending:['অপেক্ষায়','ps'],approved:['অনুমোদিত (নতুন পাসওয়ার্ড বাকি)','pa'],used:['পাসওয়ার্ড বদলেছে','pa'],rejected:['বাতিল','pr']};
 function rap(){const pend=U.filter(x=>x.status==='pending'&&!x.is_admin),rej=U.filter(x=>x.status==='rejected'),rp=RS.filter(r=>r.status==='pending');
-$('#nb9').textContent=pend.length+rp.length?'('+bn(pend.length+rp.length)+')':'';
+$('#nb9').textContent=pend.length+rp.length?bn(pend.length+rp.length):'';
 $('#sg').innerHTML=pend.length?pend.map(x=>`<div class="sm" style="align-items:flex-start"><span><b>${E(x.name)}</b> ${bn(E(x.phone))}<br><small>${E(x.email)}</small><br>${x.nid_no?`NID: ${bn(E(x.nid_no))} · জন্ম: ${bn(E(x.dob||'—'))}<br><small>পিতা: ${E(x.father_name||'—')} · মাতা: ${E(x.mother_name||'—')}<br>ঠিকানা: ${E(x.address||'—')}</small>`:'<small class="ps">এখনও NID/সেলফি জমা হয়নি</small>'}<br><small>${x.submitted_at?dt(x.submitted_at):dt(x.created_at)}</small></span><span>${x.nid_path?`<button class="sb" data-a="sgv" data-i="${x.id}">ছবি দেখুন</button><br>`:''}<button class="sb" data-a="sged" data-i="${x.id}">এডিট</button><br><button class="sb g" data-a="sga" data-i="${x.id}">অনুমোদন</button><br><button class="sb r" data-a="sgr" data-i="${x.id}">বাতিল</button></span></div>`).join(''):'<p class="hint">কোনো নতুন আবেদন নেই।</p>';
 if(rej.length)$('#sg').innerHTML+=`<p class="hint" style="margin-top:10px">বাতিল হওয়া (${bn(rej.length)}): `+rej.map(x=>E(x.name)+' '+bn(E(x.phone))).join(', ')+'। পুরোপুরি মুছতে গ্রাহক ট্যাবে গিয়ে অ্যাকাউন্ট মুছুন।</p>';
 $('#rs').innerHTML=RS.length?RS.slice(0,15).map(r=>{const l=RSL[r.status]||[r.status,''];return `<div class="sm" style="align-items:flex-start"><span><b>${E(r.profiles?.name||'—')}</b> ${bn(E(r.phone||''))}<br><small>${E(r.email||'')} · NID: ${bn(E(r.profiles?.nid_no||'—'))}</small><br><small>${dt(r.created_at)}</small>${r.note?`<br><small class="pr">কারণ: ${E(r.note)}</small>`:''}</span><span>${r.status==='pending'?`<button class="sb g" data-a="rsa" data-i="${r.id}">অনুমোদন</button><br><button class="sb r" data-a="rsr" data-i="${r.id}">বাতিল</button>`:`<small class="${l[1]}">${l[0]}</small>`}<br><button class="sb r" data-a="rsd" data-i="${r.id}">🗑 মুছুন</button></span></div>`}).join(''):'<p class="hint">কোনো আবেদন নেই।</p>'}
@@ -294,9 +358,9 @@ if(a.data)$('#sdnid').src=a.data.signedUrl;if(b.data)$('#sdnb').src=b.data.signe
 let edId=null;
 function openEdit(id){const x=U.find(u=>u.id===id);if(!x)return;edId=id;$('#edn').value=x.name||'';$('#edp').value=x.phone||'';$('#edi').value=x.nid_no||'';$('#edb').value=x.dob||'';$('#edf').value=x.father_name||'';$('#edm').value=x.mother_name||'';$('#eda').value=x.address||'';$('#ed').showModal()}
 function rch(){const g={},ord=[];CH.forEach(m=>{if(!g[m.user_id]){g[m.user_id]=m;ord.push(m.user_id)}});
-const nw=ord.filter(i=>g[i].sender==='user').length;$('#nb5').textContent=nw?'('+bn(nw)+')':'';
+const nw=ord.filter(i=>g[i].sender==='user').length;$('#nb5').textContent=nw?bn(nw):'';
 const gg={},go=[];GM.forEach(m=>{if(!gg[m.guest]){gg[m.guest]=m;go.push(m.guest)}});const gn=go.filter(i=>gg[i].sender==='user').length;
-if(gn)$('#nb5').textContent='('+bn(nw+gn)+')';const gh=go.length?'<p class="hint" style="margin:12px 0 4px">অতিথি (লগইন ছাড়া)</p>'+go.map(i=>{const m=gg[i];return `<div class="sm" data-a="gco" data-i="${i}" style="cursor:pointer"><span>${E(m.name||'অতিথি')}<br><small>${m.sender==='admin'?'আপনি: ':''}${E(m.body).slice(0,70)} · ${dt(m.created_at)}</small></span>${m.sender==='user'?'<b class="ps">নতুন</b>':''}</div>`}).join(''):'';
+if(gn)$('#nb5').textContent=bn(nw+gn);const gh=go.length?'<p class="hint" style="margin:12px 0 4px">অতিথি (লগইন ছাড়া)</p>'+go.map(i=>{const m=gg[i];return `<div class="sm" data-a="gco" data-i="${i}" style="cursor:pointer"><span>${E(m.name||'অতিথি')}<br><small>${m.sender==='admin'?'আপনি: ':''}${E(m.body).slice(0,70)} · ${dt(m.created_at)}</small></span>${m.sender==='user'?'<b class="ps">নতুন</b>':''}</div>`}).join(''):'';
 $('#cv').innerHTML=(ord.length?ord.map(i=>{const m=g[i];return `<div class="sm" data-a="co" data-i="${i}" style="cursor:pointer"><span>${who(m)}<br><small>${m.sender==='admin'?'আপনি: ':''}${E(m.body).slice(0,70)} · ${dt(m.created_at)}</small></span>${m.sender==='user'?'<b class="ps">নতুন</b>':''}</div>`}).join(''):(go.length?'':'<p class="hint">কোনো চ্যাট নেই।</p>'))+gh}
 async function chLoad(){if(!chU&&!chG)return;const{data}=chG?await sb.from('guest_msgs').select('*').eq('guest',chG).order('created_at').limit(200):await sb.from('chat_messages').select('*').eq('user_id',chU).order('created_at').limit(200);const el=$('#cms'),nb=el.scrollTop+el.clientHeight>=el.scrollHeight-40;
 el.innerHTML=(data||[]).map(m=>`<div class="${m.sender==='admin'?'me':''}">${E(m.body)}<small>${dt(m.created_at)}</small></div>`).join('')||'<p class="hint">মেসেজ নেই।</p>';if(nb)el.scrollTop=el.scrollHeight}
@@ -305,7 +369,7 @@ function openChat(id){chG=null;chU=id;const m=CH.find(x=>x.user_id===id);$('#chn
 $('#ch').onclose=()=>{clearInterval(chT);chU=null;chG=null};
 function rc(){const q=en($('#cq').value||'').toLowerCase().trim();
 const l=U.filter(x=>!q||(x.name||'').toLowerCase().includes(q)||(x.phone||'').includes(q)||(x.email||'').toLowerCase().includes(q));
-$('#cl').innerHTML=l.map(x=>`<div class="sm" data-a="cu" data-i="${x.id}" style="cursor:pointer"><span>${E(x.name)} ${x.is_admin?'⭐':''}${x.status==='pending'?' <b class="ps">[অপেক্ষায়]</b>':x.status==='rejected'?' <b class="pr">[বাতিল]</b>':''}${x.blocked?' <b class="pr">[ব্লক]</b>':''}${x.fee_override?' <small class="ps">[বিশেষ]</small>':''}<br><small>${bn(E(x.phone))} · ${E(x.email)}</small></span><b>${M(x.balance)}</b></div>`).join('')||'<p class="hint">কোনো গ্রাহক পাওয়া যায়নি।</p>'}
+$('#cl').innerHTML=l.map(x=>`<div class="sm" data-a="cu" data-i="${x.id}"><i class="av">${E((x.name||'?').trim().charAt(0)||'?')}</i><span class="cn">${E(x.name)} ${x.is_admin?'⭐':''}${x.device_id&&!x.is_admin?' <small title="ডিভাইস লক">🔒</small>':''}${x.status==='pending'?' <b class="ps">[অপেক্ষায়]</b>':x.status==='rejected'?' <b class="pr">[বাতিল]</b>':''}${x.blocked?' <b class="pr">[ব্লক]</b>':''}${x.fee_override?' <small class="ps">[বিশেষ]</small>':''}<br><small>${bn(E(x.phone))} · ${E(x.email)}</small></span><b>${M(x.balance)}</b></div>`).join('')||'<p class="hint">কোনো গ্রাহক পাওয়া যায়নি।</p>'}
 function rt(){const k=$('#tf').value,l=TX.filter(t=>!k||t.kind===k).slice(0,80);
 $('#r3').innerHTML=l.length?l.map(t=>`<div class="sm"><span>${who(t)}<br><small>${KIND[t.kind]} · ${E(t.details)}${t.txn_ref?' · TrxID: '+E(t.txn_ref):''}${t.fail_reason?' · কারণ: '+E(t.fail_reason):''} · ${dt(t.created_at)}</small></span><b>${M(t.amount)}<br><small class="${ST[t.status][1]}">${ST[t.status][0]}</small>${t.status!=='pending'?`<br><button class="sb r" data-a="dtx" data-i="${t.id}">মুছুন</button>`:''}</b></div>`).join(''):'<p class="hint">কোনো লেনদেন নেই।</p>'}
 $('#cq').oninput=rc;$('#tf').onchange=rt;
@@ -332,16 +396,32 @@ let _pv=null;async function prevAd(){const f=$('#wf').files[0],im=$('#wpv');if(!
 const SAS={active:['চলমান','ps'],paid_out:['মেয়াদ পূর্ণ, টাকা নিয়েছেন','pa'],closed:['বন্ধ করা হয়েছে','pr']},LNST={pending:['অপেক্ষায়','ps'],active:['চলমান','ps'],paid:['পরিশোধিত','pa'],rejected:['বাতিল','pr']};
 let SPL=[],SAC=[],LPL=[],LNS=[],ADL=[];
 const nv=id=>parseFloat(en($(id).value||'0'))||0,ceil2=x=>Math.ceil(x);
-async function loadSL(){const[a1,b1,c1,d1,e1]=await Promise.all([sb.from('savings_plans').select('*').order('sort').order('id'),sb.from('savings_accounts').select('*,profiles(name,phone)').order('id',{ascending:false}).limit(100),sb.from('loan_plans').select('*').order('sort').order('id'),sb.from('loans').select('*,profiles(name,phone)').order('id',{ascending:false}).limit(100),sb.from('ads').select('*').order('sort').order('id',{ascending:false})]);
+async function loadSL(){const[a1,b1,c1,d1,e1]=await Promise.all([sb.from('savings_plans').select('*').order('sort').order('id'),sb.from('savings_accounts').select('*,profiles(name,phone)').order('id',{ascending:false}).limit(1000),sb.from('loan_plans').select('*').order('sort').order('id'),sb.from('loans').select('*,profiles(name,phone)').order('id',{ascending:false}).limit(1000),sb.from('ads').select('*').order('sort').order('id',{ascending:false})]);
 SPL=a1.data||[];SAC=b1.data||[];LPL=c1.data||[];LNS=d1.data||[];ADL=e1.data||[];rsl()}
+const addP=(d,f,n)=>{d=new Date(d);if(f==='daily')d.setDate(d.getDate()+n);else if(f==='weekly')d.setDate(d.getDate()+7*n);else d.setMonth(d.getMonth()+n);return d};
+function ovSL(){const now=Date.now(),sv=(i,v)=>{const e=$('#'+i);if(e)e.textContent=v},sum=(l,f)=>l.reduce((t,x)=>t+(+f(x)||0),0);
+const act=SAC.filter(s=>s.status==='active');
+sv('s1',bn(act.length));sv('s2',M(sum(act,s=>s.paid_total)));sv('s3',M(sum(act,s=>s.maturity)));
+sv('s4',bn(act.filter(s=>s.kind==='dps'&&s.paid_count<s.inst_total&&addP(s.started_at,s.freq,s.paid_count).getTime()<=now).length));
+sv('s5',bn(act.filter(s=>{const d=new Date(s.end_at).getTime();return d>now&&d-now<=7*864e5}).length));
+sv('s6',bn(SAC.filter(s=>s.status==='paid_out').length));
+const la=LNS.filter(l=>l.status==='active'),lp=LNS.filter(l=>l.status==='paid'),lall=la.concat(lp),pay=sum(lall,l=>l.payable),got=sum(lall,l=>l.paid_total),pri=sum(lall,l=>l.principal);
+sv('l1',bn(la.length));sv('l2',M(pri));sv('l3',M(pay));sv('l4',M(got));sv('l5',M(Math.max(0,pay-got)));
+sv('l6',bn(la.filter(l=>l.next_due&&new Date(l.next_due).getTime()<now).length));sv('l7',bn(lp.length));sv('l8',M(pay-pri));
+sv('o1',bn(LNS.filter(l=>l.status==='pending').length));
+sv('o2',bn(U.filter(x=>x.status==='pending'&&!x.is_admin).length));
+sv('o3',bn(RS.filter(r=>r.status==='pending').length));
+sv('o5',bn(U.filter(x=>x.device_id&&!x.is_admin).length));
+sv('kd',new Date().toLocaleDateString('bn-BD',{weekday:'long',day:'numeric',month:'long',year:'numeric'}));
+['k3','k4','o1','o2','o3','s4','l6'].forEach(i=>{const e=$('#'+i);if(e&&e.closest('.kc'))e.closest('.kc').classList.toggle('hot',(parseInt(en(e.textContent))||0)>0)})}
 function rsl(){const pend=LNS.filter(l=>l.status==='pending'),rest=LNS.filter(l=>l.status!=='pending');
-$('#nb10').textContent=pend.length?'('+bn(pend.length)+')':'';$('#yn').textContent=pend.length?'('+bn(pend.length)+')':'';
+$('#nb10').textContent=pend.length?bn(pend.length):'';$('#yn').textContent=pend.length?'('+bn(pend.length)+')':'';
 $('#yreq').innerHTML=pend.length?pend.map(l=>`<div class="sm" style="align-items:flex-start"><span>${who(l)}<br><b>${E(l.title)}</b><br><small>${fq(l.freq)[0]} · ঋণ ${M(l.principal)} · পরিশোধ্য ${M(l.payable)} · ${bn(l.months)} ${fq(l.freq)[1]} · কিস্তি ${M(l.installment)}<br>${dt(l.created_at)}</small></span><span><button class="sb g" data-a="lna" data-i="${l.id}">অনুমোদন</button><br><button class="sb r" data-a="lnr" data-i="${l.id}">বাতিল</button></span></div>`).join(''):'<p class="hint">কোনো ঋণের আবেদন নেই।</p>';
-$('#yact').innerHTML=rest.length?rest.map(l=>{const s=LNST[l.status]||[l.status,''];return `<div class="sm" style="align-items:flex-start"><span>${who(l)}<br><b>${E(l.title)}</b><br><small>${fq(l.freq)[0]} · ঋণ ${M(l.principal)} · কিস্তি ${bn(l.paid_count)}/${bn(l.months)} · পরিশোধ ${M(l.paid_total)} / ${M(l.payable)}${l.status==='active'&&l.next_due?'<br>পরের কিস্তি: '+dt(l.next_due):''}${l.note?'<br>কারণ: '+E(l.note):''}</small></span><b class="${s[1]}">${s[0]}</b></div>`}).join(''):'<p class="hint">কোনো ঋণ নেই।</p>';
+$('#yact').innerHTML=rest.length?rest.slice(0,100).map(l=>{const s=LNST[l.status]||[l.status,''];return `<div class="sm" style="align-items:flex-start"><span>${who(l)}<br><b>${E(l.title)}</b><br><small>${fq(l.freq)[0]} · ঋণ ${M(l.principal)} · কিস্তি ${bn(l.paid_count)}/${bn(l.months)} · পরিশোধ ${M(l.paid_total)} / ${M(l.payable)}${l.status==='active'&&l.next_due?'<br>পরের কিস্তি: '+dt(l.next_due):''}${l.note?'<br>কারণ: '+E(l.note):''}</small></span><b class="${s[1]}">${s[0]}</b></div>`}).join(''):'<p class="hint">কোনো ঋণ নেই।</p>';
 $('#ylp').innerHTML=LPL.length?LPL.map(p=>`<div class="sm" style="align-items:flex-start"><span><b>${E(p.title)}</b>${p.active?'':' <small class="pr">[বন্ধ]</small>'}<br><small>${fq(p.freq)[0]} · ঋণ ${M(p.amount)} · ${bn(p.months)} ${fq(p.freq)[1]} · পরিশোধ্য ${M(p.payable)} · কিস্তি ${M(ceil2(p.payable/p.months))}</small></span><span><button class="sb" data-a="lpt" data-i="${p.id}">${p.active?'বন্ধ করুন':'চালু করুন'}</button><br><button class="sb r" data-a="lpdel" data-i="${p.id}">মুছুন</button></span></div>`).join(''):'<p class="hint">কোনো ঋণ প্ল্যান নেই। গ্রাহক ঋণের আবেদন করতে পারবেন না।</p>';
-$('#zacc').innerHTML=SAC.length?SAC.map(s=>{const st=SAS[s.status]||[s.status,''],due=new Date(s.end_at)>new Date();return `<div class="sm" style="align-items:flex-start"><span>${who(s)}<br><b>${E(s.title)}</b> <small>(${s.kind==='fdr'?'এফডিআর':'ডিপিএস'} · ${fq(s.freq)[0]})</small><br><small>জমা ${bn(s.paid_count)}/${bn(s.inst_total)} · ${M(s.paid_total)} · মেয়াদ শেষে ${M(s.maturity)}<br>মেয়াদ: ${dt(s.end_at)}</small></span><span><b class="${st[1]}">${st[0]}</b>${s.status==='active'?`<br>${due?`<button class="sb g" data-a="sam" data-i="${s.id}">মেয়াদ পূর্ণ করুন</button><br>`:''}<button class="sb r" data-a="sac" data-i="${s.id}">বন্ধ · টাকা ফেরত</button>`:''}</span></div>`}).join(''):'<p class="hint">কোনো সঞ্চয় হিসাব নেই।</p>';
+$('#zacc').innerHTML=SAC.length?SAC.slice(0,100).map(s=>{const st=SAS[s.status]||[s.status,''],due=new Date(s.end_at)>new Date();return `<div class="sm" style="align-items:flex-start"><span>${who(s)}<br><b>${E(s.title)}</b> <small>(${s.kind==='fdr'?'এফডিআর':'ডিপিএস'} · ${fq(s.freq)[0]})</small><br><small>জমা ${bn(s.paid_count)}/${bn(s.inst_total)} · ${M(s.paid_total)} · মেয়াদ শেষে ${M(s.maturity)}<br>মেয়াদ: ${dt(s.end_at)}</small></span><span><b class="${st[1]}">${st[0]}</b>${s.status==='active'?`<br>${due?`<button class="sb g" data-a="sam" data-i="${s.id}">মেয়াদ পূর্ণ করুন</button><br>`:''}<button class="sb r" data-a="sac" data-i="${s.id}">বন্ধ · টাকা ফেরত</button>`:''}</span></div>`}).join(''):'<p class="hint">কোনো সঞ্চয় হিসাব নেই।</p>';
 $('#zl').innerHTML=SPL.length?SPL.map(p=>`<div class="sm" style="align-items:flex-start"><span><b>${E(p.title)}</b> <small>(${p.kind==='fdr'?'এফডিআর':'ডিপিএস'} · ${fq(p.freq)[0]})</small>${p.active?'':' <small class="pr">[বন্ধ]</small>'}<br><small>${bn(p.months)} ${fq(p.freq)[1]} · ${p.kind==='fdr'?'এককালীন ':fq(p.freq)[0]+' '}${M(p.amount)} → মেয়াদ শেষে ${M(p.maturity)}</small></span><span><button class="sb" data-a="spt" data-i="${p.id}">${p.active?'বন্ধ করুন':'চালু করুন'}</button><br><button class="sb r" data-a="spdel" data-i="${p.id}">মুছুন</button></span></div>`).join(''):'<p class="hint">কোনো সঞ্চয় প্ল্যান নেই। গ্রাহক সঞ্চয় খুলতে পারবেন না।</p>';
-$('#wlist').innerHTML=ADL.length?ADL.map(x=>`<div class="sm" style="align-items:flex-start"><span>${/^https:\/\//.test(x.image_url||'')?`<img src="${E(x.image_url)}" alt="বিজ্ঞাপন" style="width:130px;max-width:100%;border-radius:8px;display:block">`:''}<small>${x.link?E(x.link):'লিংক নেই'}${x.active?'':' · <b class="pr">বন্ধ</b>'}</small></span><span><button class="sb" data-a="adt" data-i="${x.id}">${x.active?'বন্ধ করুন':'চালু করুন'}</button><br><button class="sb r" data-a="addel" data-i="${x.id}">মুছুন</button></span></div>`).join(''):'<p class="hint">কোনো বিজ্ঞাপন নেই।</p>'}
+$('#wlist').innerHTML=ADL.length?ADL.map(x=>`<div class="sm" style="align-items:flex-start"><span>${/^https:\/\//.test(x.image_url||'')?`<img src="${E(x.image_url)}" alt="বিজ্ঞাপন" style="width:130px;max-width:100%;border-radius:8px;display:block">`:''}<small>${x.link?E(x.link):'লিংক নেই'}${x.active?'':' · <b class="pr">বন্ধ</b>'}</small></span><span><button class="sb" data-a="adt" data-i="${x.id}">${x.active?'বন্ধ করুন':'চালু করুন'}</button><br><button class="sb r" data-a="addel" data-i="${x.id}">মুছুন</button></span></div>`).join(''):'<p class="hint">কোনো বিজ্ঞাপন নেই।</p>';ovSL()}
 document.addEventListener('click',async e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,i=b.dataset.i;
 if(a==='cu')return openC(i);
 if(a==='ap')return rpc('admin_topup',{p_id:+i,p_approve:true},'অনুমোদিত');
