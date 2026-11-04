@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<script>if(window.top!==window.self){try{window.top.location=window.self.location}catch(e){document.documentElement.style.display="none"}}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>নেটলিংক টেলিকম</title>
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#2d1a94"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;700&family=Noto+Sans+Bengali:wght@400;500;700&family=Anek+Bangla:wght@400;500;700&family=Baloo+Da+2:wght@400;500;700&family=Noto+Serif+Bengali:wght@400;500;700&family=Tiro+Bangla&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.min.js"></script>
+<script>window.supabase||document.write('<script src="https://unpkg.com/@supabase/supabase-js@2.58.0/dist/umd/supabase.min.js"><\/script>')</script>
+<style>
+:root{--bg:#f5f3ff;--card:#fff;--ink:#1a1238;--mute:#6b6590;--pri:#6a3df0;--pri2:#2d1a94;--acc:#ffb020;--line:#e6e1fb;--ok:#12a150;--bad:#e5384f;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d0a24;--card:#17133a;--ink:#f1eeff;--mute:#a9a3d0;--line:#2b2660}}
+:root[data-theme="dark"]{--bg:#0d0a24;--card:#17133a;--ink:#f1eeff;--mute:#a9a3d0;--line:#2b2660}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Baloo Da 2','Hind Siliguri',system-ui,sans-serif;line-height:1.6}
+.w{max-width:980px;margin:auto;padding:0 16px}
+header{position:sticky;top:env(safe-area-inset-top,0px);background:var(--card);border-bottom:1px solid var(--line);z-index:5}
+header .w{display:flex;align-items:center;justify-content:space-between;height:56px}
+.logo{font-weight:700;font-size:20px;color:var(--pri)}.logo b{color:var(--acc)}
+.hr{display:flex;gap:8px;align-items:center;font-size:14px}
+button{font-family:inherit;cursor:pointer}
+.lk{background:none;border:0;color:var(--pri);font-size:14px;padding:4px}
+.hero{background:linear-gradient(135deg,var(--pri2),var(--pri));color:#fff;padding:28px 0 70px}
+.hero h1{font-size:clamp(24px,6vw,36px);line-height:1.25;margin:0 0 4px}
+.bal{margin-top:14px;display:flex;justify-content:space-between;align-items:center;gap:12px;background:rgba(255,255,255,.15);border-radius:14px;padding:12px 16px;max-width:420px}
+.bal small{display:block;opacity:.85}.bal b{font-size:28px}
+.bal button{border:0;background:#fff;color:var(--pri2);padding:9px 14px;border-radius:10px;font-weight:700}
+.box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-top:-50px;box-shadow:0 10px 30px rgba(0,0,0,.12)}
+.plain{margin-top:0}.login{max-width:420px;margin:40px auto}
+.tabs{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:12px}
+.tabs button{padding:10px 4px;border:1px solid var(--line);background:none;color:var(--ink);border-radius:10px;font-size:15px;font-weight:500}
+.tabs button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+label,.lb{display:block;font-size:14px;color:var(--mute);margin:10px 0 4px}
+input,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font:inherit;background:var(--bg);color:var(--ink)}
+input:focus,select:focus,button:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{padding:8px 14px;border-radius:20px;border:2px solid var(--line);background:none;color:var(--ink);font-size:15px}
+.chips button.on{border-color:var(--pri);background:rgba(106,61,240,.12);font-weight:700}
+.go{width:100%;margin-top:16px;padding:14px;border:0;border-radius:12px;background:var(--acc);color:#fff;font-size:18px;font-weight:700}
+.go:disabled{opacity:.6}
+.sb{padding:7px 12px;border-radius:8px;border:1px solid var(--line);background:none;color:var(--ink);font-size:14px;margin:2px}
+.sb.g{background:var(--ok);color:#fff;border-color:var(--ok)}.sb.r{color:var(--bad);border-color:var(--bad)}
+.hint{font-size:13px;color:var(--mute);margin:6px 0 0}
+h2{margin:30px 0 10px;font-size:22px}
+.pk{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 16px}
+.sm{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);align-items:center}
+.sm:last-child{border:0}.sm small{color:var(--mute)}.sm>b,.sm>span:last-child{text-align:right}
+footer{margin-top:40px;padding:24px 0;border-top:1px solid var(--line);color:var(--mute);font-size:14px;text-align:center}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:14px 18px;border-radius:12px;max-width:92%;display:none;z-index:99;top:auto;right:auto;margin:0;border:0;width:max-content;overflow:visible}
+dialog{border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--ink);width:min(92%,400px);padding:20px}
+dialog::backdrop{background:rgba(0,0,0,.5)}
+.bt{display:flex;gap:8px;margin-top:14px}.bt button{flex:1;padding:12px;border-radius:10px;border:1px solid var(--line);background:none;color:var(--ink);font-size:16px}
+.bt .ok{background:var(--pri);color:#fff;border-color:var(--pri);font-weight:700}
+.ps{color:var(--acc)}.pa{color:var(--ok)}.pr{color:var(--bad)}
+#tb{position:fixed;left:0;right:0;bottom:0;z-index:6;display:grid;grid-template-columns:repeat(6,1fr);gap:0;margin:0;background:var(--card);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));box-shadow:0 -4px 16px rgba(0,0,0,.08)}
+#tb button{border:0;border-radius:12px;background:none;display:flex;flex-direction:column;align-items:center;padding:4px 1px;font-size:11px;color:var(--mute);font-weight:500}
+#tb button span{font-size:20px;line-height:1.3;filter:grayscale(1);opacity:.7}
+#tb button.on{background:none;color:var(--pri);font-weight:700}#tb button.on span{filter:none;opacity:1}
+#app main{padding-bottom:96px}
+/* ---- অ্যাপ স্টাইল ---- */
+:root{--pri:#6a3df0;--pri2:#2d1a94;--acc:#ffb020}
+.go{background:linear-gradient(135deg,var(--pri),var(--pri2))}
+.hero{padding:20px 0 26px;border-radius:0 0 26px 26px}
+.bal{background:var(--card);color:var(--ink);max-width:none;box-shadow:0 8px 24px rgba(0,0,0,.18);cursor:pointer;margin-top:14px}
+.bal small{opacity:1;color:var(--mute)}.bal b{color:var(--pri);letter-spacing:1px}
+.bal button{background:var(--pri);color:#fff}
+#app .box{margin-top:12px;box-shadow:none}
+#vhome{margin-top:16px}
+#gr{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+#gr button{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 4px;color:var(--ink);font-size:14px;font-weight:500;display:flex;flex-direction:column;align-items:center;gap:6px}
+#gr i{font-style:normal;font-size:26px;width:52px;height:52px;border-radius:50%;background:rgba(106,61,240,.1);display:grid;place-items:center}
+.promo{margin-top:14px;border-radius:16px;padding:16px;background:linear-gradient(135deg,#1f1456,#4b2bb8);color:#fff;border:1px solid rgba(255,176,32,.35)}
+.promo b{font-size:18px}
+.bar{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:20px;font-weight:700}
+.bar button{border:0;background:var(--card);border:1px solid var(--line);color:var(--ink);width:40px;height:40px;border-radius:50%;font-size:20px}
+#tb{grid-template-columns:repeat(5,1fr);align-items:end}
+#tb .fab span{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--pri),var(--pri2));display:grid;place-items:center;font-size:26px;margin-top:-26px;filter:none;opacity:1;box-shadow:0 6px 16px rgba(106,61,240,.45);border:4px solid var(--card)}
+#tb .fab{color:var(--pri);font-weight:700}
+
+.cm{display:flex;flex-direction:column;gap:6px;max-height:52vh;overflow:auto;padding:4px}
+.cm div{max-width:82%;padding:8px 12px;border-radius:14px;background:var(--bg);border:1px solid var(--line);align-self:flex-start;word-break:break-word}
+.cm div.me{align-self:flex-end;background:var(--pri);color:#fff;border-color:var(--pri)}
+.cm small{display:block;opacity:.7;font-size:11px}
+.news{background:var(--card);border-bottom:1px solid var(--line);overflow:hidden;white-space:nowrap;font-size:14px;padding:6px 0;color:var(--pri2)}
+.news span{display:inline-block;padding-left:100%;animation:mq 25s linear infinite}
+@keyframes mq{to{transform:translateX(-100%)}}
+@media (prefers-reduced-motion:reduce){.news span{animation:none;padding:0;white-space:normal}.news{white-space:normal}}
+.of{display:grid;gap:6px;margin-top:6px}.of button{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font-size:15px}.of b{color:var(--pri)}
+#qri{display:block;max-width:240px;width:100%;margin:6px auto;border:1px solid var(--line);border-radius:12px;background:#fff;padding:8px}
+dialog,input,select,textarea,button{font-family:inherit}
+.nt{display:block;width:100%;padding:12px 14px;margin-bottom:8px;border:1px solid var(--line);border-radius:12px;background:var(--bg);text-align:left;word-break:break-word;line-height:1.5}
+.nt.un{border-color:var(--pri);background:rgba(106,61,240,.08)}
+.nt b{display:block;font-size:16px}.nt .bd{display:block;margin-top:2px}.nt .tm{display:block;color:var(--mute);font-size:12px;margin-top:6px}
+.news{cursor:pointer}
+.lgp{position:relative;min-height:calc(100vh - 57px);padding:22px 0 110px;background:linear-gradient(160deg,#1b0f5e 0%,#5b34e6 62%,#c04df0 140%);overflow:hidden}
+.lgp::before,.lgp::after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.08)}
+.lgp::before{width:300px;height:300px;top:-90px;right:-80px}.lgp::after{width:220px;height:220px;bottom:60px;left:-70px}
+.lwrap{position:relative;z-index:1;max-width:440px;margin:auto;padding:0 16px}
+.lhero{text-align:center;color:#fff}.lico{width:72px;height:72px;margin:0 auto 6px;border-radius:22px;background:rgba(255,255,255,.2);display:grid;place-items:center;font-size:36px}
+.lhero h1{margin:0;font-size:30px}.lhero p{margin:2px 0 0;opacity:.92}
+.lgp .news{background:rgba(255,255,255,.18);color:#fff;border:0;border-radius:12px;margin-top:12px}
+.lcard{background:var(--card);color:var(--ink);border-radius:22px;padding:20px;margin-top:14px;box-shadow:0 14px 40px rgba(0,0,0,.22)}
+.lcard h2{margin:0 0 4px;font-size:22px}
+.pwr{position:relative}.pwr input{padding-right:46px}.pwr button{position:absolute;right:6px;top:50%;transform:translateY(-50%);border:0;background:none;font-size:20px}
+.go.alt{background:var(--card);color:var(--pri);border:2px solid var(--pri)}
+.fgl{display:block;margin:10px auto 0;font-size:13px}
+.stp{padding:12px 0;border-top:1px solid var(--line);margin-top:10px}
+.vbox{position:relative;width:100%;max-width:300px;aspect-ratio:3/4;margin:8px auto;border-radius:20px;overflow:hidden;background:#000}
+#vid{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
+.oval{position:absolute;inset:10% 14%;border:3px dashed rgba(255,255,255,.85);border-radius:50%;pointer-events:none}
+#nidp,#nidbp,#sfp{display:block;max-width:100%;max-height:200px;margin:8px auto;border-radius:12px;border:1px solid var(--line)}
+.gchat{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:8;border:0;border-radius:30px;padding:12px 18px;background:#fff;color:var(--pri);font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,.3);font-size:16px}
+.gcp{position:fixed;right:12px;left:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));max-width:420px;margin-left:auto;z-index:9;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:18px;padding:12px;box-shadow:0 14px 40px rgba(0,0,0,.35)}
+.gch{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.btn2{padding:10px;border-radius:10px;border:1px solid var(--line);background:none;color:var(--ink);font-size:15px}.btn2.g{background:var(--ok);color:#fff;border-color:var(--ok)}
+.sprog{font-weight:700;color:var(--pri);margin:10px 0 4px}.warn{background:rgba(255,138,0,.13);border:1px solid #ff8a00;border-radius:10px;padding:8px 10px;font-size:13px;margin-top:10px}
+#ncam{position:fixed;inset:0;z-index:300;background:#000;overflow:hidden}
+#nvid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.nguide{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(92vw,calc((100vh - 170px)*1.586));aspect-ratio:1.586;border:3px solid #fff;border-radius:14px;box-shadow:0 0 0 100vmax rgba(0,0,0,.62);pointer-events:none}
+.nmsg{position:absolute;top:calc(env(safe-area-inset-top,0px) + 18px);left:0;right:0;text-align:center;color:#fff;font-weight:700;padding:0 16px;text-shadow:0 1px 4px #000}
+.nbar{position:absolute;bottom:calc(env(safe-area-inset-bottom,0px) + 22px);left:0;right:0;display:flex;justify-content:space-around;align-items:center}
+.nbar button{border:0;background:rgba(255,255,255,.22);color:#fff;font-size:16px;padding:12px 10px;border-radius:12px;width:78px}
+.nbar .nbtn{width:72px;height:72px;border-radius:50%;background:#fff;border:6px solid rgba(255,255,255,.45);padding:0}
+.ads{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;border-radius:16px;scrollbar-width:none}.ads::-webkit-scrollbar{display:none}
+.ads .ad{flex:0 0 100%;scroll-snap-align:center;display:block}.ads img{width:100%;aspect-ratio:16/7;object-fit:cover;border-radius:16px;display:block;background:var(--card)}
+#adw{margin-top:14px}.stabs{display:flex;gap:8px;margin:8px 0}.stabs button{flex:1;padding:10px;border-radius:12px;border:2px solid var(--line);background:none;color:var(--ink);font-weight:700}.stabs button.on{border-color:var(--pri);background:rgba(106,61,240,.1)}
+[hidden]{display:none!important}
+/* ---- প্রিমিয়াম আইকন ও রঙ ---- */
+.ic{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none;display:block}
+.logo{display:flex;align-items:center;gap:8px;letter-spacing:.2px}.logo b{color:var(--acc)}
+.lm{width:32px;height:32px;flex:none;filter:drop-shadow(0 3px 6px rgba(106,61,240,.35))}
+.hr .lk{display:inline-flex;align-items:center;gap:2px;color:var(--ink)}.hr .lk .ic{width:22px;height:22px}
+#bell{position:relative}
+.hero{background:linear-gradient(140deg,#22116f 0%,#5b34e6 58%,#9d4ef2 100%);position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;width:240px;height:240px;border-radius:50%;right:-70px;top:-90px;background:radial-gradient(circle,rgba(255,176,32,.38),transparent 70%)}
+.hero>*{position:relative}
+.go{box-shadow:0 8px 18px -6px rgba(106,61,240,.6)}
+.bal{border:1px solid var(--line)}
+#gr button{border-radius:20px;padding:16px 4px 12px;box-shadow:0 6px 18px rgba(45,26,148,.07);transition:transform .15s}
+#gr button:active{transform:scale(.96)}
+#gr i{width:54px;height:54px;border-radius:18px;color:#fff;background:linear-gradient(135deg,#8a5cff,#5b34e6);box-shadow:0 8px 16px -6px rgba(45,26,148,.55)}
+#gr i .ic{width:27px;height:27px;stroke-width:1.7}
+#gr [data-t=r] i{background:linear-gradient(135deg,#6a3df0,#3b82f6)}
+#gr [data-t=b] i{background:linear-gradient(135deg,#0fb5a2,#22c55e)}
+#gr [data-t=s] i{background:linear-gradient(135deg,#ff4d8d,#ff8a3d)}
+#gr [data-t=a] i{background:linear-gradient(135deg,#16a34a,#84cc16)}
+#gr [data-t=h] i{background:linear-gradient(135deg,#4f46e5,#8b5cf6)}
+#gr [data-t=p] i{background:linear-gradient(135deg,#334155,#6366f1)}
+#gr [data-t=c] i{background:linear-gradient(135deg,#06b6d4,#3b82f6)}
+#gr [data-t=sv] i{background:linear-gradient(135deg,#ffb020,#ff7a18)}
+#gr [data-t=ln] i{background:linear-gradient(135deg,#9333ea,#ec4899)}
+#inst i{background:linear-gradient(135deg,#0ea5e9,#6366f1)}
+#tb button span{filter:none;opacity:1;display:grid;place-items:center;height:26px;color:var(--mute)}
+#tb button span .ic{width:24px;height:24px}
+#tb button.on span{color:var(--pri)}
+#tb button.on:not(.fab)::after{content:"";width:16px;height:3px;border-radius:3px;background:var(--pri);margin-top:3px}
+#tb .fab span,#tb .fab.on span{color:#fff;background:linear-gradient(135deg,#ff4d8d,#6a3df0);box-shadow:0 8px 18px rgba(106,61,240,.5)}
+#tb .fab span .ic{width:26px;height:26px}
+.lico{width:88px;height:88px;background:none;border-radius:0;margin:0 auto 8px;filter:drop-shadow(0 12px 22px rgba(0,0,0,.35))}.lico svg{width:100%;height:100%;display:block}
+.promo b{color:#ffc83d}
+.gchat{display:flex;align-items:center;gap:8px}.gchat .ic{width:20px;height:20px}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8a5cff"/><stop offset=".55" stop-color="#5b34e6"/><stop offset="1" stop-color="#ff4d9d"/></linearGradient><linearGradient id="lg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity=".28"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient></defs>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="19" fill="url(#lg)"/><path d="M0 19Q0 0 19 0H45Q64 0 64 19V26Q32 14 0 34Z" fill="url(#lg2)"/><g fill="none" stroke="#fff" stroke-width="5.2" stroke-linecap="round"><rect x="11" y="28" width="25" height="17" rx="8.5" transform="rotate(-35 23.5 36.5)"/><rect x="28" y="19" width="25" height="17" rx="8.5" transform="rotate(-35 40.5 27.5)"/></g><circle cx="49" cy="14" r="4.2" fill="#ffc83d"/><circle cx="49" cy="14" r="7.4" fill="none" stroke="#ffc83d" stroke-opacity=".45" stroke-width="1.6"/></symbol>
+<symbol id="i-recharge" viewBox="0 0 24 24"><rect x="6.5" y="2.5" width="11" height="19" rx="2.8"/><path d="M12.9 7.2L10.3 11.9h3.4l-2.6 4.9"/></symbol>
+<symbol id="i-bill" viewBox="0 0 24 24"><path d="M5.5 3h13v18l-2.6-1.7-2.2 1.7-2.2-1.7-2.2 1.7-2.6-1.7z"/><path d="M9 8h6M9 11.7h6M9 15.3h3.5"/></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><path d="M3.8 11.6L20.2 4l-4.9 16-3.3-6.4z"/><path d="M12 13.6L20.2 4"/></symbol>
+<symbol id="i-add" viewBox="0 0 24 24"><path d="M4 8V6.8A2.3 2.3 0 0 1 6.3 4.5H16.5"/><rect x="3.5" y="8" width="17" height="12" rx="3.2"/><path d="M12 11.4v5.2M9.4 14h5.2"/></symbol>
+<symbol id="i-history" viewBox="0 0 24 24"><path d="M3.6 12a8.4 8.4 0 1 0 2.5-6"/><path d="M3.4 4.3v4.3h4.3"/><path d="M12 7.7V12l3 1.8"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8.1" r="3.8"/><path d="M4.6 20.3c.6-3.8 3.5-6 7.4-6s6.8 2.2 7.4 6"/></symbol>
+<symbol id="i-chat" viewBox="0 0 24 24"><path d="M6 4.5h12a2.5 2.5 0 0 1 2.5 2.5v7.6a2.5 2.5 0 0 1-2.5 2.5h-6.3L7.2 20.6v-3.5H6A2.5 2.5 0 0 1 3.5 14.6V7A2.5 2.5 0 0 1 6 4.5z"/><path d="M8.3 10.8h.01M12 10.8h.01M15.7 10.8h.01" stroke-width="2.6"/></symbol>
+<symbol id="i-save" viewBox="0 0 24 24"><ellipse cx="12" cy="6.2" rx="6.8" ry="2.9"/><path d="M5.2 6.2v4.9c0 1.6 3 2.9 6.8 2.9s6.8-1.3 6.8-2.9V6.2"/><path d="M5.2 11.1v4.9c0 1.6 3 2.9 6.8 2.9s6.8-1.3 6.8-2.9v-4.9"/></symbol>
+<symbol id="i-loan" viewBox="0 0 24 24"><path d="M3 9.4L12 4l9 5.4z"/><path d="M5.5 10.6v6.4M9.8 10.6v6.4M14.2 10.6v6.4M18.5 10.6v6.4"/><path d="M3.5 20h17"/></symbol>
+<symbol id="i-install" viewBox="0 0 24 24"><rect x="6.5" y="2.5" width="11" height="19" rx="2.8"/><path d="M12 7v6.6M9.1 11l2.9 2.9 2.9-2.9"/></symbol>
+<symbol id="i-home" viewBox="0 0 24 24"><path d="M3.5 11.2L12 4l8.5 7.2"/><path d="M5.6 9.8v9.2a1 1 0 0 0 1 1H10v-5h4v5h3.4a1 1 0 0 0 1-1V9.8"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16.4V11a6 6 0 0 1 12 0v5.4l1.6 2.1H4.4z"/><path d="M10 20.8a2.1 2.1 0 0 0 4 0"/></symbol>
+<symbol id="i-theme" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.4"/><path d="M12 3.6v16.8a8.4 8.4 0 0 0 0-16.8z" fill="currentColor"/></symbol>
+</svg>
+<header><div class="w"><div class="logo"><svg class="lm" aria-hidden="true"><use href="#logo"/></svg><span>নেটলিংক<b>.</b></span></div><div class="hr"><span id="who"></span><button class="lk" id="bell" hidden aria-label="নোটিফিকেশন"><svg class="ic"><use href="#i-bell"/></svg><b id="nbg"></b></button><button class="lk" id="adm" hidden>অ্যাডমিন</button><button class="lk" id="out" hidden>লগআউট</button><button class="lk" id="th" aria-label="থিম"><svg class="ic"><use href="#i-theme"/></svg></button></div></div></header>
+
+<section id="lg" class="lgp"><div class="lwrap">
+<div class="lhero"><div class="lico"><svg aria-hidden="true"><use href="#logo"/></svg></div><h1>নেটলিংক</h1><p>রিচার্জ · বিল পে · সেন্ড মানি</p></div>
+
+<div class="lcard"><h2>লগইন</h2>
+<form id="af" onsubmit="return false">
+<label for="em">ইমেইল</label><input id="em" type="email" autocomplete="email">
+<label for="pw">পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)</label><div class="pwr"><input id="pw" type="password" minlength="6" autocomplete="current-password"><button type="button" id="pws" aria-label="পাসওয়ার্ড দেখান">👁</button></div>
+<button class="go" id="ag">লগইন</button>
+</form>
+<button class="lk fgl" id="fgb" type="button">পাসওয়ার্ড ভুলে গেছেন?</button>
+<div id="fpb" hidden class="stp">
+<p class="hint" style="margin:0">ইমেইল ও রেজিস্টার্ড মোবাইল দিয়ে "অনুরোধ পাঠান" চাপুন। এরপর আরও কিছু তথ্য দিয়ে যাচাই করতে হবে।</p>
+<label for="fpe">ইমেইল</label><input id="fpe" type="email" autocomplete="email">
+<label for="fpp">মোবাইল নম্বর</label><input id="fpp" inputmode="numeric" maxlength="11" placeholder="01XXXXXXXXX">
+<button class="go" id="fpr" type="button" style="margin-top:10px">অনুরোধ পাঠান</button>
+<div id="fpv" hidden class="stp" style="margin-top:10px"><b>তথ্য যাচাই করুন</b><p class="hint">নিচের তথ্য সঠিক হলে ডাটাবেস থেকে সাথে সাথে যাচাই হয়ে নতুন পাসওয়ার্ড দিতে পারবেন। ভুল হলে অ্যাডমিনের অনুমোদনের অপেক্ষায় থাকবে।</p>
+<label for="fpbl">বর্তমান ব্যালেন্স (৳)</label><input id="fpbl" inputmode="decimal" placeholder="যেমন ০ বা ৫০০">
+<label for="fpni">NID নম্বর</label><input id="fpni" inputmode="numeric" maxlength="17">
+<label for="fpdb">জন্ম তারিখ</label><input id="fpdb" type="date">
+<div class="row" style="margin-top:10px"><button class="btn2 g" id="fpy" type="button">যাচাই করুন</button><button class="btn2" id="fpc" type="button">অবস্থা দেখুন</button></div></div>
+<div id="fpn" hidden><label for="fpw">নতুন পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)</label><input id="fpw" type="password" autocomplete="new-password"><button class="go" id="fpd" type="button">পাসওয়ার্ড বদলান</button></div>
+<p class="hint" id="fpm"></p></div>
+</div>
+
+<div class="lcard"><h2>নতুন অ্যাকাউন্ট</h2>
+<p class="hint" style="margin:0 0 10px">NID ও লাইভ সেলফি দিয়ে যাচাই হয়। অ্যাডমিন অনুমোদন দিলে সব সেবা ব্যবহার করতে পারবেন।</p>
+<button class="go alt" id="sub" type="button" style="margin-top:0">নতুন অ্যাকাউন্ট খুলুন</button>
+<div id="suw" hidden>
+<div class="sprog" id="sprog">ধাপ ১/৩ · NID কার্ডের ছবি</div>
+<div id="sw1" class="stp"><b>NID কার্ডের সামনের পাতা</b><p class="hint">ক্যামেরায় কার্ডটি ফ্রেমের ভেতরে রাখুন। ফ্রেমের বাইরের অংশ বাদ যাবে, শুধু কার্ড থাকবে। নাম, জন্ম তারিখ, NID নম্বর ও পিতা-মাতার নাম নিজে থেকে ভরা হবে।</p>
+<div class="row"><button type="button" class="btn2" id="nidc">📷 ক্যামেরায় তুলুন</button></div>
+<img id="nidp" hidden alt="NID সামনে"><div class="hint" id="ocs"></div>
+<b style="display:block;margin-top:14px">NID কার্ডের পিছনের পাতা</b><p class="hint">কার্ড উল্টে একইভাবে ফ্রেমের ভেতরে রেখে তুলুন। পিছনের পাতা থেকে ঠিকানা নিজে থেকে ভরা হবে।</p>
+<div class="row"><button type="button" class="btn2" id="nidbc">📷 ক্যামেরায় তুলুন</button></div>
+<img id="nidbp" hidden alt="NID পিছনে"><div class="hint" id="ocb"></div>
+<button class="go" id="sv1" type="button" disabled>যাচাই করুন</button><p class="hint">দুটো ছবি তোলা ও লেখা পড়া শেষ হলে বাটনটি চালু হবে।</p></div>
+<div id="sw2" class="stp" hidden><b>যাচাই করুন</b><p class="hint">NID থেকে নেওয়া তথ্য ঠিক আছে কি না দেখুন। ভুল থাকলে নিজে ঠিক করুন।</p>
+<label for="sun">নাম (ইংরেজি, NID অনুযায়ী)</label><input id="sun" maxlength="60" autocomplete="name">
+<div class="row"><div><label for="suf">পিতার নাম (বাংলায়)</label><input id="suf" maxlength="60"></div><div><label for="sumo">মাতার নাম (বাংলায়)</label><input id="sumo" maxlength="60"></div></div>
+<div class="row"><div><label for="sudb">জন্ম তারিখ</label><input id="sudb" type="date"></div><div><label for="sunid">NID নম্বর</label><input id="sunid" inputmode="numeric" maxlength="17"></div></div>
+<label for="suad">ঠিকানা</label><input id="suad" maxlength="150" autocomplete="street-address">
+<label for="suph">মোবাইল নম্বর</label><input id="suph" inputmode="numeric" maxlength="11" placeholder="01XXXXXXXXX" autocomplete="tel">
+<label for="suem">ইমেইল <span class="ps">(পরবর্তী লগইনে লাগবে)</span></label><input id="suem" type="email" autocomplete="email">
+<label for="supw">পাসওয়ার্ড (কমপক্ষে ৬, সহজ বা সিরিয়াল নয়) <span class="ps">(পরবর্তী লগইনে লাগবে)</span></label><input id="supw" type="password" autocomplete="new-password">
+<label for="supw2">পাসওয়ার্ড আবার দিন</label><input id="supw2" type="password" autocomplete="new-password">
+<p class="warn">⚠ ইমেইল ও পাসওয়ার্ড পরবর্তী লগইনের সময় প্রয়োজন হবে। অনুগ্রহ করে তথ্য দুটি সংরক্ষণ করুন।</p>
+<label style="display:flex;gap:8px;align-items:flex-start;color:var(--ink);margin-top:12px"><input id="suok" type="checkbox" style="width:auto;margin-top:5px"><span>আমি আমার NID ও ছবি পরিচয় যাচাইয়ের জন্য জমা দিতে সম্মত। তথ্য শুধু অ্যাডমিন দেখবেন।</span></label>
+<div class="row" style="margin-top:12px"><button class="btn2" id="sb2" type="button">← পিছনে</button><button class="go" id="sv2" type="button" style="margin:0">ঠিক আছে</button></div></div>
+<div id="sw3" class="stp" hidden><b>লাইভ সেলফি</b><p class="hint">সামনে সোজা তাকিয়ে চোখের পাতা ফেলুন (ব্লিঙ্ক)। ছবি নিজে থেকে উঠবে।</p>
+<div class="vbox" id="vbox" hidden><video id="vid" playsinline muted></video><div class="oval"></div></div>
+<div class="hint" id="cst"></div><img id="sfp" hidden alt="সেলফি">
+<div class="row"><button type="button" class="btn2" id="cam1">📷 ক্যামেরা চালু করুন</button><button type="button" class="btn2" id="cam2" hidden>ছবি তুলুন (হাতে)</button></div>
+<button class="go" id="susub" type="button" disabled>জমা দিন</button><p class="hint" id="sust"></p>
+<button class="lk" id="sb3" type="button">← তথ্য ঠিক করুন</button></div>
+</div></div>
+<p class="hint pr" id="st" style="color:#fff">⚠ স্ক্রিপ্ট চালু হয়নি। ইন্টারনেট/ব্রাউজার চেক করুন বা পেজ রিফ্রেশ করুন।</p>
+</div>
+<button class="gchat" id="gcb" type="button"><svg class="ic"><use href="#i-chat"/></svg><span>লাইভ চ্যাট</span></button>
+<div class="gcp" id="gcp" hidden><div class="gch"><b>💬 লাইভ চ্যাট</b><button type="button" class="lk" id="gcx">✕</button></div><div id="gcm" class="cm"></div>
+<input id="gcn" maxlength="40" placeholder="আপনার নাম (ঐচ্ছিক)" style="margin-top:8px"><div class="row" style="grid-template-columns:1fr auto;margin-top:6px"><input id="gci" maxlength="500" placeholder="মেসেজ লিখুন..."><button class="go" id="gcs" type="button" style="margin:0;width:auto;padding:0 16px;font-size:16px">পাঠান</button></div></div>
+</section>
+
+<section id="pend" class="w" hidden><div class="lcard" style="margin-top:20px"><h2 id="pt1"></h2><p class="hint" id="pt2"></p><button class="go" id="pkyc" type="button" hidden>তথ্য আবার জমা দিন</button><div id="pnl"></div></div></section>
+
+<div id="app" hidden>
+<div class="news" id="news" hidden><span id="nt"></span></div>
+<section class="hero" id="hero"><div class="w"><h1 id="hi"></h1>
+<div class="bal" id="bc0" role="button" tabindex="0"><div><small>আপনার ব্যালেন্স (দেখতে ট্যাপ করুন)</small><b id="bv0">৳ ••••</b></div><button type="button" id="ab">+ অ্যাড মানি</button></div></div></section>
+<main class="w">
+<div id="bar" class="bar" hidden><button id="bkb" type="button" aria-label="পিছনে">←</button><span id="bt0"></span></div>
+<div id="vhome">
+<div id="gr"><button data-t="r"><i><svg class="ic"><use href="#i-recharge"/></svg></i>মোবাইল রিচার্জ</button><button data-t="b"><i><svg class="ic"><use href="#i-bill"/></svg></i>বিল পে</button><button data-t="s"><i><svg class="ic"><use href="#i-send"/></svg></i>সেন্ড মানি</button><button data-t="a"><i><svg class="ic"><use href="#i-add"/></svg></i>অ্যাড মানি</button><button data-t="h"><i><svg class="ic"><use href="#i-history"/></svg></i>হিস্ট্রি</button><button data-t="p"><i><svg class="ic"><use href="#i-user"/></svg></i>প্রোফাইল</button><button data-t="c"><i><svg class="ic"><use href="#i-chat"/></svg></i>লাইভ চ্যাট</button><button data-t="sv"><i><svg class="ic"><use href="#i-save"/></svg></i>সেভিংস</button><button data-t="ln"><i><svg class="ic"><use href="#i-loan"/></svg></i>লোন</button><button id="inst" type="button" hidden><i><svg class="ic"><use href="#i-install"/></svg></i>অ্যাপ ইনস্টল</button></div>
+<div id="adw" hidden><div class="ads" id="adt"></div></div>
+<div class="promo" id="pr"><b id="pr1">২৪/৭ সেবা</b><br><span id="pr2">সমস্যায় হেল্পলাইন ১২১</span></div>
+<div class="promo" id="npb" hidden style="background:linear-gradient(135deg,#0f9d8a,#0b6e7f);display:flex;justify-content:space-between;align-items:center;gap:10px"><span><svg class="ic" style="display:inline;vertical-align:-5px;margin-right:6px;width:20px;height:20px"><use href="#i-bell"/></svg>অর্ডার ও ব্যালেন্সের খবর ফোনে পেতে নোটিফিকেশন চালু করুন</span><button type="button" id="npb2" style="border:0;background:#fff;color:#0b6e7f;font-weight:700;padding:8px 14px;border-radius:10px;white-space:nowrap">চালু করুন</button></div>
+<h2 style="font-size:18px;margin:20px 0 8px">সাম্প্রতিক লেনদেন</h2><div class="pk" id="hx"></div>
+<p style="text-align:center"><button class="lk" data-t="h">সব দেখুন →</button></p>
+</div>
+<div class="box" id="pay" hidden>
+<h3 id="ft" style="margin:0 0 4px"></h3>
+<form onsubmit="return false">
+<div id="vr"><div class="lb">অপারেটর</div><div class="chips" id="ops"></div>
+<div class="row"><div><label for="rn">মোবাইল নম্বর</label><input id="rn" inputmode="numeric" maxlength="11" placeholder="01XXXXXXXXX"></div>
+<div><label for="rt">সংযোগ</label><select id="rt"><option>প্রিপেইড</option><option>পোস্টপেইড</option></select></div></div>
+<label for="ra">পরিমাণ (৳)</label><input id="ra" inputmode="numeric" placeholder="যেমন ৩০০"><div class="chips" id="qa" style="margin-top:8px"></div></div>
+<div id="vb" hidden>
+<div class="row"><div><label for="bc">বিলের ধরন</label><select id="bc"></select></div><div><label for="bo">কোম্পানি</label><select id="bo"></select></div></div>
+<div class="row"><div><label for="ba">অ্যাকাউন্ট/মিটার নম্বর</label><input id="ba" maxlength="40"></div><div id="bmw"><label for="bm">বিলের মাস</label><select id="bm"></select></div></div>
+<div class="row"><div><label for="bn">যোগাযোগের মোবাইল</label><input id="bn" inputmode="numeric" maxlength="11"></div><div><label for="bv">বিলের পরিমাণ (৳)</label><input id="bv" inputmode="numeric"></div></div>
+<p class="hint">সার্ভিস চার্জ নিশ্চিতকরণের সময় দেখানো হবে।</p></div>
+<div id="vs" hidden><div class="lb">কোন অ্যাকাউন্টে পাঠাবেন</div><div class="chips" id="sm"></div>
+<div class="row"><div><label for="sn">প্রাপকের নম্বর</label><input id="sn" inputmode="numeric" maxlength="11"></div><div><label for="sa">পরিমাণ (৳)</label><input id="sa" inputmode="numeric"></div></div>
+<p class="hint">ব্যালেন্স থেকে কাটা হবে। চার্জ নিশ্চিতকরণের সময় দেখানো হবে। অ্যাডমিন পাঠালে "সম্পন্ন" দেখাবে।</p></div>
+<div id="va" hidden><p class="hint" id="mh" style="margin:0 0 6px"></p>
+<div id="qrw" hidden><div class="lb">কিউআর কোড স্ক্যান করে পেমেন্ট করুন</div><img id="qri" alt="পেমেন্ট QR কোড"><div style="text-align:center"><button type="button" class="sb" id="qrd">⬇ QR ডাউনলোড করুন</button></div></div>
+<div class="row"><div><label for="an">যে নম্বর থেকে টাকা পাঠিয়েছেন</label><input id="an" inputmode="numeric" maxlength="11"></div><div><label for="aa">পরিমাণ (৳)</label><input id="aa" inputmode="numeric"></div></div>
+<label for="at">ট্রানজেকশন আইডি (TrxID)</label><input id="at" maxlength="20" style="text-transform:uppercase">
+<p class="hint">অ্যাডমিন যাচাই করে ব্যালেন্সে যোগ করবেন।</p></div>
+<button class="go" id="go"></button>
+<div id="of"></div>
+</form></div>
+<div class="box" id="vh" hidden><h3 style="margin:0 0 4px">লেনদেনের হিস্ট্রি</h3><div id="tx"></div><h3 style="margin:22px 0 4px">ব্যালেন্স রিকোয়েস্ট</h3><div id="rq"></div></div>
+<div class="box" id="vn" hidden><h3 style="margin:0 0 6px">নোটিফিকেশন (সর্বশেষ ৫টি)</h3>
+<button class="sb" id="npm" type="button" hidden>🔔 ফোনে নোটিফিকেশন চালু করুন</button><p class="hint" id="npn" style="margin:6px 0 10px"></p><div id="nl"></div></div>
+<div class="box" id="vc" hidden><div id="cm" class="cm"></div>
+<div class="row" style="grid-template-columns:1fr auto;margin-top:10px"><input id="ci" maxlength="500" placeholder="মেসেজ লিখুন..."><button class="go" id="cs2" style="margin:0;width:auto;padding:0 18px;font-size:16px">পাঠান</button></div>
+<p class="hint">আমরা যত দ্রুত সম্ভব উত্তর দেব।</p></div>
+<div class="box" id="vsv" hidden><h3 style="margin:0 0 4px">সেভিংস</h3><p class="hint" style="margin:0">ব্যালেন্স থেকে টাকা জমা করুন, মেয়াদ শেষে বেশি পাবেন।</p>
+<div class="stabs" id="svk"><button data-k="dps" class="on">ডিপিএস</button><button data-k="fdr">এফডিআর (এককালীন)</button></div>
+<div id="svp"></div><h3 style="margin:18px 0 6px;font-size:17px">আমার সঞ্চয়</h3><div id="sva"></div></div>
+<div class="box" id="vln" hidden><h3 style="margin:0 0 4px">লোন</h3><p class="hint" style="margin:0">অনুমোদন পেলে ঋণের টাকা ব্যালেন্সে যোগ হবে। মুনাফাসহ পরিশোধ্য টাকা কিস্তিতে দিন।</p>
+<div id="lnp" style="margin-top:8px"></div><h3 style="margin:18px 0 6px;font-size:17px">আমার ঋণ</h3><div id="lna"></div></div>
+<div class="box" id="vp" hidden><h3 style="margin:0 0 8px">প্রোফাইল</h3>
+<div class="sm"><span>ইমেইল</span><b id="pe"></b></div><div class="sm"><span>মোবাইল</span><b id="pm"></b></div><div class="sm"><span>যোগ দিয়েছেন</span><b id="pd"></b></div>
+<label for="pn">নাম</label><input id="pn" maxlength="60" autocomplete="name"><button class="go" id="pns" style="padding:10px;font-size:16px;margin-top:10px">নাম সেভ করুন</button>
+<label for="p1">নতুন পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)</label><input id="p1" type="password" minlength="6" autocomplete="new-password"><button class="go" id="pps" style="padding:10px;font-size:16px;margin-top:10px">পাসওয়ার্ড বদলান</button>
+<p class="hint" style="text-align:center">অ্যাপ সংস্করণ ৯</p>
+<button class="go" id="pout" style="padding:10px;font-size:16px;background:var(--bad)">লগআউট</button></div>
+</main>
+<nav class="tabs" id="tb" aria-label="প্রধান মেনু"><button class="on" data-t="home"><span><svg class="ic"><use href="#i-home"/></svg></span>হোম</button><button data-t="h"><span><svg class="ic"><use href="#i-history"/></svg></span>হিস্ট্রি</button><button class="fab" data-t="s"><span><svg class="ic"><use href="#i-send"/></svg></span>পাঠান</button><button data-t="a"><span><svg class="ic"><use href="#i-add"/></svg></span>অ্যাড মানি</button><button data-t="p"><span><svg class="ic"><use href="#i-user"/></svg></span>প্রোফাইল</button></nav>
+</div>
+
+<div id="ad" hidden><main class="w">
+<h2>অ্যাডমিন প্যানেল</h2>
+<div class="pk"><div class="sm"><span>মোট গ্রাহক</span><b id="k1"></b></div><div class="sm"><span>মোট ব্যালেন্স</span><b id="k2"></b></div><div class="sm"><span>পেন্ডিং রিকোয়েস্ট / অর্ডার</span><b id="k3"></b></div></div>
+<h2>ব্যালেন্স রিকোয়েস্ট</h2><div class="pk" id="at1"></div>
+<h2>পেন্ডিং অর্ডার</h2><div class="pk" id="at4"></div>
+<h2>গ্রাহক ও ব্যালেন্স সমন্বয়</h2>
+<div class="pk"><div class="row"><div><label for="ju">গ্রাহক</label><select id="ju"></select></div><div><label for="ja">পরিমাণ (বিয়োগ হলে − দিন)</label><input id="ja" inputmode="decimal"></div></div><button class="go" id="jb" style="margin-top:10px;padding:10px;font-size:16px">সমন্বয় করুন</button></div>
+<div class="pk" id="at2" style="margin-top:10px"></div>
+<h2>সাম্প্রতিক লেনদেন</h2><div class="pk" id="at3"></div>
+<h2>মার্চেন্ট নম্বর</h2><div class="pk"><div class="row"><div><label for="cb">বিকাশ</label><input id="cb" maxlength="11"></div><div><label for="cn">নগদ</label><input id="cn" maxlength="11"></div></div><label for="cr">রকেট</label><input id="cr" maxlength="12"><button class="go" id="cs" style="padding:10px;font-size:16px">সেভ করুন</button></div>
+</main></div>
+<footer>© নেটলিংক টেলিকম</footer>
+
+<dialog id="dg"><h3 style="margin:0 0 8px">নিশ্চিত করুন</h3><div id="sum"></div>
+<label for="cp">আপনার পাসওয়ার্ড দিয়ে নিশ্চিত করুন</label><input id="cp" type="password" autocomplete="current-password">
+<div class="bt"><button id="no">বাতিল</button><button class="ok" id="yes">নিশ্চিত</button></div></dialog>
+<dialog id="nd"><h3 style="margin:0 0 8px">📢 নোটিফিকেশন</h3><div id="ndt" style="white-space:pre-wrap;word-break:break-word"></div><div class="bt"><button id="ndx" type="button">বন্ধ করুন</button></div></dialog>
+<div id="ncam" hidden><video id="nvid" playsinline muted></video><div class="nguide" id="ng"></div><div class="nmsg" id="nmsg"></div>
+<div class="nbar"><button type="button" id="nx">বাতিল</button><button type="button" id="nsnap" class="nbtn" aria-label="ছবি তুলুন"></button><span style="width:78px"></span></div></div>
+<div id="toast" popover="manual"></div>
+
+<script>
+document.getElementById('st').textContent='';window.onerror=function(m){document.getElementById('st').textContent='ত্রুটি: '+m};
+// ====== এখানে আপনার Supabase তথ্য বসান (Project Settings > API) ======
+const SUPABASE_URL='https://hdyzypxswjopyagouwpw.supabase.co';
+const SUPABASE_ANON_KEY='sb_publishable_WMry2OnjCdMuah2eQPboxA_idjWksIC';
+// ==================================================================
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{global:{fetch:(u,o)=>fetch(u,{...o,cache:'no-store'})}});
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const D='০১২৩৪৫৬৭৮৯',bn=n=>String(n).replace(/\d/g,d=>D[d]),en=s=>String(s).replace(/[০-৯]/g,d=>D.indexOf(d));
+const E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ok=n=>/^01[3-9]\d{8}$/.test(en(n)),M=n=>'৳'+bn(+n);
+const dt=t=>new Date(t).toLocaleString('bn-BD');
+const OPS=['গ্রামীণফোন','রবি','বাংলালিংক','এয়ারটেল','টেলিটক'],PFX={7:0,3:0,8:1,9:2,4:2,6:3,5:4};
+const BILL={'বিদ্যুৎ':['নেসকো প্রিপেইড','নেসকো পোস্টপেইড','ডেসকো','ডিপিডিসি','নেসকো','পল্লী বিদ্যুৎ'],'গ্যাস':['তিতাস গ্যাস','বাখরাবাদ গ্যাস','জালালাবাদ গ্যাস'],'পানি':['ঢাকা ওয়াসা','চট্টগ্রাম ওয়াসা','খুলনা ওয়াসা'],'ইন্টারনেট':['লিংক৩','আমরা নেটওয়ার্কস','ক্যারিয়ার ব্রডব্যান্ড'],'ল্যান্ডফোন':['বিটিসিএল']};
+const MN=['জানুয়ারি','ফেব্রুয়ারি','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর'];
+const PAYS={'বিকাশ':'bkash','নগদ':'nagad','রকেট':'rocket'},PN={bkash:'বিকাশ',nagad:'নগদ',rocket:'রকেট',qr:'QR পেমেন্ট'};
+const KIND={recharge:'রিচার্জ',bill:'বিল পে',send:'সেন্ড মানি',topup:'ব্যালেন্স যোগ',adjust:'অ্যাডমিন সমন্বয়',refund:'টাকা ফেরত',commission:'কমিশন',saving:'সঞ্চয় জমা',saving_out:'সঞ্চয় ফেরত/মেয়াদপূর্তি',loan_in:'ঋণ গ্রহণ',loan_pay:'ঋণ পরিশোধ'};
+const ST={pending:['প্রক্রিয়াধীন','ps'],completed:['সম্পন্ন','pa'],refunded:['ফেল · টাকা ফেরত','pr'],approved:['যোগ হয়েছে','pa'],rejected:['বাতিল','pr']};
+let me=null,tab='r',op='',sm='বিকাশ',am='বিকাশ',mode='in',cfg={},pend=null,timer=null,busy=false;
+const toast=t=>{const x=$('#toast');x.textContent=t;x.style.display='block';try{if(x.matches(':popover-open'))x.hidePopover();x.showPopover()}catch(e){}clearTimeout(x._t);x._t=setTimeout(()=>{x.style.display='none';try{x.hidePopover()}catch(e){}},4000)};
+const chips=(id,list,cur,fn)=>{$(id).innerHTML=list.map(v=>`<button type="button" class="${v===cur?'on':''}">${v}</button>`).join('');$(id).onclick=e=>{if(e.target.tagName==='BUTTON'){$$(id+' button').forEach(b=>b.classList.toggle('on',b===e.target));fn(e.target.textContent)}}};
+function weakPw(p,c){c=c||{};p=String(p||'');const L=p.length,lo=p.toLowerCase(),num=/^\d+$/.test(p);
+const common=['password','password1','123456789','1234567890','qwerty','qwerty123','qwertyuiop','abc123','abcdef','iloveyou','admin123','welcome','letmein','bangladesh','netlink','nesco123','111222','112233','121212','123123','123321','159753','520520','696969','1q2w3e','1q2w3e4r','asdfgh','asdfghjk','zxcvbn'];
+if(common.includes(lo))return 'এটা খুব সহজ ও পরিচিত পাসওয়ার্ড।';
+if(/^(.)\1+$/.test(p))return 'একই অক্ষর বারবার (যেমন ১১১১১১) চলবে না।';
+for(let b=1;b<=L/2;b++){if(L%b===0&&p.slice(0,b).repeat(L/b)===p)return 'একই অংশ বারবার (যেমন ১২১২১২, ১২৩১২৩) চলবে না।'}
+if(L<=10&&p===p.split('').reverse().join(''))return 'সোজা-উল্টো একই (যেমন ১২৩৩২১) চলবে না।';
+if('qwertyuiopasdfghjklzxcvbnm'.includes(lo)||'mnbvcxzlkjhgfdsapoiuytrewq'.includes(lo))return 'কীবোর্ডের সারি (যেমন qwerty) চলবে না।';
+if(num){
+if(new Set(p).size<4)return 'কমপক্ষে ৪টা আলাদা অঙ্ক থাকতে হবে।';
+const d=[...p].map(Number),st=((d[1]-d[0])+10)%10;let ar=true;for(let i=1;i<L;i++){if(((d[i]-d[i-1])+10)%10!==st){ar=false;break}}
+if(ar)return 'ধারাবাহিক সংখ্যা (যেমন ১২৩৪৫৬, ৬৫৪৩২১) চলবে না।';
+for(const k of [2,3]){if(L%k===0&&L/k>=3){const v=[];for(let i=0;i<L;i+=k)v.push(+p.slice(i,i+k));const df=v[1]-v[0];let ok=true;for(let i=2;i<v.length;i++){if(v[i]-v[i-1]!==df){ok=false;break}}if(ok)return 'ধারাবাহিক জোড়া সংখ্যা (যেমন ১০১১১২, ১০২০৩০) চলবে না।'}}}
+if(/^[a-z]+$/.test(lo)){const df=lo.charCodeAt(1)-lo.charCodeAt(0);if(Math.abs(df)===1){let ok=true;for(let i=1;i<L;i++){if(lo.charCodeAt(i)-lo.charCodeAt(i-1)!==df){ok=false;break}}if(ok)return 'ধারাবাহিক অক্ষর (যেমন abcdef) চলবে না।'}}
+const ph=String(c.phone||'').replace(/\D/g,''),nid=String(c.nid||'').replace(/\D/g,''),em=String(c.email||'').split('@')[0].toLowerCase();
+if(ph&&(p===ph||(num&&ph.endsWith(p))||(ph.includes(p)&&L>=6)))return 'মোবাইল নম্বরের অংশ পাসওয়ার্ড হিসেবে চলবে না।';
+if(nid&&num&&(nid.includes(p)||p.includes(nid.slice(-6))))return 'NID নম্বরের অংশ চলবে না।';
+if(em.length>=4&&lo.includes(em))return 'ইমেইলের নাম পাসওয়ার্ডে রাখা যাবে না।';
+return ''}
+const WPM=r=>'⚠ সহজ পাসওয়ার্ড: '+r+' অনুমান করা কঠিন এমন পাসওয়ার্ড দিন।';
+const errMsg=e=>{const m=e?.message||'';if(m==='not due')return 'এখনও কিস্তির সময় হয়নি।';if(m==='completed')return 'সব কিস্তি আগেই দেওয়া হয়েছে।';if(m==='not complete')return 'সব কিস্তি না দিলে টাকা নেওয়া যায় না।';if(m==='not matured')return 'এখনও মেয়াদ পূর্ণ হয়নি।';if(m==='loan exists')return 'আপনার একটা ঋণ আগেই চালু বা আবেদনাধীন আছে।';if(m==='plan not found')return 'প্ল্যানটি আর পাওয়া যাচ্ছে না।';if(m==='limit reached')return 'সর্বোচ্চ ১০টা চালু সঞ্চয় রাখা যায়।';if(/weak password/i.test(m))return 'সহজ বা সিরিয়াল পাসওয়ার্ড চলবে না।';if(/nid used|profiles_nid/i.test(m))return 'এই NID নম্বর দিয়ে আগেই আবেদন বা অ্যাকাউন্ট আছে।';if(/Bucket not found/i.test(m))return 'সার্ভারে ছবি রাখার জায়গা তৈরি হয়নি (অ্যাডমিন SQL সংস্করণ ১৪ রান করুন)।';if(/Could not find the function|schema cache/i.test(m))return 'সার্ভার আপডেট হয়নি (অ্যাডমিন নতুন SQL রান করুন)।';if(/invalid dob/i.test(m))return 'জন্ম তারিখ ঠিক নয় (বয়স ১৮ বছর বা বেশি হতে হবে)।';if(/invalid nid/i.test(m))return 'NID নম্বর ঠিক নয়।';if(/row-level security|Unauthorized/i.test(m)&&/storage|object/i.test(m))return 'ছবি জমা দেওয়ার অনুমতি নেই (SQL সংস্করণ ১৪ রান হয়েছে কি দেখুন)।';if(/already registered/i.test(m))return 'এই ইমেইলে আগেই অ্যাকাউন্ট আছে।';if(/Database error saving/i.test(m))return 'এই মোবাইল নম্বর বা ইমেইলে আগেই অ্যাকাউন্ট আছে।';if(/invalid email/.test(m))return 'সঠিক ইমেইল দিন।';if(/invalid phone/.test(m))return 'সঠিক মোবাইল নম্বর দিন।';if(/invalid nid/.test(m))return 'NID নম্বর ১০, ১৩ বা ১৭ অঙ্কের হতে হবে।';if(/no match/.test(m))return 'এই ইমেইল ও মোবাইলে কোনো গ্রাহক নেই।';if(/not approved/.test(m))return 'অনুরোধ এখনও অনুমোদিত নয় বা সময় শেষ।';if(/too fast/.test(m))return 'একটু ধীরে পাঠান।';if(/Database error saving new user/i.test(m))return 'এই মোবাইল বা ইমেইল দিয়ে আগেই অ্যাকাউন্ট আছে।';if(/account pending/.test(m))return 'আপনার অ্যাকাউন্ট এখনও অনুমোদিত হয়নি।';if(/already registered|User already/i.test(m))return 'এই ইমেইল আগেই ব্যবহৃত।';if(/blocked/.test(m))return 'আপনার অ্যাকাউন্ট ব্লক করা আছে।';if(/insufficient/.test(m))return 'ব্যালেন্স কম। আগে ব্যালেন্স যোগ করুন।';if(/duplicate|unique/.test(m))return 'এই তথ্য আগেই ব্যবহৃত হয়েছে (TrxID/মোবাইল)।';if(/forbidden/.test(m))return 'আপনার অনুমতি নেই।';if(/Invalid login/i.test(m))return 'ইমেইল বা পাসওয়ার্ড ভুল (অথবা এই ইমেইলে অ্যাকাউন্ট নেই)।';if(/not confirmed/i.test(m))return 'ইমেইল কনফার্ম হয়নি। মেইলের লিংকে ক্লিক করুন।';if(/rate limit/i.test(m))return 'অনেকবার চেষ্টা হয়েছে। কিছুক্ষণ পর আবার করুন।';return 'ব্যর্থ: '+(m||'আবার চেষ্টা করুন।')};
+
+const DEF_OFF={'গ্রামীণফোন':[['১ জিবি · ৭ দিন',49],['৫ জিবি · ৭ দিন',149],['১৫ জিবি · ৩০ দিন',349],['২০০ মিনিট · ৩০ দিন',179]],'রবি':[['১ জিবি · ৭ দিন',48],['৫ জিবি · ৭ দিন',147],['১৫ জিবি · ৩০ দিন',345],['৩০০ মিনিট · ৩০ দিন',199]],'বাংলালিংক':[['১ জিবি · ৭ দিন',47],['৬ জিবি · ৭ দিন',146],['১৬ জিবি · ৩০ দিন',348],['২৫০ মিনিট · ৩০ দিন',189]],'এয়ারটেল':[['১ জিবি · ৭ দিন',46],['৫ জিবি · ৭ দিন',145],['১৫ জিবি · ৩০ দিন',340]],'টেলিটক':[['১ জিবি · ৭ দিন',39],['৫ জিবি · ৭ দিন',129],['২০ জিবি · ৩০ দিন',299]]};
+function offs(){let o=DEF_OFF;try{if(cfg.offers)o=JSON.parse(cfg.offers)}catch(e){}return o}
+function showOffers(){const l=op?(offs()[op]||[]):[];$('#of').innerHTML=l.length?`<div class="lb" style="margin-top:10px">${E(op)} এর অফার (ট্যাপ করে বেছে নিন)</div><div class="of">`+l.map(x=>`<button type="button" data-p="${+x[1]}" data-n="${E(x[0])}"><span>${E(x[0])}</span><b>${M(x[1])}</b></button>`).join('')+'</div>':''}
+$('#of').onclick=e=>{const b=e.target.closest('[data-p]');if(b){selOff=b.dataset.n;selPrice=+b.dataset.p;selOp=op;$('#ra').value=bn(b.dataset.p);$('#ra').scrollIntoView({behavior:'smooth',block:'center'})}};
+let chT=null,selOff='',selPrice=0,selOp='';
+
+function sysNote(x){if(!('Notification' in window)||Notification.permission!=='granted')return;const o={body:x.body,icon:'icon-192.png',badge:'icon-192.png',tag:'nl'+x.id};
+if(navigator.serviceWorker&&navigator.serviceWorker.ready)navigator.serviceWorker.ready.then(r=>r.showNotification(x.title,o)).catch(()=>{try{new Notification(x.title,o)}catch(e){}});else{try{new Notification(x.title,o)}catch(e){}}}
+function npState(){const sup='Notification' in window,p=sup?Notification.permission:'';$('#npm').hidden=!(sup&&p==='default');$('#npb').hidden=!(sup&&p==='default'&&!!cfg.vapid_public);
+$('#npn').textContent=!sup?'এই ব্রাউজারে সমর্থন নেই। iPhone-এ অ্যাপটি Home Screen-এ ইনস্টল করে খুলতে হয়।':p==='granted'?(cfg.vapid_public?'✅ ফোনে নোটিফিকেশন চালু আছে (অ্যাপ বন্ধ থাকলেও আসবে)।':'✅ ফোনে নোটিফিকেশন চালু আছে (অ্যাপ খোলা বা ব্যাকগ্রাউন্ডে থাকলে আসবে)।'):p==='denied'?'নোটিফিকেশন বন্ধ করা আছে। ব্রাউজার বা ফোনের সেটিংস থেকে চালু করুন।':'নতুন আপডেট ফোনে পেতে চালু করুন।'}
+function notifRender(l){const un=l.filter(x=>!x.read).length;$('#bell').hidden=false;$('#nbg').textContent=un?' '+bn(un):'';$('#nbg').style.color=un?'#ff8a00':'';
+$('#nl').innerHTML=l.length?l.slice(0,5).map(x=>`<div class="nt${x.read?'':' un'}"><b>${E(x.title)}${x.read?'':' <small class="ps">নতুন</small>'}</b><span class="bd">${E(x.body).replace(/\n/g,'<br>')}</span><span class="tm">${dt(x.created_at)}</span></div>`).join(''):'<p class="hint">কোনো নোটিফিকেশন নেই।</p>';
+let ln=-1;try{const v=localStorage.getItem('nl_ln');ln=v===null?-1:+v}catch(e){}const mx=l.reduce((m,x)=>Math.max(m,x.id),0);
+if(ln<0)ln=mx;else{l.filter(x=>x.id>ln&&!x.read).reverse().forEach(sysNote);if(mx>ln)ln=mx}
+try{localStorage.setItem('nl_ln',String(ln))}catch(e){}npState()}
+const urlB64=b=>{const p='='.repeat((4-b.length%4)%4),r=atob((b+p).replace(/-/g,'+').replace(/_/g,'/'));return Uint8Array.from([...r].map(c=>c.charCodeAt(0)))};
+async function pushSub(){if(!me||!cfg.vapid_public||!('serviceWorker' in navigator)||!('PushManager' in window)||!('Notification' in window)||Notification.permission!=='granted')return;
+const reg=await navigator.serviceWorker.ready,key=urlB64(cfg.vapid_public);let sub=await reg.pushManager.getSubscription();
+if(!sub){try{sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:key})}catch(e){return}}
+let j=sub.toJSON();let r=await sb.rpc('save_push_sub',{p_endpoint:j.endpoint,p_p256dh:j.keys.p256dh,p_auth:j.keys.auth});
+if(r.error){try{await sub.unsubscribe();sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:key});j=sub.toJSON();await sb.rpc('save_push_sub',{p_endpoint:j.endpoint,p_p256dh:j.keys.p256dh,p_auth:j.keys.auth})}catch(e){}}}
+async function dropPush(){window._ps=0;try{const reg=await navigator.serviceWorker.ready,sub=await reg.pushManager.getSubscription();if(sub)await sb.rpc('drop_push_sub',{p_endpoint:sub.endpoint})}catch(e){}}
+async function markRead(){if(tab!=='n')return;await sb.rpc('mark_notifications_read');load()}
+$('#bell').onclick=()=>{setTab('n');scrollTo(0,0)};
+$('#npb2').onclick=()=>{if('Notification' in window)Notification.requestPermission().then(()=>{npState();pushSub().catch(()=>{})})};
+$('#npm').onclick=()=>{if('Notification' in window)Notification.requestPermission().then(()=>{npState();pushSub().catch(()=>{})})};
+async function chatLoad(){if(!me)return;const{data}=await sb.from('chat_messages').select('*').eq('user_id',me.id).order('created_at').limit(100);const el=$('#cm'),nb=el.scrollTop+el.clientHeight>=el.scrollHeight-40;
+el.innerHTML=(data||[]).length?data.map(m=>`<div class="${m.sender==='user'?'me':''}">${E(m.body)}<small>${m.sender==='admin'?'অ্যাডমিন · ':''}${dt(m.created_at)}</small></div>`).join(''):'<p class="hint">কোনো মেসেজ নেই। নিচে লিখে পাঠান।</p>';if(nb)el.scrollTop=el.scrollHeight}
+function chatOpen(){chatLoad().then(()=>{$('#cm').scrollTop=1e9});clearInterval(chT);chT=setInterval(chatLoad,4000)}
+$('#cs2').onclick=async()=>{const t=$('#ci').value.trim();if(!t)return;$('#cs2').disabled=true;const{error}=await sb.rpc('send_chat',{p_body:t});$('#cs2').disabled=false;if(error)return toast(errMsg(error));$('#ci').value='';await chatLoad();$('#cm').scrollTop=1e9};
+$('#ci').onkeydown=e=>{if(e.key==='Enter')$('#cs2').click()};
+let dp=null;const ios=/iphone|ipad/i.test(navigator.userAgent)&&!navigator.standalone,lkOk=()=>/^https?:\/\//i.test(cfg.app_link||'');
+const instUI=()=>{$('#inst').hidden=!(cfg.app_install!=='off'&&(dp||ios||lkOk())&&!matchMedia('(display-mode: standalone)').matches)};
+function promo(){const t=cfg.promo_t??'২৪/৭ সেবা',b=cfg.promo_b??'সমস্যায় হেল্পলাইন ১২১';$('#pr').hidden=!t&&!b;$('#pr1').textContent=t;$('#pr2').textContent=b}
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;instUI()});
+addEventListener('appinstalled',()=>{dp=null;$('#inst').hidden=true});
+$('#inst').onclick=async()=>{if(lkOk())window.open(cfg.app_link,'_blank','noopener');else if(dp){dp.prompt();await dp.userChoice;dp=null;instUI()}else toast('Safari-তে নিচের শেয়ার বাটন চেপে "Add to Home Screen" বাছুন।')};
+if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+let SP=[],SA=[],LP=[],LN=[],ADS=[],svk='dps';
+const fd=x=>new Date(x).toLocaleDateString('bn-BD');
+function askPin(rows,fn,args,msg){pend={rpc:fn,args,msg,total:0};$('#sum').innerHTML=rows.map(r=>`<div class="sm"><span>${r[0]}</span><b>${r[1]}</b></div>`).join('');$('#cp').value='';$('#dg').showModal()}
+const FQ={daily:['দৈনিক','দিন'],weekly:['সাপ্তাহিক','সপ্তাহ'],monthly:['মাসিক','মাস']},fq=f=>FQ[f]||FQ.monthly,FO=['daily','weekly','monthly'],fo=(x,y)=>FO.indexOf(x.freq||'monthly')-FO.indexOf(y.freq||'monthly'),addP=(d,f,n)=>{d=new Date(d);if(f==='daily')d.setDate(d.getDate()+n);else if(f==='weekly')d.setDate(d.getDate()+7*n);else d.setMonth(d.getMonth()+n);return d};
+function renderSV(){$$('#svk button').forEach(b=>b.classList.toggle('on',b.dataset.k===svk));const pl=SP.filter(x=>x.kind===svk).sort(fo);
+$('#svp').innerHTML=pl.length?pl.map(x=>{const dep=x.kind==='dps'?x.amount*x.months:+x.amount;return `<div class="pk" style="margin-bottom:8px"><b>${E(x.title)}</b><br>${x.kind==='dps'?`${fq(x.freq)[0]} জমা ${M(x.amount)} × ${bn(x.months)} ${fq(x.freq)[1]}`:`এককালীন জমা ${M(x.amount)} · মেয়াদ ${bn(x.months)} ${fq(x.freq)[1]}`}<br>মেয়াদ শেষে পাবেন <b class="pa">${M(x.maturity)}</b> <small>(মুনাফা ${M(x.maturity-dep)})</small><br><button class="sb" data-sv="${x.id}" style="margin-top:6px">${x.kind==='dps'?'ডিপিএস':'এফডিআর'} শুরু করুন</button></div>`}).join(''):'<p class="hint">এই ধরনের কোনো প্ল্যান এখন চালু নেই।</p>';
+$('#sva').innerHTML=SA.length?SA.map(a=>{const now=Date.now(),due=addP(a.started_at,a.freq,a.paid_count);const left=a.inst_total-a.paid_count,ended=now>=new Date(a.end_at).getTime();let act='';
+if(a.status==='active'){if(a.kind==='dps'&&left>0)act=now>=due.getTime()?`<button class="sb g" data-pay="${a.id}">কিস্তি দিন ${M(a.amount)}</button>`:`<small>পরের কিস্তি: ${fd(due)}</small>`;else if(left<=0)act=ended?`<button class="sb g" data-claim="${a.id}">${M(a.maturity)} নিন</button>`:`<small>মেয়াদ শেষ: ${fd(a.end_at)}</small>`}
+const st={active:['চালু','ps'],paid_out:['টাকা নেওয়া হয়েছে','pa'],closed:['বন্ধ','pr']}[a.status]||[a.status,''];
+return `<div class="sm" style="align-items:flex-start"><span><b>${E(a.title)}</b> <small>${a.kind==='dps'?'ডিপিএস':'এফডিআর'} · ${fq(a.freq)[0]}</small><br><small>জমা ${M(a.paid_total)} · কিস্তি ${bn(a.paid_count)}/${bn(a.inst_total)} · মেয়াদশেষে ${M(a.maturity)}</small><br><small>শুরু ${fd(a.started_at)} · শেষ ${fd(a.end_at)}</small></span><span><small class="${st[1]}">${st[0]}</small><br>${act}</span></div>`}).join(''):'<p class="hint">এখনও কোনো সঞ্চয় শুরু করেননি।</p>'}
+function renderLN(){$('#lnp').innerHTML=LP.length?[...LP].sort(fo).map(x=>`<div class="pk" style="margin-bottom:8px"><b>${E(x.title)}</b><br>${fq(x.freq)[0]} ঋণ <b>${M(x.amount)}</b> · মেয়াদ ${bn(x.months)} ${fq(x.freq)[1]}<br>মুনাফাসহ মোট পরিশোধ্য <b class="pr">${M(x.payable)}</b> <small>(মুনাফা ${M(x.payable-x.amount)})</small><br>${fq(x.freq)[0]} কিস্তি প্রায় ${M(Math.ceil(x.payable/x.months))}<br><button class="sb" data-la="${x.id}" style="margin-top:6px">আবেদন করুন</button></div>`).join(''):'<p class="hint">এখন কোনো ঋণ প্ল্যান চালু নেই।</p>';
+$('#lna').innerHTML=LN.length?LN.map(l=>{const left=l.payable-l.paid_total,late=l.status==='active'&&l.next_due&&new Date(l.next_due)<new Date();const st={pending:['অনুমোদনের অপেক্ষায়','ps'],active:[late?'কিস্তি বকেয়া':'চালু',late?'pr':'ps'],paid:['পরিশোধিত','pa'],rejected:['বাতিল','pr']}[l.status]||[l.status,''];
+const act=l.status==='active'?`<button class="sb g" data-lp="${l.id}">কিস্তি ${M(Math.min(l.installment,left))}</button><br><button class="sb" data-lf="${l.id}">সম্পূর্ণ ${M(left)}</button>`:'';
+return `<div class="sm" style="align-items:flex-start"><span><b>${E(l.title)}</b><br><small>${fq(l.freq)[0]} · ঋণ ${M(l.principal)} · মোট পরিশোধ্য ${M(l.payable)}</small><br><small>পরিশোধ ${M(l.paid_total)} · বাকি ${M(left)}${l.status==='active'&&l.next_due?' · পরের কিস্তি '+fd(l.next_due):''}</small>${l.status==='rejected'&&l.note?`<br><small class="pr">কারণ: ${E(l.note)}</small>`:''}</span><span><small class="${st[1]}">${st[0]}</small><br>${act}</span></div>`}).join(''):'<p class="hint">কোনো ঋণ নেই।</p>'}
+function renderAds(){const l=ADS.filter(x=>/^https:\/\//.test(x.image_url||''));$('#adw').hidden=!l.length;
+$('#adt').innerHTML=l.map(x=>{const lk=/^https?:\/\//i.test(x.link||'')?x.link:'',im=`<img src="${E(x.image_url)}" alt="বিজ্ঞাপন" loading="lazy">`;return lk?`<a class="ad" href="${E(lk)}" target="_blank" rel="noopener">${im}</a>`:`<div class="ad">${im}</div>`}).join('')}
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches)setInterval(()=>{const el=$('#adt');if(!el||$('#adw').hidden||ADS.length<2||document.hidden)return;const w=el.clientWidth,i=Math.round(el.scrollLeft/w);el.scrollTo({left:((i+1)%ADS.length)*w,behavior:'smooth'})},4000);
+$('#vsv').onclick=e=>{const k=e.target.closest('[data-k]');if(k){svk=k.dataset.k;return renderSV()}
+const sv=e.target.closest('[data-sv]'),pay=e.target.closest('[data-pay]'),cl=e.target.closest('[data-claim]');
+if(sv){const x=SP.find(p=>p.id==sv.dataset.sv);if(!x)return;if(me.balance<x.amount)return toast(`ব্যালেন্স কম। দরকার ${M(x.amount)}, আছে ${M(me.balance)}।`);
+return askPin([['প্ল্যান',E(x.title)],['এখনই কাটবে',M(x.amount)],['মেয়াদ',bn(x.months)+' '+fq(x.freq)[1]],['মেয়াদ শেষে পাবেন',M(x.maturity)]],'sav_start',{p_plan:x.id},'সঞ্চয় শুরু হয়েছে')}
+if(pay){const a=SA.find(p=>p.id==pay.dataset.pay);if(!a)return;if(me.balance<a.amount)return toast(`ব্যালেন্স কম। দরকার ${M(a.amount)}।`);return askPin([['সঞ্চয়',E(a.title)],['কিস্তি',M(a.amount)]],'sav_pay',{p_acc:a.id},'কিস্তি জমা হয়েছে')}
+if(cl){const a=SA.find(p=>p.id==cl.dataset.claim);if(!a)return;return askPin([['সঞ্চয়',E(a.title)],['ব্যালেন্সে যোগ হবে',M(a.maturity)]],'sav_claim',{p_acc:a.id},'মেয়াদপূর্তির টাকা ব্যালেন্সে যোগ হয়েছে')}};
+$('#vln').onclick=e=>{const la=e.target.closest('[data-la]'),lp=e.target.closest('[data-lp]'),lf=e.target.closest('[data-lf]');
+if(la){const x=LP.find(p=>p.id==la.dataset.la);if(!x)return;return askPin([['প্ল্যান',E(x.title)],['ঋণ (অনুমোদনে ব্যালেন্সে আসবে)',M(x.amount)],['মোট পরিশোধ্য',M(x.payable)],['মেয়াদ',bn(x.months)+' '+fq(x.freq)[1]]],'loan_apply',{p_plan:x.id},'আবেদন জমা হয়েছে। অনুমোদন হলে টাকা ব্যালেন্সে আসবে।')}
+const b=lp||lf;if(!b)return;const l=LN.find(p=>p.id==(b.dataset.lp||b.dataset.lf));if(!l)return;const left=l.payable-l.paid_total,amt=lf?left:Math.min(l.installment,left);
+if(me.balance<amt)return toast(`ব্যালেন্স কম। দরকার ${M(amt)}, আছে ${M(me.balance)}।`);
+return askPin([['ঋণ',E(l.title)],[lf?'সম্পূর্ণ পরিশোধ':'কিস্তি',M(amt)],['পরিশোধের পর বাকি',M(left-amt)]],'loan_pay',{p_loan:l.id,p_full:!!lf},lf?'ঋণ সম্পূর্ণ পরিশোধ হয়েছে':'কিস্তি জমা হয়েছে')};
+let bal=0,shown=false;const renderBal=()=>{$('#bv0').textContent=shown?M(bal):'৳ ••••'};
+// ---- সেটআপ
+chips('#ops',OPS,'',v=>{op=v;showOffers()});chips('#sm',Object.keys(PAYS),sm,v=>sm=v);
+$('#qa').innerHTML=[20,50,100,200,500].map(a=>`<button type="button">${bn(a)}</button>`).join('');
+$('#qa').onclick=e=>{if(e.target.tagName==='BUTTON')$('#ra').value=e.target.textContent};
+$('#bc').innerHTML=Object.keys(BILL).map(k=>`<option>${k}</option>`).join('');
+function mm(){const pre=/প্রিপেইড/.test($('#bo').value);$('#bmw').hidden=pre;$('#bmw').parentElement.style.gridTemplateColumns=pre?'1fr':'';$('#ba').previousElementSibling.textContent=pre?'কনজিউমার/মিটার নম্বর (প্রিপেইড)':'কনজিউমার/অ্যাকাউন্ট নম্বর'}
+const fb=()=>{$('#bo').innerHTML=((window.BL||BILL)[$('#bc').value]||[]).map(k=>`<option>${E(k)}</option>`).join('');mm()};fb();$('#bc').onchange=fb;$('#bo').onchange=mm;
+function buildBill(){let B=BILL;try{if(cfg.bill_cfg)B=JSON.parse(cfg.bill_cfg)}catch(e){}window.BL=B;
+const cs=$('#bc').value;$('#bc').innerHTML=Object.keys(B).map(k=>`<option>${E(k)}</option>`).join('');if(B[cs])$('#bc').value=cs;fb();
+const n=Math.min(12,Math.max(1,+cfg.bill_months||3)),d=new Date(),cm=$('#bm').value;
+$('#bm').innerHTML=Array.from({length:n},(_,i)=>{const x=new Date(d.getFullYear(),d.getMonth()-i,1);return `<option>${MN[x.getMonth()]} ${bn(x.getFullYear())}</option>`}).join('');if(cm)$('#bm').value=cm}
+buildBill();
+$('#rn').oninput=e=>{const n=en(e.target.value);if(n.length>=3&&PFX[n[2]]!==undefined){op=OPS[PFX[n[2]]];$$('#ops button').forEach(b=>b.classList.toggle('on',b.textContent===op));showOffers()}};
+const merch=()=>{const q=cfg.qr_all||'',ok=/^https:\/\//.test(q);$('#qrw').hidden=!ok;if(ok&&$('#qri').getAttribute('src')!==q)$('#qri').src=q;
+$('#mh').textContent=ok?'১) নিচের QR স্ক্যান করে পেমেন্ট করুন। ২) তারপর পেমেন্টের তথ্য দিয়ে রিকোয়েস্ট পাঠান।':'এখনও QR সেট করা হয়নি। অ্যাডমিনের সাথে যোগাযোগ করুন।'};
+$('#qrd').onclick=async()=>{const u=$('#qri').src;try{const r=await fetch(u),b=await r.blob(),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='qr-payment'+(b.type==='image/jpeg'?'.jpg':'.png');document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000)}catch(e){window.open(u,'_blank','noopener');toast('ছবিটা চেপে ধরে "Save image" করুন।')}};
+function setTab(t){tab=t;const f='rbsa'.indexOf(t)>=0,T={r:'মোবাইল রিচার্জ',b:'বিল পে',s:'সেন্ড মানি',a:'অ্যাড মানি',h:'হিস্ট্রি',p:'প্রোফাইল',c:'লাইভ চ্যাট',n:'নোটিফিকেশন',sv:'সেভিংস',ln:'লোন'};
+$$('#tb button').forEach(b=>b.classList.toggle('on',b.dataset.t===t&&!b.classList.contains('fab')));
+$('#hero').hidden=$('#vhome').hidden=t!=='home';$('#bar').hidden=t==='home';$('#bt0').textContent=T[t]||'';
+['r','b','s','a'].forEach(k=>$('#v'+k).hidden=k!==t);$('#pay').hidden=!f;$('#vh').hidden=t!=='h';$('#vp').hidden=t!=='p';$('#vc').hidden=t!=='c';$('#vn').hidden=t!=='n';$('#vsv').hidden=t!=='sv';$('#vln').hidden=t!=='ln';if(t==='n')setTimeout(markRead,1500);$('#of').hidden=t!=='r';if(t==='c')chatOpen();else clearInterval(chT);
+$('#ft').textContent={r:'রিচার্জের তথ্য',b:'বিলের তথ্য',s:'কাকে পাঠাবেন',a:'ব্যালেন্সে টাকা যোগ'}[t]||'';
+$('#go').textContent={r:'রিচার্জ করুন',b:'বিল পরিশোধ করুন',s:'টাকা পাঠান',a:'রিকোয়েস্ট পাঠান'}[t]||''}
+$$('#tb button').forEach(b=>b.onclick=()=>{setTab(b.dataset.t);scrollTo(0,0)});setTab('home');
+$('#vhome').onclick=e=>{const b=e.target.closest('[data-t]');if(b){setTab(b.dataset.t);scrollTo(0,0)}};$('#bkb').onclick=()=>{setTab('home');scrollTo(0,0)};
+$('#bc0').onclick=()=>{shown=!shown;renderBal()};$('#bc0').onkeydown=e=>{if(e.key==='Enter'){shown=!shown;renderBal()}};
+$('#ab').onclick=e=>{e.stopPropagation();setTab('a');scrollTo(0,0)};
+$('#th').onclick=()=>{const r=document.documentElement,d=r.dataset.theme==='dark'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme:dark)').matches);r.dataset.theme=d?'light':'dark'};
+
+// ---- অ্যাকাউন্ট (লগইন, সাইন আপ, পাসওয়ার্ড ভুলে গেলে, অতিথি চ্যাট)
+$('#pws').onclick=()=>{const p=$('#pw');p.type=p.type==='password'?'text':'password'};
+$('#ag').onclick=async()=>{const email=$('#em').value.trim(),password=$('#pw').value;if(!email||password.length<6)return toast('ইমেইল ও কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দিন।');
+$('#ag').disabled=true;try{const{error}=await sb.auth.signInWithPassword({email,password});if(error)throw error}catch(e){toast(errMsg(e))}finally{$('#ag').disabled=false}};
+function showNews(t){if(!t)return;$('#ndt').textContent=t;$('#nd').showModal()}
+$('#news').onclick=()=>showNews($('#nt').textContent);$('#ndx').onclick=()=>$('#nd').close();
+// পাসওয়ার্ড ভুলে গেলে (অ্যাডমিন অনুমোদন লাগে)
+$('#fgb').onclick=()=>{$('#fpb').hidden=!$('#fpb').hidden};
+const fpv=()=>{const e=$('#fpe').value.trim(),p=en($('#fpp').value);if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)||!ok(p)){$('#fpm').textContent='সঠিক ইমেইল ও মোবাইল নম্বর দিন।';return null}return{e,p}};
+$('#fpr').onclick=()=>{const v=fpv();if(!v)return;$('#fpv').hidden=false;$('#fpm').textContent='নিচের তথ্য দিয়ে যাচাই করুন।'};
+$('#fpy').onclick=async()=>{const v=fpv();if(!v)return;const bal=parseFloat(en($('#fpbl').value)),nid=en($('#fpni').value).replace(/\D/g,''),dob=$('#fpdb').value;
+if(isNaN(bal)||bal<0)return toast('বর্তমান ব্যালেন্স দিন (০ হলে ০ লিখুন)।');if(nid.length<10)return toast('NID নম্বর দিন।');if(!dob)return toast('জন্ম তারিখ দিন।');
+$('#fpy').disabled=true;const{data,error}=await sb.rpc('verify_password_reset',{p_email:v.e,p_phone:v.p,p_balance:bal,p_nid:nid,p_dob:dob});$('#fpy').disabled=false;
+if(error){$('#fpm').textContent=errMsg(error);return}
+if(data==='approved'){$('#fpn').hidden=false;$('#fpm').textContent='✅ তথ্য মিলেছে। নিচে নতুন পাসওয়ার্ড দিন (২৪ ঘণ্টার মধ্যে)।'}else{$('#fpn').hidden=true;$('#fpm').textContent='⏳ তথ্য যাচাই করা যায়নি। আপনার অনুরোধ অ্যাডমিনের অনুমোদনের অপেক্ষায় আছে। অনুমোদন হলে "অবস্থা দেখুন" চাপুন।'}};
+$('#fpc').onclick=async()=>{const v=fpv();if(!v)return;const{data,error}=await sb.rpc('password_request_status',{p_email:v.e,p_phone:v.p});if(error){$('#fpm').textContent=errMsg(error);return}
+const t=String(data||'none');$('#fpn').hidden=t!=='approved';
+$('#fpm').textContent=t==='approved'?'✅ অনুমোদিত। নিচে নতুন পাসওয়ার্ড দিন (২৪ ঘণ্টার মধ্যে)।':t==='pending'?'⏳ অ্যাডমিনের অনুমোদনের অপেক্ষায়।':t.startsWith('rejected')?'❌ বাতিল হয়েছে। কারণ: '+(t.split(':')[1]||'—'):t==='expired'?'সময় শেষ। নতুন অনুরোধ করুন।':t==='used'?'এই অনুরোধ ব্যবহার হয়ে গেছে। দরকার হলে নতুন অনুরোধ করুন।':'কোনো অনুরোধ পাওয়া যায়নি।'};
+$('#fpd').onclick=async()=>{const v=fpv();if(!v)return;const pw=$('#fpw').value;if(pw.length<6)return toast('কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দিন।');{const wp=weakPw(pw,{phone:v.p,email:v.e});if(wp)return toast(WPM(wp))}
+const{error}=await sb.rpc('complete_password_reset',{p_email:v.e,p_phone:v.p,p_new:pw});if(error)return toast(errMsg(error));$('#fpw').value='';$('#fpn').hidden=true;$('#fpm').textContent='✅ পাসওয়ার্ড বদলেছে। এখন লগইন করুন।';$('#em').value=v.e};
+// নতুন অ্যাকাউন্ট: NID + লাইভ সেলফি (ব্লিঙ্কে ছবি)
+let kycBusy=false,ocrF=false,ocrB=false,nidBlob=null,nidBackBlob=null,selfieBlob=null,camStream=null,camOn=false,flm=null;
+$('#pkyc').onclick=async()=>{await sb.auth.signOut();setTimeout(()=>{if($('#suw').hidden)$('#sub').click();toast('একই ইমেইল ও পাসওয়ার্ড দিয়ে আবার তথ্য দিন।');$('#suw').scrollIntoView({behavior:'smooth'})},500)};
+$('#sub').onclick=()=>{const w=$('#suw');w.hidden=!w.hidden;$('#sub').textContent=w.hidden?'নতুন অ্যাকাউন্ট খুলুন':'বন্ধ করুন';if(!w.hidden)suGo(1)};
+async function toCanvas(f,max){const bm=await createImageBitmap(f),k=Math.min(1,max/Math.max(bm.width,bm.height)),c=document.createElement('canvas');c.width=Math.round(bm.width*k);c.height=Math.round(bm.height*k);c.getContext('2d').drawImage(bm,0,0,c.width,c.height);return c}
+const cBlob=(c,q)=>new Promise(r=>c.toBlob(r,'image/jpeg',q||.82));
+function parseNid(t){const o={};let m=t.match(/(?:ID\s*NO|NID\s*No)[^\d]{0,8}([\d ]{10,22})/i)||t.match(/\b(\d{3}\s?\d{3}\s?\d{4}(?:\s?\d{3})?(?:\s?\d{4})?)\b/);if(m)o.nid=m[1].replace(/\s/g,'');
+m=t.match(/Name[:\s]+([A-Z][A-Za-z.'\- ]{3,60})/);if(m)o.name=m[1].trim().replace(/\s+/g,' ');
+m=t.match(/(\d{1,2})\s*(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*[,\s]+(\d{4})/i);if(m){const i=['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'].indexOf(m[2].toLowerCase());o.dob=m[3]+'-'+String(i+1).padStart(2,'0')+'-'+m[1].padStart(2,'0')}return o}
+async function loadTess(){if(window.Tesseract)return;await new Promise((res,rej)=>{const sc=document.createElement('script');sc.src='https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';sc.onload=res;sc.onerror=rej;document.head.appendChild(sc)})}
+function parseBn(t){const o={},cl=v=>(v||'').replace(/[^\u0980-\u09FF\s.]/g,' ').replace(/\s+/g,' ').trim();let m=t.match(/পিতা\s*[:：।ঃ]?\s*([^\n]+)/);if(m&&cl(m[1]).length>2)o.father=cl(m[1]);m=t.match(/মাতা\s*[:：।ঃ]?\s*([^\n]+)/);if(m&&cl(m[1]).length>2)o.mother=cl(m[1]);return o}
+async function readNid(c){try{await loadTess();const g=document.createElement('canvas');g.width=c.width;g.height=c.height;const x=g.getContext('2d');x.filter='grayscale(1) contrast(1.4)';x.drawImage(c,0,0);
+const lg=p=>m=>{if(m.status==='recognizing text')$('#ocs').textContent=p+' '+bn(Math.round(m.progress*100))+'%'};
+const r=await Tesseract.recognize(g,'eng',{logger:lg('NID পড়া হচ্ছে...')});
+const o=parseNid(r.data.text||''),got=[];if(o.name&&!$('#sun').value){$('#sun').value=o.name;got.push('নাম')}if(o.dob&&!$('#sudb').value){$('#sudb').value=o.dob;got.push('জন্ম তারিখ')}if(o.nid&&!$('#sunid').value){$('#sunid').value=o.nid;got.push('NID নম্বর')}
+try{const rb=await Tesseract.recognize(g,'ben',{logger:lg('বাংলা লেখা (পিতা-মাতা) পড়া হচ্ছে...')});const b=parseBn(rb.data.text||'');if(b.father&&!$('#suf').value){$('#suf').value=b.father;got.push('পিতার নাম')}if(b.mother&&!$('#sumo').value){$('#sumo').value=b.mother;got.push('মাতার নাম')}}catch(e){}
+$('#ocs').textContent=got.length?'✅ NID থেকে পাওয়া গেছে: '+got.join(', ')+'। সঠিক কি না দেখে নিন, ভুল হলে ঠিক করুন।':'⚠ লেখা পড়া যায়নি। আরও পরিষ্কার ছবি দিন বা পরের ধাপে ঘরগুলো হাতে লিখুন।'}catch(e){$('#ocs').textContent='⚠ অটো পড়া যায়নি। পরের ধাপে ঘরগুলো হাতে লিখুন।'}}
+let ocrQ=Promise.resolve();const queueOcr=f=>(ocrQ=ocrQ.then(f,f));
+function parseAddr(t){const lines=t.split('\n').map(x=>x.trim()).filter(Boolean),cl=v=>(v||'').replace(/[^\u0980-\u09FF0-9\s,.\-:\/]/g,' ').replace(/\s+/g,' ').trim(),i=lines.findIndex(l=>/ঠিকানা/.test(l));if(i<0)return '';
+const out=[],first=cl(lines[i].replace(/^.*ঠিকানা\s*[:：।ঃ]?\s*/,''));if(first.length>2)out.push(first);
+for(let j=i+1;j<lines.length&&out.length<5;j++){const l=lines[j];if(/জন্মস্থান|রক্তের|Blood|Place of Birth|মুদ্রণ|প্রদানকারী|Issue|সংশ্লিষ্ট/i.test(l))break;const c=cl(l);if(c.length>2)out.push(c)}
+return out.join(', ').replace(/(,\s*)+/g,', ').slice(0,150)}
+async function readBack(c){try{await loadTess();const g=document.createElement('canvas');g.width=c.width;g.height=c.height;const x=g.getContext('2d');x.filter='grayscale(1) contrast(1.4)';x.drawImage(c,0,0);
+const r=await Tesseract.recognize(g,'ben',{logger:m=>{if(m.status==='recognizing text')$('#ocb').textContent='ঠিকানা পড়া হচ্ছে... '+bn(Math.round(m.progress*100))+'%'}});
+const a=parseAddr(r.data.text||'');if(a&&!$('#suad').value){$('#suad').value=a;$('#ocb').textContent='✅ পিছনের পাতা থেকে ঠিকানা পাওয়া গেছে। সঠিক কি না দেখে নিন, ভুল হলে ঠিক করুন।'}else $('#ocb').textContent=a?'ঠিকানা আগে থেকেই লেখা আছে।':'⚠ ঠিকানা পড়া যায়নি। পরের ধাপে হাতে লিখুন।'}catch(e){$('#ocb').textContent='⚠ ঠিকানা অটো পড়া যায়নি। পরের ধাপে হাতে লিখুন।'}}
+async function setNid(c,w){const b=await cBlob(c,.85);if(w==='f'){nidBlob=b;ocrF=false;$('#nidp').src=URL.createObjectURL(b);$('#nidp').hidden=false;chk1();$('#ocs').textContent='NID পড়া হচ্ছে (প্রথমবার ১-২ মিনিট লাগতে পারে)...';await queueOcr(()=>readNid(c));ocrF=true;chk1()}else{nidBackBlob=b;ocrB=false;$('#nidbp').src=URL.createObjectURL(b);$('#nidbp').hidden=false;chk1();$('#ocb').textContent='ঠিকানা পড়ার অপেক্ষায়...';await queueOcr(()=>readBack(c));ocrB=true;chk1()}}
+let ncS=null,ncW='f';
+async function ncOpen(w){ncW=w;try{ncS=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1080}},audio:false});const v=$('#nvid');v.srcObject=ncS;await v.play();$('#nmsg').textContent=(w==='f'?'NID-এর সামনের পাতা':'NID-এর পিছনের পাতা')+' ফ্রেমের ভেতরে রাখুন';$('#ncam').hidden=false}catch(e){ncStop();toast('ক্যামেরা চালু হয়নি। ব্রাউজারের ক্যামেরা অনুমতি দিন।')}}
+function ncStop(){if(ncS){ncS.getTracks().forEach(t=>t.stop());ncS=null}$('#ncam').hidden=true}
+$('#nx').onclick=ncStop;
+$('#nsnap').onclick=async()=>{const v=$('#nvid');if(!v.videoWidth)return;const gr=$('#ng').getBoundingClientRect(),vr=v.getBoundingClientRect(),sc=Math.max(vr.width/v.videoWidth,vr.height/v.videoHeight),ox=(vr.width-v.videoWidth*sc)/2,oy=(vr.height-v.videoHeight*sc)/2;
+let sx=Math.max(0,(gr.left-vr.left-ox)/sc),sy=Math.max(0,(gr.top-vr.top-oy)/sc),sw=gr.width/sc,sh=gr.height/sc;sw=Math.min(sw,v.videoWidth-sx);sh=Math.min(sh,v.videoHeight-sy);
+const k=Math.min(1,1400/sw),c=document.createElement('canvas');c.width=Math.round(sw*k);c.height=Math.round(sh*k);c.getContext('2d').drawImage(v,sx,sy,sw,sh,0,0,c.width,c.height);const w=ncW;ncStop();await setNid(c,w)};
+$('#nidc').onclick=()=>ncOpen('f');$('#nidbc').onclick=()=>ncOpen('b');
+async function loadFL(){if(flm)return flm;const base='https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14',m=await import(base+'/vision_bundle.mjs'),v=await m.FilesetResolver.forVisionTasks(base+'/wasm');
+const mk=d=>m.FaceLandmarker.createFromOptions(v,{baseOptions:{modelAssetPath:'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task',delegate:d},runningMode:'VIDEO',numFaces:1,outputFaceBlendshapes:true});
+try{flm=await mk('GPU')}catch(e){flm=await mk('CPU')}return flm}
+function camStop(){camOn=false;if(camStream)camStream.getTracks().forEach(t=>t.stop());camStream=null;$('#vbox').hidden=true;$('#cam2').hidden=true}
+async function snap(auto){const v=$('#vid');if(!camOn||!v.videoWidth)return;const c=document.createElement('canvas'),k=Math.min(1,720/Math.max(v.videoWidth,v.videoHeight));c.width=Math.round(v.videoWidth*k);c.height=Math.round(v.videoHeight*k);c.getContext('2d').drawImage(v,0,0,c.width,c.height);
+selfieBlob=await cBlob(c,.85);$('#susub').disabled=false;$('#sfp').src=URL.createObjectURL(selfieBlob);$('#sfp').hidden=false;camStop();$('#cst').textContent=auto?'✅ চোখের পাতা ফেলতেই ছবি উঠেছে':'✅ ছবি উঠেছে';$('#cam1').textContent='🔄 আবার তুলুন'}
+$('#cam2').onclick=()=>snap(false);
+$('#cam1').onclick=async()=>{if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){$('#cst').textContent='এই ব্রাউজারে ক্যামেরা চালানো যায় না।';return}
+$('#sfp').hidden=true;selfieBlob=null;$('#susub').disabled=true;$('#cst').textContent='ক্যামেরা চালু হচ্ছে...';
+try{camStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:720},height:{ideal:960}},audio:false})}catch(e){$('#cst').textContent='ক্যামেরার অনুমতি দিন (ব্রাউজার/ফোনের সেটিংস)।';return}
+const v=$('#vid');v.srcObject=camStream;await v.play();$('#vbox').hidden=false;$('#cam2').hidden=false;camOn=true;$('#cst').textContent='ফেস মডেল লোড হচ্ছে...';
+try{const f=await loadFL();$('#cst').textContent='সামনে সোজা তাকান, তারপর চোখের পাতা ফেলুন 👁';let st='wait',n=0;
+const loop=()=>{if(!camOn)return;if(v.readyState>=2){const r=f.detectForVideo(v,performance.now()),b=r.faceBlendshapes&&r.faceBlendshapes[0]&&r.faceBlendshapes[0].categories;
+if(b){const g=k=>(b.find(c=>c.categoryName===k)||{}).score||0,e=(g('eyeBlinkLeft')+g('eyeBlinkRight'))/2;
+if(st==='wait'){if(e<.2&&++n>8)st='open'}else if(st==='open'){if(e>.5)st='closed'}else if(st==='closed'&&e<.25){st='done';setTimeout(()=>snap(true),350)}}else{n=0;if(st==='wait')$('#cst').textContent='মুখ ক্যামেরার সামনে আনুন'}}
+requestAnimationFrame(loop)};loop()}catch(e){$('#cst').textContent='অটো ব্লিঙ্ক চালু হয়নি। "ছবি তুলুন (হাতে)" বাটন চাপুন।'}};
+const chk1=()=>{$('#sv1').disabled=!(nidBlob&&nidBackBlob&&ocrF&&ocrB)};
+function suGo(n){[1,2,3].forEach(i=>$('#sw'+i).hidden=i!==n);$('#sprog').textContent=['','ধাপ ১/৩ · NID কার্ডের ছবি','ধাপ ২/৩ · যাচাই করুন','ধাপ ৩/৩ · লাইভ সেলফি'][n];if(n!==3)camStop();$('#suw').scrollIntoView({behavior:'smooth'})}
+function suCheck(){const g=id=>$('#'+id).value.trim(),name=g('sun'),phone=en(g('suph')),nid=en(g('sunid')),email=g('suem'),pw=$('#supw').value;
+if(name.length<3)return 'নাম লিখুন।';if(!/^(\d{10}|\d{13}|\d{17})$/.test(nid))return 'NID নম্বর ১০, ১৩ বা ১৭ অঙ্কের হতে হবে।';if(!g('sudb'))return 'জন্ম তারিখ দিন।';if(!ok(phone))return 'সঠিক মোবাইল নম্বর দিন।';
+if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email))return 'সঠিক ইমেইল দিন।';if(pw.length<6)return 'পাসওয়ার্ড কমপক্ষে ৬ অক্ষর।';const wp=weakPw(pw,{phone,nid,email});if(wp)return WPM(wp);if(pw!==$('#supw2').value)return 'দুটো পাসওয়ার্ড মেলেনি।';if(!$('#suok').checked)return 'সম্মতির বক্সে টিক দিন।';return ''}
+$('#sv1').onclick=()=>{if(!nidBlob||!nidBackBlob)return toast('NID-এর সামনে ও পিছনের ছবি দিন।');suGo(2)};
+$('#sb2').onclick=()=>suGo(1);$('#sb3').onclick=()=>suGo(2);
+$('#sv2').onclick=async()=>{const er=suCheck();if(er)return toast(er);$('#sv2').disabled=true;try{const r=await sb.rpc('nid_taken',{p_nid:en($('#sunid').value.trim())});if(r.error&&!/Could not find|schema cache/i.test(r.error.message||''))return toast(errMsg(r.error));if(r.data===true)return toast('এই NID নম্বর দিয়ে আগেই আবেদন বা অ্যাকাউন্ট আছে। একই NID দুইবার ব্যবহার করা যায় না।')}finally{$('#sv2').disabled=false}suGo(3);$('#cam1').click()};
+$('#susub').onclick=async()=>{const g=id=>$('#'+id).value.trim();
+if(!nidBlob||!nidBackBlob)return toast('NID-এর সামনে ও পিছনের ছবি দিন।');if(!selfieBlob)return toast('লাইভ সেলফি তুলুন।');const er=suCheck();if(er)return toast(er);
+const name=g('sun'),phone=en(g('suph')),nid=en(g('sunid')),email=g('suem'),pw=$('#supw').value;
+kycBusy=true;$('#susub').disabled=true;$('#sust').textContent='জমা হচ্ছে...';
+try{let{data,error}=await sb.auth.signUp({email,password:pw,options:{data:{name,phone}}});
+if(error&&/already registered|already been registered/i.test(error.message||'')){const r0=await sb.auth.signInWithPassword({email,password:pw});if(r0.error)throw new Error('এই ইমেইল আগেই ব্যবহৃত। আগে দেওয়া পাসওয়ার্ড দিন বা অন্য ইমেইল ব্যবহার করুন।');data=r0.data;error=null}
+if(error)throw error;
+if(!data.session){$('#sust').textContent='⚠ ইমেইল কনফার্মেশন চালু আছে। অ্যাডমিনকে Supabase-এ "Confirm email" বন্ধ করতে বলুন।';return}
+const uid=data.user.id,p1=uid+'/nid.jpg',p3=uid+'/nid_back.jpg',p2=uid+'/selfie.jpg';
+let r=await sb.storage.from('kyc').upload(p1,nidBlob,{contentType:'image/jpeg'});if(r.error)throw r.error;
+r=await sb.storage.from('kyc').upload(p3,nidBackBlob,{contentType:'image/jpeg'});if(r.error)throw r.error;
+r=await sb.storage.from('kyc').upload(p2,selfieBlob,{contentType:'image/jpeg'});if(r.error)throw r.error;
+r=await sb.rpc('submit_kyc',{p_nid:nid,p_dob:g('sudb'),p_father:g('suf'),p_mother:g('sumo'),p_address:g('suad'),p_nid_path:p1,p_nid_back_path:p3,p_selfie_path:p2});if(r.error)throw r.error;
+$('#sust').textContent='✅ আবেদন জমা হয়েছে। অ্যাডমিন অনুমোদন করলে জানানো হবে।';kycBusy=false;const{data:{session:s2}}=await sb.auth.getSession();boot(s2)}catch(e){$('#sust').textContent='❌ '+errMsg(e)+' (আবার "জমা দিন" চাপতে পারেন)'}finally{kycBusy=false;$('#susub').disabled=!selfieBlob}};
+// লগইন ছাড়া লাইভ চ্যাট (অতিথি)
+const gid=(()=>{let k=null;try{k=localStorage.getItem('nl_gid')}catch(e){}if(!k){k=crypto.randomUUID();try{localStorage.setItem('nl_gid',k)}catch(e){}}return k})();let gT=null;
+async function gcLoad(){const{data}=await sb.rpc('guest_fetch',{p_guest:gid}),el=$('#gcm'),nb=el.scrollTop+el.clientHeight>=el.scrollHeight-40;
+el.innerHTML=(data||[]).length?data.map(m=>`<div class="${m.sender==='user'?'me':''}">${E(m.body)}<small>${m.sender==='admin'?'সাপোর্ট · ':''}${dt(m.created_at)}</small></div>`).join(''):'<p class="hint">প্রশ্ন লিখুন, আমরা উত্তর দেব।</p>';if(nb)el.scrollTop=el.scrollHeight}
+$('#gcb').onclick=()=>{$('#gcp').hidden=false;$('#gcb').hidden=true;gcLoad().then(()=>{$('#gcm').scrollTop=1e9});clearInterval(gT);gT=setInterval(gcLoad,4000)};
+$('#gcx').onclick=()=>{$('#gcp').hidden=true;$('#gcb').hidden=false;clearInterval(gT)};
+$('#gcs').onclick=async()=>{const t=$('#gci').value.trim();if(!t)return;$('#gcs').disabled=true;const{error}=await sb.rpc('guest_send',{p_guest:gid,p_name:$('#gcn').value.trim(),p_body:t});$('#gcs').disabled=false;if(error)return toast(errMsg(error));$('#gci').value='';await gcLoad();$('#gcm').scrollTop=1e9};
+$('#gci').onkeydown=e=>{if(e.key==='Enter')$('#gcs').click()};
+$('#out').onclick=async()=>{await dropPush();sb.auth.signOut()};
+sb.auth.onAuthStateChange((ev,s)=>{setTimeout(()=>boot(s),0)});
+
+async function boot(s){if(s&&kycBusy)return;clearInterval(timer);
+if(!s){me=null;['app','ad','pend'].forEach(i=>{const e=document.getElementById(i);if(e)e.hidden=true});$('#lg').hidden=false;$('#gcb').hidden=false;$('#gcp').hidden=true;pubLoad();$('#out').hidden=$('#adm').hidden=$('#bell').hidden=true;$('#who').textContent='';return}
+$('#lg').hidden=true;clearInterval(gT);camStop();$('#out').hidden=false;
+await load();timer=setInterval(load,20000)}
+async function showPending(p){$('#app').hidden=true;$('#pend').hidden=false;$('#who').textContent=p.name||'';$('#out').hidden=false;$('#bell').hidden=true;
+$('#pt1').textContent=p.status==='pending'?'⏳ আপনার আবেদন অ্যাডমিনের অনুমোদনের অপেক্ষায়':'❌ আপনার আবেদন বাতিল হয়েছে';
+$('#pt2').textContent=p.status==='pending'?'অনুমোদন হলে এখানে ও নোটিফিকেশনে জানানো হবে। এই পেজ নিজে থেকে আপডেট হয়।':'কারণ: '+(p.status_note||'—');
+const need=(p.status==='pending'&&!p.submitted_at)||p.status==='rejected';$('#pkyc').hidden=!need;if(p.status==='pending'&&!p.submitted_at){$('#pt1').textContent='⚠ আপনার NID ও সেলফি জমা হয়নি';$('#pt2').textContent='আবেদন সম্পূর্ণ করতে নিচের বাটন চেপে আবার তথ্য দিন (একই ইমেইল ও পাসওয়ার্ড ব্যবহার করুন)।'}
+const{data}=await sb.from('notifications').select('*').eq('user_id',p.id).order('created_at',{ascending:false}).limit(5);
+$('#pnl').innerHTML=(data||[]).map(x=>`<div class="nt"><b>${E(x.title)}</b><span class="bd">${E(x.body).replace(/\n/g,'<br>')}</span><span class="tm">${dt(x.created_at)}</span></div>`).join('')}
+async function load(){if(busy)return;
+const{data:{session:ss}}=await sb.auth.getSession();if(!ss)return;const{data:p,error}=await sb.from('profiles').select('*').eq('id',ss.user.id).maybeSingle();if(error||!p)return;if(p.blocked){toast('আপনার অ্যাকাউন্ট ব্লক করা হয়েছে। অ্যাডমিনের সাথে যোগাযোগ করুন।');sb.auth.signOut();return}me=p;
+if(p.status&&p.status!=='active'&&!p.is_admin){await showPending(p);return}
+$('#pend').hidden=true;$('#app').hidden=false;
+$('#who').textContent=p.name||'';$('#hi').textContent='স্বাগতম, '+(p.name||'');bal=+p.balance;renderBal();$('#adm').hidden=!p.is_admin;$('#pe').textContent=p.email||'';$('#pm').textContent=bn(p.phone||'');$('#pd').textContent=dt(p.created_at);if(document.activeElement!==$('#pn'))$('#pn').value=p.name||'';
+if(!$('#an').value)$('#an').value=bn(p.phone||'');if(!$('#rn').value&&p.phone){$('#rn').value=bn(p.phone);$('#rn').dispatchEvent(new Event('input'))}
+const[st,tx,tp,nt,spq,saq,lpq,lnq,adq]=await Promise.all([sb.from('settings').select('*'),sb.from('transactions').select('*').eq('user_id',p.id).order('created_at',{ascending:false}).limit(50),sb.from('topups').select('*').eq('user_id',p.id).order('created_at',{ascending:false}).limit(20),sb.from('notifications').select('*').eq('user_id',p.id).order('created_at',{ascending:false}).limit(30),sb.from('savings_plans').select('*').eq('active',true).order('sort').order('id'),sb.from('savings_accounts').select('*').eq('user_id',p.id).order('id',{ascending:false}),sb.from('loan_plans').select('*').eq('active',true).order('sort').order('id'),sb.from('loans').select('*').eq('user_id',p.id).order('id',{ascending:false}),sb.from('ads').select('*').eq('active',true).order('sort').order('id',{ascending:false})]);
+cfg={};(st.data||[]).forEach(r=>cfg[r.key]=r.value);merch();buildBill();showOffers();promo();instUI();$('#news').hidden=!cfg.news;$('#nt').textContent=cfg.news||'';$('#nt').style.animationDuration=Math.max(14,(cfg.news||'').length*.3)+'s';
+$('#tx').innerHTML=(tx.data||[]).length?tx.data.map(t=>{const c=['topup','refund','commission','saving_out','loan_in'].includes(t.kind)||(t.kind==='adjust'&&t.amount>0),v=t.kind==='adjust'?Math.abs(t.amount):['refund','topup','commission','saving','saving_out','loan_in','loan_pay'].includes(t.kind)?+t.amount:+t.amount+ +t.fee;
+return `<div class="sm"><span>${KIND[t.kind]}<br><small>${E(t.details)}${t.txn_ref?' · TrxID: '+E(t.txn_ref):''} · ${dt(t.created_at)}</small>${t.fail_reason?'<br><small class="pr">কারণ: '+E(t.fail_reason)+'</small>':''}</span><b class="${c?'pa':''}">${c?'+':'−'}${M(v)}<br><small class="${ST[t.status][1]}">${ST[t.status][0]}</small></b></div>`}).join(''):'<p class="hint">এখনও কোনো লেনদেন নেই।</p>';
+notifRender(nt.data||[]);SP=spq.data||[];SA=saq.data||[];LP=lpq.data||[];LN=lnq.data||[];ADS=adq.data||[];renderSV();renderLN();renderAds();if(!window._ps){window._ps=1;pushSub().catch(()=>{})}
+{const c=[...$('#tx').children];$('#hx').innerHTML=c.length&&c[0].classList.contains('sm')?c.slice(0,3).map(e=>e.outerHTML).join(''):$('#tx').innerHTML}
+$('#rq').innerHTML=(tp.data||[]).length?tp.data.map(t=>`<div class="sm"><span>${PN[t.method]} · ${M(t.amount)}<br><small>${E(t.trx)} · ${dt(t.created_at)}</small>${t.reject_reason?'<br><small class="pr">কারণ: '+E(t.reject_reason)+'</small>':''}</span><b class="${ST[t.status][1]}">${ST[t.status][0]}</b></div>`).join(''):'<p class="hint">কোনো রিকোয়েস্ট নেই।</p>';
+if(p.is_admin){$('#cb').value=cfg.bkash||'';$('#cn').value=cfg.nagad||'';$('#cr').value=cfg.rocket||'';if(!$('#ad').hidden)loadAdmin()}}
+
+// ---- লেনদেন
+const FD={bill:{type:'percent',value:1,min:5,max:0},send:{type:'percent',value:1.5,min:5,max:0}};
+function calcAmt(p,a){if(!p)return 0;if(p.type==='percent'){let v=Math.round(a*(+p.value||0))/100;v=Math.max(v,+p.min||0);if(+p.max>0)v=Math.min(v,+p.max);return Math.round(v*100)/100}return +p.value||0}
+function ovOf(sv,k){const o=me&&me.fee_override;return(o&&o[sv]&&o[sv][k])||null}
+function feeOf(sv,a){let o={};try{if(cfg.fees)o=JSON.parse(cfg.fees)}catch(e){}const p=ovOf(sv,'charge')||(o[sv]&&o[sv].charge)||FD[sv]||{type:'fixed',value:0};return calcAmt(p,a)}
+function commOf(sv,a){const p=ovOf(sv,'commission');return p?calcAmt(p,a):0}
+$('#go').onclick=()=>{let rows;
+if(tab==='r'){const n=en($('#rn').value),a=+en($('#ra').value),pk=(selOff&&selOp===op&&selPrice===a)?selOff:'';if(!op)return toast('অপারেটর বেছে নিন।');if(!ok(n))return toast('সঠিক মোবাইল নম্বর দিন।');if(!a||a<10||a>1000)return toast('১০ থেকে ১০০০ টাকার মধ্যে দিন।');
+rows=[['অপারেটর',op+' ('+$('#rt').value+')'],['নম্বর',bn(n)],['পরিমাণ',M(a)]].concat(pk?[['প্যাকেজ',pk]]:[]).concat(feeOf('recharge',a)?[['চার্জ',M(feeOf('recharge',a))]]:[]);pend={rpc:'place_order',args:{p_kind:'recharge',p_details:op+' '+n+' '+$('#rt').value+(pk?' | প্যাকেজ: '+pk:''),p_amount:a},total:a+feeOf('recharge',a)}}
+else if(tab==='b'){const a=+en($('#bv').value),ac=$('#ba').value.trim();if(!ac)return toast('অ্যাকাউন্ট নম্বর দিন।');if(!ok($('#bn').value))return toast('যোগাযোগের সঠিক নম্বর দিন।');if(!a||a<10)return toast('সঠিক পরিমাণ দিন।');
+const f=feeOf('bill',a),pre=/প্রিপেইড/.test($('#bo').value),mo=pre?'প্রিপেইড':$('#bm').value;rows=[['কোম্পানি',$('#bo').value],['অ্যাকাউন্ট',E(ac)],pre?['ধরন','প্রিপেইড']:['মাস',mo],['বিল',M(a)],['চার্জ',M(f)]];
+pend={rpc:'place_order',args:{p_kind:'bill',p_details:$('#bo').value+' | '+ac+' | '+mo+' | '+en($('#bn').value),p_amount:a},total:a+f}}
+else if(tab==='s'){const n=en($('#sn').value),a=+en($('#sa').value);if(!ok(n))return toast('প্রাপকের সঠিক নম্বর দিন।');if(!a||a<10||a>25000)return toast('১০ থেকে ২৫,০০০ টাকার মধ্যে দিন।');
+const f=feeOf('send',a);rows=[[sm,bn(n)],['পরিমাণ',M(a)],['চার্জ',M(f)]];pend={rpc:'place_order',args:{p_kind:'send',p_details:sm+' '+n,p_amount:a},total:a+f}}
+else{const n=en($('#an').value),a=+en($('#aa').value),t=$('#at').value.trim().toUpperCase();if(!ok(n))return toast('সঠিক নম্বর দিন।');if(!a||a<10||a>50000)return toast('১০ থেকে ৫০,০০০ টাকার মধ্যে দিন।');if(t.length<6)return toast('TrxID দিন।');
+rows=[['মাধ্যম','QR পেমেন্ট'],['নম্বর',bn(n)],['পরিমাণ',M(a)],['TrxID',E(t)]].concat(feeOf('topup',a)?[['চার্জ (জমা থেকে কাটা হবে)',M(feeOf('topup',a))]]:[]);pend={rpc:'request_topup',args:{p_method:'qr',p_sender:n,p_amount:a,p_trx:t},total:0,top:1}}
+{const cm=commOf(pend.top?'topup':pend.args.p_kind,pend.args.p_amount);if(cm)rows.push([pend.top?'কমিশন (অনুমোদনে ব্যালেন্সে আসবে)':'কমিশন (সম্পন্ন হলে ব্যালেন্সে আসবে)',M(cm)])}
+if(!pend.top&&me.balance<pend.total)return toast(`ব্যালেন্স কম। দরকার ${M(pend.total)}, আছে ${M(me.balance)}।`);
+$('#sum').innerHTML=rows.map(r=>`<div class="sm"><span>${r[0]}</span><b>${r[1]}</b></div>`).join('')+(pend.top?'':`<div class="sm"><span>সর্বমোট</span><b>${M(pend.total)}</b></div>`);$('#cp').value='';$('#dg').showModal()};
+$('#no').onclick=()=>$('#dg').close();
+$('#yes').onclick=async()=>{const p=pend;if(!$('#cp').value)return toast('পাসওয়ার্ড দিন।');$('#yes').disabled=true;busy=true;
+try{const v=await sb.auth.signInWithPassword({email:me.email,password:$('#cp').value});if(v.error)return toast('পাসওয়ার্ড ভুল।');
+const{error}=await sb.rpc(p.rpc,p.args);if(error)throw error;$('#dg').close();
+toast(p.msg?('✅ '+p.msg):p.top?'✅ রিকোয়েস্ট পাঠানো হয়েছে। অ্যাডমিন যাচাই করবেন।':'✅ অর্ডার জমা হয়েছে। '+M(p.total)+' কাটা হয়েছে।');
+$$('#pay input').forEach(i=>{if(['ra','bv','ba','sn','sa','aa','at'].includes(i.id))i.value=''})}
+catch(e){toast(errMsg(e))}finally{$('#yes').disabled=false;busy=false;load()}};
+
+// ---- অ্যাডমিন
+$('#adm').onclick=()=>{const to=$('#ad').hidden;$('#ad').hidden=!to;$('#app').hidden=to;$('#adm').textContent=to?'গ্রাহক পেজ':'অ্যাডমিন';if(to)loadAdmin()};
+async function loadAdmin(){const[u,tp,tx]=await Promise.all([sb.from('profiles').select('*').order('created_at',{ascending:false}),
+sb.from('topups').select('*,profiles(name,phone)').eq('status','pending').order('created_at'),
+sb.from('transactions').select('*,profiles(name,phone)').order('created_at',{ascending:false}).limit(60)]);
+const us=u.data||[],tps=tp.data||[],txs=tx.data||[],po=txs.filter(t=>t.status==='pending'&&['recharge','bill','send'].includes(t.kind));
+const who=r=>E(r.profiles?.name)+' '+bn(E(r.profiles?.phone));
+$('#k1').textContent=bn(us.length);$('#k2').textContent=M(us.reduce((s,a)=>s+ +a.balance,0));$('#k3').textContent=bn(tps.length)+' / '+bn(po.length);
+$('#at1').innerHTML=tps.length?tps.map(t=>`<div class="sm"><span>${who(t)}<br>${PN[t.method]} · ${M(t.amount)}<br><small>থেকে ${bn(E(t.sender))} · ${E(t.trx)} · ${dt(t.created_at)}</small></span><span><button class="sb g" data-a="ap" data-i="${t.id}">অনুমোদন</button><button class="sb r" data-a="rj" data-i="${t.id}">বাতিল</button></span></div>`).join(''):'<p class="hint">কোনো পেন্ডিং রিকোয়েস্ট নেই।</p>';
+$('#at4').innerHTML=po.length?po.map(t=>`<div class="sm"><span>${who(t)}<br>${KIND[t.kind]} · ${M(t.amount)}<br><small>${E(t.details)}</small></span><span><button class="sb g" data-a="dn" data-i="${t.id}">সম্পন্ন</button><button class="sb r" data-a="rf" data-i="${t.id}">রিফান্ড</button></span></div>`).join(''):'<p class="hint">কোনো পেন্ডিং অর্ডার নেই।</p>';
+const sel=$('#ju').value;$('#ju').innerHTML=us.map(x=>`<option value="${x.id}">${E(x.name)} ${bn(E(x.phone))}</option>`).join('');if(sel)$('#ju').value=sel;
+$('#at2').innerHTML=us.map(x=>`<div class="sm"><span>${E(x.name)} ${x.is_admin?'⭐':''}<br><small>${bn(E(x.phone))} · ${E(x.email)}</small></span><b>${M(x.balance)}</b></div>`).join('');
+$('#at3').innerHTML=txs.slice(0,25).map(t=>`<div class="sm"><span>${who(t)}<br><small>${KIND[t.kind]} · ${E(t.details)} · ${dt(t.created_at)}</small></span><b>${M(t.amount)}<br><small class="${ST[t.status][1]}">${ST[t.status][0]}</small></b></div>`).join('')}
+$('#ad').onclick=async e=>{const b=e.target.closest('[data-a]');if(!b)return;const i=+b.dataset.i,a=b.dataset.a;
+let note=null;
+if(a==='dn'){note=(prompt('ট্রানজেকশন আইডি দিন (কমপক্ষে ৩ অক্ষর)')||'').trim();if(note.length<3)return toast('ট্রানজেকশন আইডি দিতে হবে।')}
+if(a==='rf'||a==='rj'){note=(prompt(a==='rf'?'ফেল করার কারণ লিখুন (টাকা গ্রাহকের ব্যালেন্সে ফেরত যাবে)':'বাতিলের কারণ লিখুন')||'').trim();if(note.length<3)return toast('কারণ লিখতে হবে (কমপক্ষে ৩ অক্ষর)।')}
+b.disabled=true;
+const m={ap:['admin_topup',{p_id:i,p_approve:true}],rj:['admin_topup',{p_id:i,p_approve:false,p_note:note}],dn:['admin_order',{p_id:i,p_status:'completed',p_note:note}],rf:['admin_order',{p_id:i,p_status:'refunded',p_note:note}]}[a];
+const{error}=await sb.rpc(...m);if(error)toast(errMsg(error));else toast('✅ হয়েছে');loadAdmin()};
+$('#jb').onclick=async()=>{const a=parseFloat(en($('#ja').value).replace('−','-').replace('–','-'));if(!$('#ju').value||!a)return toast('গ্রাহক ও পরিমাণ দিন।');
+const why=(prompt((a>0?'৳'+bn(a)+' যোগ হবে। ':'৳'+bn(Math.abs(a))+' কাটা হবে। ')+'কারণ লিখুন (গ্রাহক দেখতে পাবেন)')||'').trim();if(why.length<3)return toast('কারণ লিখতে হবে (কমপক্ষে ৩ অক্ষর)।');
+$('#jb').disabled=true;const{error}=await sb.rpc('admin_adjust',{p_user:$('#ju').value,p_amount:Math.round(a*100)/100,p_note:why});$('#jb').disabled=false;if(error)return toast(errMsg(error));$('#ja').value='';toast('✅ ব্যালেন্স আপডেট হয়েছে');loadAdmin()};
+$('#cs').onclick=async()=>{const{error}=await sb.from('settings').upsert([{key:'bkash',value:$('#cb').value.trim()},{key:'nagad',value:$('#cn').value.trim()},{key:'rocket',value:$('#cr').value.trim()}]);toast(error?errMsg(error):'✅ সেভ হয়েছে')};
+
+$('#pns').onclick=async()=>{const{error}=await sb.rpc('update_name',{p_name:$('#pn').value});toast(error?errMsg(error):'✅ নাম বদলানো হয়েছে');load()};
+$('#pps').onclick=async()=>{const v=$('#p1').value;if(v.length<6)return toast('কমপক্ষে ৬ অক্ষর দিন।');{const wp=weakPw(v,{phone:me&&me.phone,email:me&&me.email});if(wp)return toast(WPM(wp))}const{error}=await sb.auth.updateUser({password:v});if(error)return toast(errMsg(error));$('#p1').value='';toast('✅ পাসওয়ার্ড বদলানো হয়েছে')};
+$('#pout').onclick=async()=>{await dropPush();sb.auth.signOut()};
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&me)load()});
+sb.auth.getSession().then(({data})=>boot(data.session));
+</script>
+</body>
+</html>
