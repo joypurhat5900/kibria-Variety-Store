@@ -51,7 +51,7 @@ h2::before{content:"";width:4px;height:20px;border-radius:4px;background:linear-
 .sm[data-a="cu"]{cursor:pointer;border-radius:12px;transition:background .15s}.sm[data-a="cu"]:hover{background:rgba(106,61,240,.06)}
 .av{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;font-style:normal;font-weight:700;font-size:18px;color:#fff;background:linear-gradient(135deg,#8a5cff,#ff4d9d);flex:none}
 footer{margin-top:40px;padding:24px 0;border-top:1px solid var(--line);color:var(--mute);font-size:14px;text-align:center}
-#toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:14px 18px;border-radius:14px;max-width:92%;display:none;z-index:99;top:auto;right:auto;margin:0;border:0;width:max-content;overflow:visible;box-shadow:0 12px 30px rgba(0,0,0,.3)}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:14px 18px;border-radius:14px;max-width:92%;display:none;z-index:99;top:auto;right:auto;margin:0;border:0;width:max-content;overflow:visible;box-shadow:0 12px 30px rgba(0,0,0,.3)}
 dialog{border:0;border-radius:22px;background:var(--card);color:var(--ink);width:min(92%,420px);padding:22px;box-shadow:0 24px 60px rgba(0,0,0,.4);max-height:90vh;overflow:auto}
 dialog h3{font-size:19px}
 dialog::backdrop{background:rgba(20,10,60,.55);backdrop-filter:blur(2px)}
@@ -78,20 +78,20 @@ textarea{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radi
 .kc small{display:block;color:var(--mute);font-size:13px;line-height:1.35}.kc b{display:block;font-size:21px;line-height:1.35;color:var(--ink)}
 .kc.hot{border-color:rgba(229,56,79,.5)}.kc.hot b{color:var(--bad)}
 div.kc{cursor:default}
-/* নিচের নেভিগেশন */
-#ad main{padding-bottom:110px}
-#bn{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--card);border-top:1px solid var(--line);box-shadow:0 -8px 24px rgba(45,26,148,.1);padding:6px 0 calc(6px + env(safe-area-inset-bottom,0px))}
-#bn .w{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;padding:0 6px}
-#bn button{border:0;background:none;color:var(--mute);display:flex;flex-direction:column;align-items:center;gap:1px;padding:5px 2px;font-size:11px;font-weight:600;position:relative;border-radius:12px}
-#bn button em{font-style:normal}#bn button .ic{width:23px;height:23px}
-#bn button.on{color:var(--pri)}#bn button.on::after{content:"";position:absolute;top:-7px;width:28px;height:3px;border-radius:0 0 4px 4px;background:var(--pri)}
-.bd{position:absolute;top:0;right:calc(50% - 26px);background:var(--bad);color:#fff;font-size:10px;font-weight:700;line-height:1;padding:3px 6px;border-radius:10px;min-width:17px;text-align:center;font-style:normal}.bd:empty{display:none}
-#mmenu{position:fixed;inset:0;z-index:7}
-.mnb{position:absolute;inset:0;background:rgba(20,10,60,.45);backdrop-filter:blur(2px)}
-.mnp{position:absolute;left:12px;right:12px;bottom:calc(74px + env(safe-area-inset-bottom,0px));max-width:560px;margin:auto;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:16px 10px 10px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px 4px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
-.mnp button{border:0;background:none;color:var(--ink);display:flex;flex-direction:column;align-items:center;gap:6px;padding:6px 2px;font-size:12px;font-weight:600;border-radius:14px}.mnp button em{font-style:normal;text-align:center;line-height:1.25}
-.mnp button.on em{color:var(--pri)}
-.mi{width:50px;height:50px;border-radius:17px;display:grid;place-items:center;color:#fff;background:var(--g,linear-gradient(135deg,#8a5cff,#5b34e6));box-shadow:0 8px 14px -6px rgba(45,26,148,.55);position:relative;font-style:normal}.mi .ic{width:25px;height:25px}.mi .bd{top:-5px;right:-5px}
+/* ডানপাশের মেনু */
+#ad main{padding-bottom:40px}
+#rail{position:fixed;right:0;top:calc(60px + env(safe-area-inset-top,0px));bottom:0;width:76px;z-index:4;background:var(--card);border-left:1px solid var(--line);box-shadow:-6px 0 20px rgba(45,26,148,.08);overflow-y:auto;padding:8px 5px calc(10px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:2px;scrollbar-width:none}
+#rail::-webkit-scrollbar{display:none}
+#rail button{border:0;background:none;color:var(--mute);display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 2px 6px;border-radius:14px;font-size:10.5px;font-weight:600;line-height:1.2;position:relative}
+#rail button em{font-style:normal;text-align:center;word-break:break-word}
+#rail .ri{width:38px;height:38px;border-radius:13px;display:grid;place-items:center;position:relative;transition:background .15s,color .15s}
+#rail .ri .ic{width:22px;height:22px}
+#rail button.on{color:var(--pri)}
+#rail button.on .ri{background:linear-gradient(135deg,#6a3df0,#8a5cff);color:#fff;box-shadow:0 8px 14px -6px rgba(106,61,240,.7)}
+#rail button.on::before{content:"";position:absolute;right:-5px;top:12px;bottom:12px;width:3px;border-radius:3px 0 0 3px;background:var(--pri)}
+.bd{position:absolute;top:-4px;right:-5px;background:var(--bad);color:#fff;font-size:10px;font-weight:700;line-height:1;padding:3px 5px;border-radius:10px;min-width:17px;text-align:center;font-style:normal}.bd:empty{display:none}
+@media(max-width:1130px){#ad main{padding-right:90px}}
+@media(max-width:480px){#ad main .row{grid-template-columns:1fr}.kc b{font-size:19px}.kc{padding:10px 8px 10px 14px}.ovh b{font-size:30px}}
 </style></head><body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><linearGradient id="lgrad1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8a5cff"/><stop offset=".55" stop-color="#5b34e6"/><stop offset="1" stop-color="#ff4d9d"/></linearGradient><linearGradient id="lgrad2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
 <symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="19" fill="url(#lgrad1)"/><path d="M0 19Q0 0 19 0H45Q64 0 64 19V26Q32 14 0 34Z" fill="url(#lgrad2)"/><g fill="none" stroke="#fff" stroke-width="5.2" stroke-linecap="round"><rect x="11" y="28" width="25" height="17" rx="8.5" transform="rotate(-35 23.5 36.5)"/><rect x="28" y="19" width="25" height="17" rx="8.5" transform="rotate(-35 40.5 27.5)"/></g><circle cx="49" cy="14" r="4.2" fill="#ffc83d"/><circle cx="49" cy="14" r="7.4" fill="none" stroke="#ffc83d" stroke-opacity=".45" stroke-width="1.6"/></symbol>
@@ -188,22 +188,7 @@ div.kc{cursor:default}
 <p class="hint">বটকে টেলিগ্রামে /start পাঠান। Chat ID পেতে @userinfobot কে মেসেজ দিন বা getUpdates লিংক খুলুন।</p></div>
 </div>
 </main>
-<nav id="bn" aria-label="প্রধান মেনু"><div class="w">
-<button data-tab="t0" class="on"><svg class="ic"><use href="#a-dash"/></svg><em>ওভারভিউ</em></button>
-<button data-tab="t1"><svg class="ic"><use href="#a-inbox"/></svg><em>রিকোয়েস্ট</em><span id="nb1" class="bd"></span></button>
-<button data-tab="t2"><svg class="ic"><use href="#a-users"/></svg><em>গ্রাহক</em></button>
-<button data-tab="t3"><svg class="ic"><use href="#a-swap"/></svg><em>লেনদেন</em></button>
-<button id="bmore" type="button"><svg class="ic"><use href="#a-more"/></svg><em>আরও</em></button>
-</div></nav>
-<div id="mmenu" hidden><div class="mnb" data-close></div><div class="mnp">
-<button data-tab="t5"><i class="mi" style="--g:linear-gradient(135deg,#06b6d4,#3b82f6)"><svg class="ic"><use href="#a-chat"/></svg><span id="nb5" class="bd"></span></i><em>লাইভ চ্যাট</em></button>
-<button data-tab="t10"><i class="mi" style="--g:linear-gradient(135deg,#ffb020,#ff7a18)"><svg class="ic"><use href="#a-coin"/></svg><span id="nb10" class="bd"></span></i><em>সঞ্চয় ও ঋণ</em></button>
-<button data-tab="t9"><i class="mi" style="--g:linear-gradient(135deg,#0fb5a2,#22c55e)"><svg class="ic"><use href="#a-shield"/></svg><span id="nb9" class="bd"></span></i><em>অনুমোদন</em></button>
-<button data-tab="t8"><i class="mi" style="--g:linear-gradient(135deg,#ff4d8d,#ff8a3d)"><svg class="ic"><use href="#a-bell"/></svg></i><em>নোটিফিকেশন ও বিজ্ঞাপন</em></button>
-<button data-tab="t6"><i class="mi" style="--g:linear-gradient(135deg,#9333ea,#ec4899)"><svg class="ic"><use href="#a-pct"/></svg></i><em>চার্জ</em></button>
-<button data-tab="t7"><i class="mi" style="--g:linear-gradient(135deg,#4f46e5,#8b5cf6)"><svg class="ic"><use href="#a-star"/></svg></i><em>কমিশন</em></button>
-<button data-tab="t4"><i class="mi" style="--g:linear-gradient(135deg,#334155,#6366f1)"><svg class="ic"><use href="#a-gear"/></svg></i><em>সেটিংস</em></button>
-</div></div>
+<nav id="rail" aria-label="প্রধান মেনু"><button data-tab="t0" class="on" type="button"><span class="ri"><svg class="ic"><use href="#a-dash"/></svg></span><em>ওভারভিউ</em></button><button data-tab="t1" type="button"><span class="ri"><svg class="ic"><use href="#a-inbox"/></svg><span id="nb1" class="bd"></span></span><em>রিকোয়েস্ট</em></button><button data-tab="t2" type="button"><span class="ri"><svg class="ic"><use href="#a-users"/></svg></span><em>গ্রাহক</em></button><button data-tab="t3" type="button"><span class="ri"><svg class="ic"><use href="#a-swap"/></svg></span><em>লেনদেন</em></button><button data-tab="t5" type="button"><span class="ri"><svg class="ic"><use href="#a-chat"/></svg><span id="nb5" class="bd"></span></span><em>চ্যাট</em></button><button data-tab="t10" type="button"><span class="ri"><svg class="ic"><use href="#a-coin"/></svg><span id="nb10" class="bd"></span></span><em>সঞ্চয় ও ঋণ</em></button><button data-tab="t9" type="button"><span class="ri"><svg class="ic"><use href="#a-shield"/></svg><span id="nb9" class="bd"></span></span><em>অনুমোদন</em></button><button data-tab="t8" type="button"><span class="ri"><svg class="ic"><use href="#a-bell"/></svg></span><em>নোটিফিকেশন</em></button><button data-tab="t6" type="button"><span class="ri"><svg class="ic"><use href="#a-pct"/></svg></span><em>চার্জ</em></button><button data-tab="t7" type="button"><span class="ri"><svg class="ic"><use href="#a-star"/></svg></span><em>কমিশন</em></button><button data-tab="t4" type="button"><span class="ri"><svg class="ic"><use href="#a-gear"/></svg></span><em>সেটিংস</em></button></nav>
 </div>
 
 <dialog id="cd"><h3 id="ctt" style="margin:0 0 6px"></h3><div id="cin"></div>
@@ -322,9 +307,8 @@ $('#bmn').innerHTML=Array.from({length:12},(_,i)=>`<option value="${i+1}">${bn(i
 const show=id=>{['lg','ad'].forEach(i=>$('#'+i).hidden=i!==id);$('#out').hidden=id!=='ad'};
 $('#ag').onclick=async()=>{$('#msg').textContent='অপেক্ষা করুন...';try{const{error}=await sb.auth.signInWithPassword({email:$('#em').value.trim(),password:$('#pw').value});$('#msg').textContent=error?errMsg(error):''}catch(e){$('#msg').textContent='সংযোগ ব্যর্থ: '+(e.message||e)}};
 $('#out').onclick=()=>sb.auth.signOut();
-const MORE=['t5','t6','t7','t8','t9','t10','t4'];
-const tabTo=t=>{$$('#bn [data-tab],#mmenu [data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));$$('.tp').forEach(x=>x.hidden=x.id!==t);$('#bmore').classList.toggle('on',MORE.includes(t));$('#mmenu').hidden=true;window.scrollTo({top:0,behavior:'smooth'})};
-document.addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(b){tabTo(b.dataset.tab);return}if(e.target.closest('#bmore')){$('#mmenu').hidden=!$('#mmenu').hidden;return}if(e.target.closest('[data-close]'))$('#mmenu').hidden=true});
+const tabTo=t=>{$$('#rail [data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));$$('.tp').forEach(x=>x.hidden=x.id!==t);window.scrollTo({top:0,behavior:'smooth'})};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(b)tabTo(b.dataset.tab)});
 
 async function loadAll(){
 const[u,tp,tx,st,chq,ntq,rsq,gmq]=await Promise.all([sb.from('profiles').select('*').order('created_at',{ascending:false}),
