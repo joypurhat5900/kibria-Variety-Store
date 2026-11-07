@@ -164,8 +164,13 @@ dialog,input,select,textarea,button{font-family:inherit}
 .gchat{display:flex;align-items:center;gap:8px}.gchat .ic{width:20px;height:20px}
 .bi{width:28px;height:28px;border-radius:9px;display:inline-block;vertical-align:middle;position:relative;overflow:hidden;flex:none;box-shadow:0 2px 6px rgba(0,0,0,.18)}
 .bi svg{width:100%;height:100%;display:block}.bi img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#fff}
-.chips.br button{display:inline-flex;align-items:center;gap:8px;padding:6px 14px 6px 7px}
-.chips.br button.on{box-shadow:0 4px 12px -4px rgba(106,61,240,.5)}
+.bgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:10px}
+.bgrid button{display:flex;flex-direction:column;align-items:center;gap:7px;padding:12px 4px 9px;border:2px solid var(--line);border-radius:16px;background:var(--card);color:var(--ink);font-size:13px;line-height:1.25;text-align:center}
+.bgrid button span{max-width:100%;overflow-wrap:anywhere}
+.bgrid button.on{border-color:var(--pri);background:rgba(106,61,240,.1);font-weight:700;box-shadow:0 6px 14px -6px rgba(106,61,240,.55)}
+.bgrid .bi{width:56px;height:56px;border-radius:12px}
+.bi.bl0{display:inline-grid;place-items:center;font-style:normal;font-weight:700;font-size:22px;color:#fff;background:linear-gradient(135deg,#8a5cff,#ff4d9d)}
+.bgrid .bi.bl0{font-size:26px}
 .sm .bi,.pk .bi{margin-right:4px}
 </style>
 </head>
@@ -305,8 +310,16 @@ const ST={pending:['প্রক্রিয়াধীন','ps'],completed:['�
 let me=null,tab='r',op='',sm='বিকাশ',am='বিকাশ',mode='in',cfg={},pend=null,timer=null,busy=false;
 const toast=t=>{const x=$('#toast');x.textContent=t;x.style.display='block';try{if(x.matches(':popover-open'))x.hidePopover();x.showPopover()}catch(e){}clearTimeout(x._t);x._t=setTimeout(()=>{x.style.display='none';try{x.hidePopover()}catch(e){}},4000)};
 const BR={'বিকাশ':['b-bkash','bkash'],'নগদ':['b-nagad','nagad'],'রকেট':['b-rocket','rocket'],'গ্রামীণফোন':['b-gp','grameenphone'],'রবি':['b-robi','robi'],'বাংলালিংক':['b-bl','banglalink'],'এয়ারটেল':['b-airtel','airtel'],'টেলিটক':['b-tt','teletalk']};
-const bi=n=>{const b=BR[n];return b?`<span class="bi"><img src="logos/${b[1]}.png" alt="" onload="this.nextElementSibling.style.display='none'" onerror="this.remove()"><svg aria-hidden="true"><use href="#${b[0]}"/></svg></span>`:''};
-const chips=(id,list,cur,fn)=>{$(id).classList.add('br');$(id).innerHTML=list.map(v=>`<button type="button" data-v="${E(v)}" class="${v===cur?'on':''}">${bi(v)}<span>${E(v)}</span></button>`).join('');$(id).onclick=e=>{const b=e.target.closest('button');if(b&&$(id).contains(b)){$$(id+' button').forEach(x=>x.classList.toggle('on',x===b));fn(b.dataset.v)}}};
+const DEF_BR={operator:OPS.map((n,i)=>({id:'d'+i,kind:'operator',name:n,okey:n,logo_url:null})),payment:Object.keys(PAYS).map((n,i)=>({id:'p'+i,kind:'payment',name:n,okey:n,logo_url:null}))};
+let BRD={operator:DEF_BR.operator.slice(),payment:DEF_BR.payment.slice()};
+const allBr=()=>BRD.operator.concat(BRD.payment),brandBy=n=>allBr().find(b=>b.name===n)||allBr().find(b=>b.okey===n)||DEF_BR.operator.concat(DEF_BR.payment).find(b=>b.okey===n),okeyOf=n=>{const b=allBr().find(x=>x.name===n);return b?(b.okey||b.name):n};
+const bi=n=>{const b=brandBy(n),k=(b&&b.okey)||n,sv=BR[k],url=b&&/^https:\/\//.test(b.logo_url||'')?b.logo_url:'';
+if(url)return `<span class="bi"><img src="${E(url)}" alt="" loading="lazy"></span>`;
+if(sv)return `<span class="bi"><img src="logos/${sv[1]}.png" alt="" onload="this.nextElementSibling.style.display='none'" onerror="this.remove()"><svg aria-hidden="true"><use href="#${sv[0]}"/></svg></span>`;
+return b?`<span class="bi bl0">${E((b.name||'?').trim().charAt(0))}</span>`:''};
+const bgrid=(id,list,cur,fn)=>{const el=$(id);el.className='bgrid';el.innerHTML=list.map(b=>`<button type="button" data-v="${E(b.name)}" class="${b.name===cur?'on':''}">${bi(b.name)}<span>${E(b.name)}</span></button>`).join('');el.onclick=e=>{const x=e.target.closest('button');if(x&&el.contains(x)){$$(id+' button').forEach(y=>y.classList.toggle('on',y===x));fn(x.dataset.v)}}};
+function renderBrands(){if(!BRD.payment.some(b=>b.name===sm))sm=(BRD.payment[0]||{}).name||'';if(op&&!BRD.operator.some(b=>b.name===op))op='';bgrid('#ops',BRD.operator,op,v=>{op=v;showOffers()});bgrid('#sm',BRD.payment,sm,v=>sm=v)}
+async function loadBrands(){try{const{data,error}=await sb.from('brands').select('*').eq('active',true).order('sort').order('id');if(error||!data||!data.length)return;BRD={operator:data.filter(b=>b.kind==='operator'),payment:data.filter(b=>b.kind==='payment')};if(!BRD.operator.length)BRD.operator=DEF_BR.operator.slice();if(!BRD.payment.length)BRD.payment=DEF_BR.payment.slice();renderBrands();showOffers()}catch(e){}}
 function weakPw(p,c){c=c||{};p=String(p||'');const L=p.length,lo=p.toLowerCase(),num=/^\d+$/.test(p);
 const common=['password','password1','123456789','1234567890','qwerty','qwerty123','qwertyuiop','abc123','abcdef','iloveyou','admin123','welcome','letmein','bangladesh','netlink','nesco123','111222','112233','121212','123123','123321','159753','520520','696969','1q2w3e','1q2w3e4r','asdfgh','asdfghjk','zxcvbn'];
 if(common.includes(lo))return 'এটা খুব সহজ ও পরিচিত পাসওয়ার্ড।';
@@ -330,7 +343,7 @@ const errMsg=e=>{const m=e?.message||'';if(m==='device locked')return 'এই �
 
 const DEF_OFF={'গ্রামীণফোন':[['১ জিবি · ৭ দিন',49],['৫ জিবি · ৭ দিন',149],['১৫ জিবি · ৩০ দিন',349],['২০০ মিনিট · ৩০ দিন',179]],'রবি':[['১ জিবি · ৭ দিন',48],['৫ জিবি · ৭ দিন',147],['১৫ জিবি · ৩০ দিন',345],['৩০০ মিনিট · ৩০ দিন',199]],'বাংলালিংক':[['১ জিবি · ৭ দিন',47],['৬ জিবি · ৭ দিন',146],['১৬ জিবি · ৩০ দিন',348],['২৫০ মিনিট · ৩০ দিন',189]],'এয়ারটেল':[['১ জিবি · ৭ দিন',46],['৫ জিবি · ৭ দিন',145],['১৫ জিবি · ৩০ দিন',340]],'টেলিটক':[['১ জিবি · ৭ দিন',39],['৫ জিবি · ৭ দিন',129],['২০ জিবি · ৩০ দিন',299]]};
 function offs(){let o=DEF_OFF;try{if(cfg.offers)o=JSON.parse(cfg.offers)}catch(e){}return o}
-function showOffers(){const l=op?(offs()[op]||[]):[];$('#of').innerHTML=l.length?`<div class="lb" style="margin-top:10px">${E(op)} এর অফার (ট্যাপ করে বেছে নিন)</div><div class="of">`+l.map(x=>`<button type="button" data-p="${+x[1]}" data-n="${E(x[0])}"><span>${E(x[0])}</span><b>${M(x[1])}</b></button>`).join('')+'</div>':''}
+function showOffers(){const l=op?(offs()[okeyOf(op)]||offs()[op]||[]):[];$('#of').innerHTML=l.length?`<div class="lb" style="margin-top:10px">${E(op)} এর অফার (ট্যাপ করে বেছে নিন)</div><div class="of">`+l.map(x=>`<button type="button" data-p="${+x[1]}" data-n="${E(x[0])}"><span>${E(x[0])}</span><b>${M(x[1])}</b></button>`).join('')+'</div>':''}
 $('#of').onclick=e=>{const b=e.target.closest('[data-p]');if(b){selOff=b.dataset.n;selPrice=+b.dataset.p;selOp=op;$('#ra').value=bn(b.dataset.p);$('#ra').scrollIntoView({behavior:'smooth',block:'center'})}};
 let chT=null,selOff='',selPrice=0,selOp='';
 
@@ -396,7 +409,7 @@ if(me.balance<amt)return toast(`ব্যালেন্স কম। দরক�
 return askPin([['ঋণ',E(l.title)],[lf?'সম্পূর্ণ পরিশোধ':'কিস্তি',M(amt)],['পরিশোধের পর বাকি',M(left-amt)]],'loan_pay',{p_loan:l.id,p_full:!!lf},lf?'ঋণ সম্পূর্ণ পরিশোধ হয়েছে':'কিস্তি জমা হয়েছে')};
 let bal=0,shown=false;const renderBal=()=>{$('#bv0').textContent=shown?M(bal):'৳ ••••'};
 // ---- সেটআপ
-chips('#ops',OPS,'',v=>{op=v;showOffers()});chips('#sm',Object.keys(PAYS),sm,v=>sm=v);
+renderBrands();
 $('#qa').innerHTML=[20,50,100,200,500].map(a=>`<button type="button">${bn(a)}</button>`).join('');
 $('#qa').onclick=e=>{if(e.target.tagName==='BUTTON')$('#ra').value=e.target.textContent};
 $('#bc').innerHTML=Object.keys(BILL).map(k=>`<option>${k}</option>`).join('');
@@ -407,7 +420,7 @@ const cs=$('#bc').value;$('#bc').innerHTML=Object.keys(B).map(k=>`<option>${E(k)
 const n=Math.min(12,Math.max(1,+cfg.bill_months||3)),d=new Date(),cm=$('#bm').value;
 $('#bm').innerHTML=Array.from({length:n},(_,i)=>{const x=new Date(d.getFullYear(),d.getMonth()-i,1);return `<option>${MN[x.getMonth()]} ${bn(x.getFullYear())}</option>`}).join('');if(cm)$('#bm').value=cm}
 buildBill();
-$('#rn').oninput=e=>{const n=en(e.target.value);if(n.length>=3&&PFX[n[2]]!==undefined){op=OPS[PFX[n[2]]];$$('#ops button').forEach(b=>b.classList.toggle('on',b.textContent===op));showOffers()}};
+$('#rn').oninput=e=>{const n=en(e.target.value);if(n.length>=3&&PFX[n[2]]!==undefined){const bk=OPS[PFX[n[2]]],bb=BRD.operator.find(x=>(x.okey||x.name)===bk);if(bb){op=bb.name;$$('#ops button').forEach(b=>b.classList.toggle('on',b.dataset.v===op));showOffers()}}};
 const merch=()=>{const q=cfg.qr_all||'',ok=/^https:\/\//.test(q);$('#qrw').hidden=!ok;if(ok&&$('#qri').getAttribute('src')!==q)$('#qri').src=q;
 $('#mh').textContent=ok?'১) নিচের QR স্ক্যান করে পেমেন্ট করুন। ২) তারপর পেমেন্টের তথ্য দিয়ে রিকোয়েস্ট পাঠান।':'এখনও QR সেট করা হয়নি। অ্যাডমিনের সাথে যোগাযোগ করুন।'};
 $('#qrd').onclick=async()=>{const u=$('#qri').src;try{const r=await fetch(u),b=await r.blob(),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='qr-payment'+(b.type==='image/jpeg'?'.jpg':'.png');document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000)}catch(e){window.open(u,'_blank','noopener');toast('ছবিটা চেপে ধরে "Save image" করুন।')}};
@@ -433,7 +446,7 @@ if(!window._devOk){let r=null;try{r=await sb.rpc('claim_device',{p_device:DEV,p_
 if(r&&r.data==='locked'){window._goLocked=true;await sb.auth.signOut();return}
 window._devOk=true}
 $('#out').hidden=false;
-await load();timer=setInterval(load,20000)}
+loadBrands();await load();timer=setInterval(load,20000)}
 async function showPending(p){$('#app').hidden=true;$('#pend').hidden=false;$('#who').textContent=p.name||'';$('#out').hidden=false;$('#bell').hidden=true;
 $('#pt1').textContent=p.status==='pending'?'⏳ আপনার আবেদন অ্যাডমিনের অনুমোদনের অপেক্ষায়':'❌ আপনার আবেদন বাতিল হয়েছে';
 $('#pt2').textContent=p.status==='pending'?'অনুমোদন হলে এখানে ও নোটিফিকেশনে জানানো হবে। এই পেজ নিজে থেকে আপডেট হয়।':'কারণ: '+(p.status_note||'—');

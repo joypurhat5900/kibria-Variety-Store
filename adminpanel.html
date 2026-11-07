@@ -95,6 +95,11 @@ div.kc{cursor:default}
 .otpbar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:10px;font-size:14px;color:var(--mute)}.otpbar b{color:var(--ink);font-size:17px}.otpbar b.low{color:var(--bad)}
 .otpp{height:5px;border-radius:5px;background:var(--line);overflow:hidden;margin-top:6px}.otpp i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#6a3df0,#ff4d9d);transition:width .5s linear}
 #otp{letter-spacing:6px;font-size:20px;text-align:center;font-weight:700}
+.bq{width:48px;height:48px;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:#fff;display:grid;place-items:center;flex:none}
+.bq img{width:100%;height:100%;object-fit:contain;display:block}.bq i{font-style:normal;font-weight:700;font-size:20px;color:#fff;width:100%;height:100%;display:grid;place-items:center;background:linear-gradient(135deg,#8a5cff,#ff4d9d)}
+.sm>span.bq:first-child{flex:none;width:48px}
+.sm.brw{display:grid;grid-template-columns:48px 1fr;gap:8px 12px;align-items:center}.sm.brw>span.bq:first-child{width:48px}
+.sm.brw>span.bb:last-child{grid-column:1/-1;display:flex;flex-direction:row;flex-wrap:wrap;justify-content:flex-start;align-items:center;text-align:left;gap:4px}
 </style></head><body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><linearGradient id="lgrad1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8a5cff"/><stop offset=".55" stop-color="#5b34e6"/><stop offset="1" stop-color="#ff4d9d"/></linearGradient><linearGradient id="lgrad2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
 <symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="19" fill="url(#lgrad1)"/><path d="M0 19Q0 0 19 0H45Q64 0 64 19V26Q32 14 0 34Z" fill="url(#lgrad2)"/><g fill="none" stroke="#fff" stroke-width="5.2" stroke-linecap="round"><rect x="11" y="28" width="25" height="17" rx="8.5" transform="rotate(-35 23.5 36.5)"/><rect x="28" y="19" width="25" height="17" rx="8.5" transform="rotate(-35 40.5 27.5)"/></g><circle cx="49" cy="14" r="4.2" fill="#ffc83d"/><circle cx="49" cy="14" r="7.4" fill="none" stroke="#ffc83d" stroke-opacity=".45" stroke-width="1.6"/></symbol>
@@ -175,6 +180,12 @@ div.kc{cursor:default}
 
 <div class="tp" id="t4" hidden>
 <h2>অ্যাডমিন লগইন ওটিপি</h2><div class="pk"><p class="hint" style="margin:0 0 6px">অ্যাডমিন লগইনে ইমেইল ও পাসওয়ার্ডের সাথে এই ওটিপি দিতে হয়, ২ মিনিটের মধ্যে। এটা কোথাও পাঠানো হয় না, নিজে মনে রাখতে হবে। ডিফল্ট ১২৩৪। Supabase-এ <b>admin_secrets</b> টেবিলের <b>admin_otp</b> সারি বদলালেও হবে।</p><label for="aotp">বর্তমান ওটিপি (৪ থেকে ৮ অঙ্ক)</label><input id="aotp" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="১২৩৪"><button class="btn2 g" style="width:100%" data-a="otpsave" type="button">ওটিপি সেভ করুন</button></div>
+<h2>অপারেটর ও পেমেন্ট মাধ্যম</h2>
+<div class="pk"><p class="hint" style="margin:0 0 6px">ইউজার অ্যাপে এখানকার নাম ও লোগো দেখাবে। যেকোনো মাপের লোগো দিন, চারকোনা (বর্গ) করে নেওয়া হবে এবং লোগোর নিচে নাম দেখাবে। অপারেটর রিচার্জে এবং পেমেন্ট মাধ্যম সেন্ড মানিতে দেখায়।</p>
+<div class="row"><div><label for="brk">ধরন</label><select id="brk"><option value="operator">অপারেটর (রিচার্জ)</option><option value="payment">পেমেন্ট মাধ্যম (সেন্ড মানি)</option></select></div><div><label for="brn">নাম</label><input id="brn" maxlength="40" autocomplete="off"></div></div>
+<label for="brf">লোগো (ঐচ্ছিক, পরেও দেওয়া যাবে)</label><input id="brf" type="file" accept="image/png,image/jpeg,image/webp"><img id="brp" alt="প্রিভিউ" style="display:none;width:84px;height:84px;border-radius:12px;border:1px solid var(--line);margin:8px 0;object-fit:contain;background:#fff">
+<button class="btn2 g" style="width:100%" data-a="bradd" type="button">যোগ করুন</button></div>
+<div id="brl" style="margin-top:10px"></div><input id="brx" type="file" accept="image/png,image/jpeg,image/webp" hidden>
 <h2>অ্যাড মানি QR কোড</h2><div class="pk"><p class="hint" style="margin:0 0 6px">গ্রাহকের অ্যাড মানি পেজে শুধু এই QR দেখাবে। ছবি বাছলেই আপলোড হয়ে যাবে, সেভ বাটন লাগবে না। নতুন ছবি দিলে আগেরটা বদলে যাবে।</p><div id="qrl"></div></div>
 <h2>বিল পে অপশন</h2><div class="pk"><p class="hint" style="margin:0 0 6px">প্রতি লাইনে একটা ধরন: <b>ধরন: কোম্পানি১, কোম্পানি২</b>। নামে "প্রিপেইড" থাকলে গ্রাহকের কাছে মাস লুকানো থাকবে, বাকিগুলোতে মাস আসবে।</p><textarea id="bt"></textarea>
 <label for="bmn">বিলের মাসের তালিকা (সাল সহ), কত মাস পর্যন্ত দেখাবে</label><select id="bmn"></select></div>
@@ -332,7 +343,7 @@ async function loadAll(){
 const[u,tp,tx,st,chq,ntq,rsq,gmq]=await Promise.all([sb.from('profiles').select('*').order('created_at',{ascending:false}),
 sb.from('topups').select('*,profiles(name,phone)').eq('status','pending').order('created_at'),
 sb.from('transactions').select('*,profiles(name,phone)').order('created_at',{ascending:false}).limit(200),sb.from('settings').select('*'),sb.from('chat_messages').select('*,profiles(name,phone)').order('created_at',{ascending:false}).limit(300),sb.from('notifications').select('*,profiles(name,phone)').order('created_at',{ascending:false}).limit(40),sb.from('reset_requests').select('*,profiles(name,phone,nid_no)').order('created_at',{ascending:false}).limit(30),sb.from('guest_msgs').select('*').order('created_at',{ascending:false}).limit(300)]);
-CH=chq.data||[];NT=ntq.data||[];RS=rsq.data||[];GM=gmq.data||[];U=u.data||[];TP=tp.data||[];TX=tx.data||[];cfg={};(st.data||[]).forEach(r=>cfg[r.key]=r.value);render();rf();loadTg();loadEarn();loadSL()}
+CH=chq.data||[];NT=ntq.data||[];RS=rsq.data||[];GM=gmq.data||[];U=u.data||[];TP=tp.data||[];TX=tx.data||[];cfg={};(st.data||[]).forEach(r=>cfg[r.key]=r.value);render();rf();loadTg();loadEarn();loadSL();loadBR()}
 async function loadTg(){const{data}=await sb.rpc('admin_telegram_status');const d=data||{};$('#tgs').innerHTML=d.token?`✅ বট সেট আছে (টোকেন শেষে ${E(d.token)}), Chat ID: ${E(d.chat||'নেই')}`:'⚠ বট সেট করা নেই। নোটিফিকেশন যাবে না।';if(document.activeElement!==$('#tgc'))$('#tgc').value=d.chat||''}
 const who=r=>E(r.profiles?.name)+' '+bn(E(r.profiles?.phone));
 function render(){
@@ -388,7 +399,7 @@ const rpc=async(n,a,okm)=>{const{error}=await sb.rpc(n,a);if(error){toast(errMsg
 
 
 const FQ={daily:['দৈনিক','দিন'],weekly:['সাপ্তাহিক','সপ্তাহ'],monthly:['মাসিক','মাস']},fq=f=>FQ[f]||FQ.monthly;
-document.addEventListener('change',e=>{const t=e.target;if(t.id==='wf'||t.id==='wfit')prevAd();if(t.id==='zf')$('#zml').textContent='মেয়াদ (কত '+fq(t.value)[1]+')';if(t.id==='yf')$('#yml').textContent='মেয়াদ (কত '+fq(t.value)[1]+')'});
+document.addEventListener('change',e=>{const t=e.target;if(t.id==='wf'||t.id==='wfit')prevAd();if(t.id==='brf')prevBr();if(t.id==='brx')brLogoPicked();if(t.id==='zf')$('#zml').textContent='মেয়াদ (কত '+fq(t.value)[1]+')';if(t.id==='yf')$('#yml').textContent='মেয়াদ (কত '+fq(t.value)[1]+')'});
 const BW=1280,BH=560;
 async function toBanner(f,mode){const bm=await createImageBitmap(f),c=document.createElement('canvas');c.width=BW;c.height=BH;const x=c.getContext('2d');x.fillStyle='#eef2f7';x.fillRect(0,0,BW,BH);
 const dr=(sc,bl)=>{const w=bm.width*sc,h=bm.height*sc;x.filter=bl?'blur(22px)':'none';x.drawImage(bm,(BW-w)/2,(BH-h)/2,w,h);x.filter='none'},cv=Math.max(BW/bm.width,BH/bm.height);
@@ -416,6 +427,16 @@ sv('o3',bn(RS.filter(r=>r.status==='pending').length));
 sv('o5',bn(U.filter(x=>x.device_id&&!x.is_admin).length));
 sv('kd',new Date().toLocaleDateString('bn-BD',{weekday:'long',day:'numeric',month:'long',year:'numeric'}));
 ['k3','k4','o1','o2','o3','s4','l6'].forEach(i=>{const e=$('#'+i);if(e&&e.closest('.kc'))e.closest('.kc').classList.toggle('hot',(parseInt(en(e.textContent))||0)>0)})}
+let BRL=[];
+async function toSquare(f){const bm=await createImageBitmap(f),S=256,c=document.createElement('canvas');c.width=c.height=S;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,S,S);const sc=Math.min(S/bm.width,S/bm.height),w=bm.width*sc,h=bm.height*sc;x.imageSmoothingQuality='high';x.drawImage(bm,(S-w)/2,(S-h)/2,w,h);return new Promise(r=>c.toBlob(r,'image/png'))}
+const brPath=u=>u&&u.includes('/brands/')?decodeURIComponent(u.split('/brands/')[1].split('?')[0]):null;
+async function upBrand(f){const bl=await toSquare(f);if(!bl||bl.size>1000000)throw new Error('ছবি বেশি বড়, ছোট ছবি দিন');const p='b-'+Date.now()+'-'+Math.random().toString(36).slice(2,7)+'.png',up=await sb.storage.from('brands').upload(p,bl,{contentType:'image/png',cacheControl:'3600'});if(up.error)throw up.error;return sb.storage.from('brands').getPublicUrl(p).data.publicUrl}
+let _bpv=null;async function prevBr(){const f=$('#brf').files[0],im=$('#brp');if(!f||!/^image\//.test(f.type)){im.style.display='none';return}try{const bl=await toSquare(f);if(_bpv)URL.revokeObjectURL(_bpv);_bpv=URL.createObjectURL(bl);im.src=_bpv;im.style.display='block'}catch(e){im.style.display='none'}}
+async function loadBR(){const{data,error}=await sb.from('brands').select('*').order('sort').order('id');if(error){$('#brl').innerHTML='<div class="pk"><p class="hint">লোগোর টেবিল পাওয়া যায়নি। Supabase-এ supabase_brands.sql রান করুন।</p></div>';BRL=[];return}BRL=data||[];renderBR()}
+function renderBR(){const grp=(k,t)=>{const l=BRL.filter(b=>b.kind===k);return `<h3 class="sec">${t}</h3><div class="pk">`+(l.length?l.map((b,i)=>`<div class="sm brw"><span class="bq">${/^https:\/\//.test(b.logo_url||'')?`<img src="${E(b.logo_url)}" alt="">`:`<i>${E((b.name||'?').charAt(0))}</i>`}</span><span class="cn"><b>${E(b.name)}</b>${b.active?'':' <small class="pr">[বন্ধ]</small>'}${b.logo_url?'':'<br><small>লোগো নেই (ডিফল্ট আইকন দেখাবে)</small>'}</span><span class="bb"><button class="sb" data-a="brren" data-i="${b.id}">নাম</button><button class="sb" data-a="brlogo" data-i="${b.id}">লোগো</button><button class="sb" data-a="brt" data-i="${b.id}">${b.active?'বন্ধ':'চালু'}</button>${i>0?`<button class="sb" data-a="brup" data-i="${b.id}">↑</button>`:''}${i<l.length-1?`<button class="sb" data-a="brdn" data-i="${b.id}">↓</button>`:''}<button class="sb r" data-a="brdel" data-i="${b.id}">মুছুন</button></span></div>`).join(''):'<p class="hint">কিছু নেই।</p>')+'</div>'};
+$('#brl').innerHTML=grp('operator','অপারেটর')+grp('payment','পেমেন্ট মাধ্যম')}
+async function brSwap(id,dir){const r=BRL.find(x=>String(x.id)===id);if(!r)return;const l=BRL.filter(b=>b.kind===r.kind),i=l.findIndex(x=>x.id===r.id),j=i+dir;if(j<0||j>=l.length)return;[l[i],l[j]]=[l[j],l[i]];const res=await Promise.all(l.map((b,n)=>sb.from('brands').update({sort:(n+1)*10}).eq('id',b.id)));const er=res.find(x=>x.error);if(er)return toast(errMsg(er.error));await loadBR()}
+async function brLogoPicked(){const f=$('#brx').files[0],r=BRL.find(x=>String(x.id)===window._brT);if(!f||!r)return;if(!/^image\//.test(f.type))return toast('শুধু ছবি দিন।');try{toast('আপলোড হচ্ছে...');const url=await upBrand(f),{error}=await sb.from('brands').update({logo_url:url}).eq('id',r.id);if(error)throw error;const old=brPath(r.logo_url);if(old)sb.storage.from('brands').remove([old]);toast('✅ লোগো বদলানো হয়েছে');await loadBR()}catch(x){toast(errMsg(x))}}
 function rsl(){const pend=LNS.filter(l=>l.status==='pending'),rest=LNS.filter(l=>l.status!=='pending');
 $('#nb10').textContent=pend.length?bn(pend.length):'';$('#yn').textContent=pend.length?'('+bn(pend.length)+')':'';
 $('#yreq').innerHTML=pend.length?pend.map(l=>`<div class="sm" style="align-items:flex-start"><span>${who(l)}<br><b>${E(l.title)}</b><br><small>${fq(l.freq)[0]} · ঋণ ${M(l.principal)} · পরিশোধ্য ${M(l.payable)} · ${bn(l.months)} ${fq(l.freq)[1]} · কিস্তি ${M(l.installment)}<br>${dt(l.created_at)}</small></span><span><button class="sb g" data-a="lna" data-i="${l.id}">অনুমোদন</button><br><button class="sb r" data-a="lnr" data-i="${l.id}">বাতিল</button></span></div>`).join(''):'<p class="hint">কোনো ঋণের আবেদন নেই।</p>';
@@ -486,6 +507,14 @@ if(r.error&&/Could not find the function/i.test(r.error.message||'')){const d=aw
 else if(r.error)return toast(errMsg(r.error));
 if(old)sb.storage.from('ads').remove([old]);toast('✅ বিজ্ঞাপন মুছে গেছে');await loadSL()}finally{b.disabled=false}return}
 if(a==='cdr'){if(!cur||!confirm('এই গ্রাহকের ডিভাইস লক খুলবেন?\nএরপর যে ডিভাইসে প্রথম লগইন করবেন সেটাই নতুন করে লক হবে।'))return;return rpc('admin_reset_device',{p_user:cur.id},'ডিভাইস লক খোলা হয়েছে')}
+if(a==='bradd'){const nm=$('#brn').value.trim(),f=$('#brf').files[0],k=$('#brk').value;if(!nm)return toast('নাম দিন।');if(f&&!/^image\//.test(f.type))return toast('শুধু ছবি দিন।');
+b.disabled=true;try{let url=null;if(f)url=await upBrand(f);const mx=Math.max(0,...BRL.filter(x=>x.kind===k).map(x=>x.sort||0)),{error}=await sb.from('brands').insert({kind:k,name:nm,okey:nm,logo_url:url,sort:mx+10});if(error)throw error;$('#brn').value='';$('#brf').value='';$('#brp').style.display='none';toast('✅ যোগ হয়েছে');await loadBR()}catch(x){toast(errMsg(x))}finally{b.disabled=false}return}
+if(a==='brren'){const r=BRL.find(x=>String(x.id)===i);if(!r)return;const nm=(prompt('নতুন নাম লিখুন',r.name)||'').trim().slice(0,40);if(!nm||nm===r.name)return;const{error}=await sb.from('brands').update({name:nm}).eq('id',r.id);if(error)return toast(errMsg(error));toast('✅ নাম বদলানো হয়েছে');return loadBR()}
+if(a==='brlogo'){window._brT=i;$('#brx').value='';return $('#brx').click()}
+if(a==='brt'){const r=BRL.find(x=>String(x.id)===i);if(!r)return;const{error}=await sb.from('brands').update({active:!r.active}).eq('id',r.id);if(error)return toast(errMsg(error));toast('✅ হয়েছে');return loadBR()}
+if(a==='brup')return brSwap(i,-1);
+if(a==='brdn')return brSwap(i,1);
+if(a==='brdel'){const r=BRL.find(x=>String(x.id)===i);if(!r||!confirm('"'+r.name+'" মুছবেন?'))return;const{error}=await sb.from('brands').delete().eq('id',r.id);if(error)return toast(errMsg(error));const old=brPath(r.logo_url);if(old)sb.storage.from('brands').remove([old]);toast('✅ মুছে গেছে');return loadBR()}
 if(a==='otpsave'){const v=en($('#aotp').value).trim();if(!/^[0-9]{4,8}$/.test(v))return toast('ওটিপি ৪ থেকে ৮ অঙ্কের সংখ্যা হতে হবে।');if(!confirm('ওটিপি বদলে '+bn(v)+' করবেন?\nপরের লগইন থেকে এটাই লাগবে।'))return;return rpc('admin_set_otp',{p_otp:v},'ওটিপি বদলানো হয়েছে')}
 if(a==='ncopen'){['#ncn','#ncp','#nci','#nce','#ncw','#ncd','#ncb','#ncf','#ncm','#nca'].forEach(s=>$(s).value='');return $('#nc').showModal()}
 if(a==='ncx')return $('#nc').close();
