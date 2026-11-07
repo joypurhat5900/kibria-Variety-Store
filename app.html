@@ -162,11 +162,24 @@ dialog,input,select,textarea,button{font-family:inherit}
 .lico{width:88px;height:88px;background:none;border-radius:0;margin:0 auto 8px;filter:drop-shadow(0 12px 22px rgba(0,0,0,.35))}.lico svg{width:100%;height:100%;display:block}
 .promo b{color:#ffc83d}
 .gchat{display:flex;align-items:center;gap:8px}.gchat .ic{width:20px;height:20px}
+.bi{width:28px;height:28px;border-radius:9px;display:inline-block;vertical-align:middle;position:relative;overflow:hidden;flex:none;box-shadow:0 2px 6px rgba(0,0,0,.18)}
+.bi svg{width:100%;height:100%;display:block}.bi img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#fff}
+.chips.br button{display:inline-flex;align-items:center;gap:8px;padding:6px 14px 6px 7px}
+.chips.br button.on{box-shadow:0 4px 12px -4px rgba(106,61,240,.5)}
+.sm .bi,.pk .bi{margin-right:4px}
 </style>
 </head>
 <body>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><linearGradient id="lgrad1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8a5cff"/><stop offset=".55" stop-color="#5b34e6"/><stop offset="1" stop-color="#ff4d9d"/></linearGradient><linearGradient id="lgrad2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity=".28"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient></defs>
+<symbol id="b-bkash" viewBox="0 0 40 40"><rect width="40" height="40" rx="11" fill="#e2136e"/><path d="M10.5 12.5l9.5 4 9.5-4-3.2 17-6.3-5.2-6.3 5.2z" fill="#fff"/><path d="M20 16.5v7.5" stroke="#e2136e" stroke-width="1.6" stroke-linecap="round"/></symbol>
+<symbol id="b-nagad" viewBox="0 0 40 40"><rect width="40" height="40" rx="11" fill="#f6921e"/><path d="M11.5 29V12.5h4.2l8.8 10.6V12.5h4V29h-4.2l-8.8-10.6V29z" fill="#fff"/><circle cx="30" cy="10.5" r="3" fill="#ed1c24"/></symbol>
+<symbol id="b-rocket" viewBox="0 0 40 40"><rect width="40" height="40" rx="11" fill="#8c3494"/><path d="M20 6.5c5.2 3.2 7.2 8.6 6.2 15.5l-3 3h-6.4l-3-3C12.8 15.100 14.800 9.700 20 6.500z" fill="#fff"/><circle cx="20" cy="15.500" r="2.700" fill="#8c3494"/><path d="M13.800 21.500l-4 5.500 5.200-1.200zM26.200 21.500l4 5.500-5.200-1.200z" fill="#fff"/><path d="M17.800 27.200L20 33.500l2.200-6.300z" fill="#ffb020"/></symbol>
+<symbol id="b-gp" viewBox="0 0 40 40"><rect width="40" height="40" rx="11" fill="#00a1e4"/><text x="20" y="27" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="20" fill="#fff">gp</text></symbol>
+<symbol id="b-robi" viewBox="0 0 40 40"><rect width="40" height="40" rx="11" fill="#ed1c24"/><text x="20" y="25" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="12.500" fill="#fff">robi</text><path d="M10 29.500q10 4 20 0" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/></symbol>
+<symbol id="b-bl" viewBox="0 0 40 40"><rect width="40" height="40" rx="11" fill="#f58220"/><text x="20" y="24.500" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="19" fill="#fff">bl</text><path d="M10 30q10 5 20 0" stroke="#fff" stroke-width="2.400" fill="none" stroke-linecap="round"/></symbol>
+<symbol id="b-airtel" viewBox="0 0 40 40"><rect width="40" height="40" rx="11" fill="#e40000"/><text x="20" y="28.500" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="25" fill="#fff">a</text></symbol>
+<symbol id="b-tt" viewBox="0 0 40 40"><rect width="40" height="40" rx="11" fill="#00a650"/><path d="M10.500 11.500h19v5h-7v14h-5v-14h-7z" fill="#fff"/><circle cx="31" cy="30.500" r="3" fill="#ed1c24"/></symbol>
 <symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="19" fill="url(#lgrad1)"/><path d="M0 19Q0 0 19 0H45Q64 0 64 19V26Q32 14 0 34Z" fill="url(#lgrad2)"/><g fill="none" stroke="#fff" stroke-width="5.2" stroke-linecap="round"><rect x="11" y="28" width="25" height="17" rx="8.5" transform="rotate(-35 23.5 36.5)"/><rect x="28" y="19" width="25" height="17" rx="8.5" transform="rotate(-35 40.5 27.5)"/></g><circle cx="49" cy="14" r="4.2" fill="#ffc83d"/><circle cx="49" cy="14" r="7.4" fill="none" stroke="#ffc83d" stroke-opacity=".45" stroke-width="1.6"/></symbol>
 <symbol id="i-recharge" viewBox="0 0 24 24"><rect x="6.5" y="2.5" width="11" height="19" rx="2.8"/><path d="M12.9 7.2L10.3 11.9h3.4l-2.6 4.9"/></symbol>
 <symbol id="i-bill" viewBox="0 0 24 24"><path d="M5.5 3h13v18l-2.6-1.7-2.2 1.7-2.2-1.7-2.2 1.7-2.6-1.7z"/><path d="M9 8h6M9 11.7h6M9 15.3h3.5"/></symbol>
@@ -291,7 +304,9 @@ const KIND={recharge:'রিচার্জ',bill:'বিল পে',send:'স�
 const ST={pending:['প্রক্রিয়াধীন','ps'],completed:['সম্পন্ন','pa'],refunded:['ফেল · টাকা ফেরত','pr'],approved:['যোগ হয়েছে','pa'],rejected:['বাতিল','pr']};
 let me=null,tab='r',op='',sm='বিকাশ',am='বিকাশ',mode='in',cfg={},pend=null,timer=null,busy=false;
 const toast=t=>{const x=$('#toast');x.textContent=t;x.style.display='block';try{if(x.matches(':popover-open'))x.hidePopover();x.showPopover()}catch(e){}clearTimeout(x._t);x._t=setTimeout(()=>{x.style.display='none';try{x.hidePopover()}catch(e){}},4000)};
-const chips=(id,list,cur,fn)=>{$(id).innerHTML=list.map(v=>`<button type="button" class="${v===cur?'on':''}">${v}</button>`).join('');$(id).onclick=e=>{if(e.target.tagName==='BUTTON'){$$(id+' button').forEach(b=>b.classList.toggle('on',b===e.target));fn(e.target.textContent)}}};
+const BR={'বিকাশ':['b-bkash','bkash'],'নগদ':['b-nagad','nagad'],'রকেট':['b-rocket','rocket'],'গ্রামীণফোন':['b-gp','grameenphone'],'রবি':['b-robi','robi'],'বাংলালিংক':['b-bl','banglalink'],'এয়ারটেল':['b-airtel','airtel'],'টেলিটক':['b-tt','teletalk']};
+const bi=n=>{const b=BR[n];return b?`<span class="bi"><img src="logos/${b[1]}.png" alt="" onload="this.nextElementSibling.style.display='none'" onerror="this.remove()"><svg aria-hidden="true"><use href="#${b[0]}"/></svg></span>`:''};
+const chips=(id,list,cur,fn)=>{$(id).classList.add('br');$(id).innerHTML=list.map(v=>`<button type="button" data-v="${E(v)}" class="${v===cur?'on':''}">${bi(v)}<span>${E(v)}</span></button>`).join('');$(id).onclick=e=>{const b=e.target.closest('button');if(b&&$(id).contains(b)){$$(id+' button').forEach(x=>x.classList.toggle('on',x===b));fn(b.dataset.v)}}};
 function weakPw(p,c){c=c||{};p=String(p||'');const L=p.length,lo=p.toLowerCase(),num=/^\d+$/.test(p);
 const common=['password','password1','123456789','1234567890','qwerty','qwerty123','qwertyuiop','abc123','abcdef','iloveyou','admin123','welcome','letmein','bangladesh','netlink','nesco123','111222','112233','121212','123123','123321','159753','520520','696969','1q2w3e','1q2w3e4r','asdfgh','asdfghjk','zxcvbn'];
 if(common.includes(lo))return 'এটা খুব সহজ ও পরিচিত পাসওয়ার্ড।';
@@ -437,7 +452,7 @@ $('#tx').innerHTML=(tx.data||[]).length?tx.data.map(t=>{const c=['topup','refund
 return `<div class="sm"><span>${KIND[t.kind]}<br><small>${E(t.details)}${t.txn_ref?' · TrxID: '+E(t.txn_ref):''} · ${dt(t.created_at)}</small>${t.fail_reason?'<br><small class="pr">কারণ: '+E(t.fail_reason)+'</small>':''}</span><b class="${c?'pa':''}">${c?'+':'−'}${M(v)}<br><small class="${ST[t.status][1]}">${ST[t.status][0]}</small></b></div>`}).join(''):'<p class="hint">এখনও কোনো লেনদেন নেই।</p>';
 notifRender(nt.data||[]);SP=spq.data||[];SA=saq.data||[];LP=lpq.data||[];LN=lnq.data||[];ADS=adq.data||[];renderSV();renderLN();renderAds();if(!window._ps){window._ps=1;pushSub().catch(()=>{})}
 {const c=[...$('#tx').children];$('#hx').innerHTML=c.length&&c[0].classList.contains('sm')?c.slice(0,3).map(e=>e.outerHTML).join(''):$('#tx').innerHTML}
-$('#rq').innerHTML=(tp.data||[]).length?tp.data.map(t=>`<div class="sm"><span>${PN[t.method]} · ${M(t.amount)}<br><small>${E(t.trx)} · ${dt(t.created_at)}</small>${t.reject_reason?'<br><small class="pr">কারণ: '+E(t.reject_reason)+'</small>':''}</span><b class="${ST[t.status][1]}">${ST[t.status][0]}</b></div>`).join(''):'<p class="hint">কোনো রিকোয়েস্ট নেই।</p>';
+$('#rq').innerHTML=(tp.data||[]).length?tp.data.map(t=>`<div class="sm"><span>${bi(PN[t.method])} ${PN[t.method]} · ${M(t.amount)}<br><small>${E(t.trx)} · ${dt(t.created_at)}</small>${t.reject_reason?'<br><small class="pr">কারণ: '+E(t.reject_reason)+'</small>':''}</span><b class="${ST[t.status][1]}">${ST[t.status][0]}</b></div>`).join(''):'<p class="hint">কোনো রিকোয়েস্ট নেই।</p>';
 if(p.is_admin){$('#cb').value=cfg.bkash||'';$('#cn').value=cfg.nagad||'';$('#cr').value=cfg.rocket||'';if(!$('#ad').hidden)loadAdmin()}}
 
 // ---- লেনদেন
@@ -475,7 +490,7 @@ sb.from('transactions').select('*,profiles(name,phone)').order('created_at',{asc
 const us=u.data||[],tps=tp.data||[],txs=tx.data||[],po=txs.filter(t=>t.status==='pending'&&['recharge','bill','send'].includes(t.kind));
 const who=r=>E(r.profiles?.name)+' '+bn(E(r.profiles?.phone));
 $('#k1').textContent=bn(us.length);$('#k2').textContent=M(us.reduce((s,a)=>s+ +a.balance,0));$('#k3').textContent=bn(tps.length)+' / '+bn(po.length);
-$('#at1').innerHTML=tps.length?tps.map(t=>`<div class="sm"><span>${who(t)}<br>${PN[t.method]} · ${M(t.amount)}<br><small>থেকে ${bn(E(t.sender))} · ${E(t.trx)} · ${dt(t.created_at)}</small></span><span><button class="sb g" data-a="ap" data-i="${t.id}">অনুমোদন</button><button class="sb r" data-a="rj" data-i="${t.id}">বাতিল</button></span></div>`).join(''):'<p class="hint">কোনো পেন্ডিং রিকোয়েস্ট নেই।</p>';
+$('#at1').innerHTML=tps.length?tps.map(t=>`<div class="sm"><span>${who(t)}<br>${bi(PN[t.method])} ${PN[t.method]} · ${M(t.amount)}<br><small>থেকে ${bn(E(t.sender))} · ${E(t.trx)} · ${dt(t.created_at)}</small></span><span><button class="sb g" data-a="ap" data-i="${t.id}">অনুমোদন</button><button class="sb r" data-a="rj" data-i="${t.id}">বাতিল</button></span></div>`).join(''):'<p class="hint">কোনো পেন্ডিং রিকোয়েস্ট নেই।</p>';
 $('#at4').innerHTML=po.length?po.map(t=>`<div class="sm"><span>${who(t)}<br>${KIND[t.kind]} · ${M(t.amount)}<br><small>${E(t.details)}</small></span><span><button class="sb g" data-a="dn" data-i="${t.id}">সম্পন্ন</button><button class="sb r" data-a="rf" data-i="${t.id}">রিফান্ড</button></span></div>`).join(''):'<p class="hint">কোনো পেন্ডিং অর্ডার নেই।</p>';
 const sel=$('#ju').value;$('#ju').innerHTML=us.map(x=>`<option value="${x.id}">${E(x.name)} ${bn(E(x.phone))}</option>`).join('');if(sel)$('#ju').value=sel;
 $('#at2').innerHTML=us.map(x=>`<div class="sm"><span>${E(x.name)} ${x.is_admin?'⭐':''}<br><small>${bn(E(x.phone))} · ${E(x.email)}</small></span><b>${M(x.balance)}</b></div>`).join('');
