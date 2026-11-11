@@ -22,12 +22,12 @@ const $=s=>document.querySelector(s),ts='?t='+Date.now(),H=t=>String(t).replace(
 (async()=>{
  // ১) live index.html কি নতুন?
  try{const r=await fetch('index.html'+ts,{cache:'no-store'}),t=await r.text();
-  $('#a').innerHTML='<b>১) index.html</b><br>'+(/manifest-kibria\.webmanifest/.test(t)?'<span class="ok">✔ নতুন ফাইল আপলোড আছে (নতুন ম্যানিফেস্টের লিংক আছে)</span>':'<span class="bad">✘ পুরনো index.html আছে। নতুন index.html আপলোড করুন।</span>')}catch(e){$('#a').innerHTML='<b>১) index.html</b><br><span class="bad">✘ পড়া যায়নি</span>'}
+  $('#a').innerHTML='<b>১) index.html</b><br>'+(/manifest\.webmanifest\?v4/.test(t)?'<span class="ok">✔ নতুন ফাইল আপলোড আছে (নতুন ম্যানিফেস্টের লিংক আছে (v4))</span>':'<span class="bad">✘ পুরনো index.html আছে। নতুন index.html আপলোড করুন।</span>')}catch(e){$('#a').innerHTML='<b>১) index.html</b><br><span class="bad">✘ পড়া যায়নি</span>'}
  // ২) ম্যানিফেস্ট
- try{const r=await fetch('manifest-kibria.webmanifest'+ts,{cache:'no-store'});if(!r.ok)throw new Error(r.status);const m=await r.json();
-  let h='<b>২) ম্যানিফেস্ট (manifest-kibria.webmanifest)</b><br><span class="ok">✔ আছে</span><br>নাম: <b>'+H(m.name)+'</b> · ছোট নাম: <b>'+H(m.short_name)+'</b><div class="r" style="margin-top:8px">';
+ try{const r=await fetch('manifest.webmanifest'+ts,{cache:'no-store'});if(!r.ok)throw new Error(r.status);const m=await r.json();
+  let h='<b>২) ম্যানিফেস্ট (manifest.webmanifest)</b><br><span class="ok">✔ আছে</span><br>নাম: <b>'+H(m.name)+'</b> · ছোট নাম: <b>'+H(m.short_name)+'</b><div class="r" style="margin-top:8px">';
   const seen={};for(const i of m.icons||[]){const u=i.src.split('?')[0];if(seen[u])continue;seen[u]=1;h+='<div><img src="'+H(u+ts.replace('?','?x='))+'" alt=""><br><small>'+H(u)+'</small></div>'}
-  $('#b').innerHTML=h+'</div>'}catch(e){$('#b').innerHTML='<b>২) ম্যানিফেস্ট</b><br><span class="bad">✘ manifest-kibria.webmanifest পাওয়া যায়নি ('+H(e.message)+')। ফাইলটা index.html এর ফোল্ডারে আপলোড করুন।</span>'}
+  $('#b').innerHTML=h+'</div>'}catch(e){$('#b').innerHTML='<b>২) ম্যানিফেস্ট</b><br><span class="bad">✘ manifest.webmanifest পাওয়া যায়নি ('+H(e.message)+')। ফাইলটা index.html এর ফোল্ডারে আপলোড করুন।</span>'}
  // ৩) ফোনে জমা
  try{const rs=await navigator.serviceWorker.getRegistrations(),ks=await caches.keys();
   $('#d').innerHTML='<b>৩) এই ফোনে জমা থাকা</b><br>সার্ভিস ওয়ার্কার: <b>'+rs.length+'</b>টি<br>ক্যাশ: <b>'+H(ks.join(', ')||'নেই')+'</b>'}catch(e){$('#d').innerHTML='<b>৩)</b> পরীক্ষা করা গেল না'}
