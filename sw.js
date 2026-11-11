@@ -1,5 +1,5 @@
 // কিবরিয়া টেলিকম: সার্ভিস ওয়ার্কার (নতুন ফাইল আগে নেটওয়ার্ক থেকে আনে, তাই পুরনো নাম/আইকন আটকে থাকে না)
-const V = 'kibria-v1';
+const V = 'kibria-v2';
 const SHELL = ['./', 'index.html', 'app.html', 'manifest-kibria.webmanifest', 'icon-kibria-192.png', 'icon-kibria-512.png'];
 self.addEventListener('install', e => {
   self.skipWaiting();
