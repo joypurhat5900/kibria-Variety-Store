@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <script>if(window.top!==window.self){try{window.top.location=window.self.location}catch(e){document.documentElement.style.display="none"}}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>নেটলিংক টেলিকম</title>
+<title>কিবরিয়া টেলিকম</title>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#2d1a94"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;700&family=Noto+Sans+Bengali:wght@400;500;700&family=Anek+Bangla:wght@400;500;700&family=Baloo+Da+2:wght@400;500;700&family=Noto+Serif+Bengali:wght@400;500;700&family=Tiro+Bangla&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.min.js"></script>
@@ -172,6 +172,10 @@ dialog,input,select,textarea,button{font-family:inherit}
 .bi.bl0{display:inline-grid;place-items:center;font-style:normal;font-weight:700;font-size:22px;color:#fff;background:linear-gradient(135deg,#8a5cff,#ff4d9d)}
 .bgrid .bi.bl0{font-size:26px}
 .sm .bi,.pk .bi{margin-right:4px}
+.logo{font-size:17px;min-width:0}.logo span{white-space:nowrap}
+#who{max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hr{flex-wrap:nowrap;white-space:nowrap}
+@media(max-width:430px){#who{display:none}}
 </style>
 </head>
 <body>
@@ -185,7 +189,7 @@ dialog,input,select,textarea,button{font-family:inherit}
 <symbol id="b-bl" viewBox="0 0 40 40"><rect width="40" height="40" rx="11" fill="#f58220"/><text x="20" y="24.500" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="19" fill="#fff">bl</text><path d="M10 30q10 5 20 0" stroke="#fff" stroke-width="2.400" fill="none" stroke-linecap="round"/></symbol>
 <symbol id="b-airtel" viewBox="0 0 40 40"><rect width="40" height="40" rx="11" fill="#e40000"/><text x="20" y="28.500" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="25" fill="#fff">a</text></symbol>
 <symbol id="b-tt" viewBox="0 0 40 40"><rect width="40" height="40" rx="11" fill="#00a650"/><path d="M10.500 11.500h19v5h-7v14h-5v-14h-7z" fill="#fff"/><circle cx="31" cy="30.500" r="3" fill="#ed1c24"/></symbol>
-<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="19" fill="url(#lgrad1)"/><path d="M0 19Q0 0 19 0H45Q64 0 64 19V26Q32 14 0 34Z" fill="url(#lgrad2)"/><g fill="none" stroke="#fff" stroke-width="5.2" stroke-linecap="round"><rect x="11" y="28" width="25" height="17" rx="8.5" transform="rotate(-35 23.5 36.5)"/><rect x="28" y="19" width="25" height="17" rx="8.5" transform="rotate(-35 40.5 27.5)"/></g><circle cx="49" cy="14" r="4.2" fill="#ffc83d"/><circle cx="49" cy="14" r="7.4" fill="none" stroke="#ffc83d" stroke-opacity=".45" stroke-width="1.6"/></symbol>
+<symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="19" fill="url(#lgrad1)"/><path d="M0 19Q0 0 19 0H45Q64 0 64 19V26Q32 14 0 34Z" fill="url(#lgrad2)"/><g fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 15V49"/><path d="M18 34L33.500 19"/><path d="M24.500 31.500L38 49"/></g><circle cx="39" cy="14" r="3.600" fill="#ffc83d"/><g fill="none" stroke="#ffc83d" stroke-width="2.400" stroke-linecap="round"><path d="M44.100 7.900A8 8 0 0 1 45.900 18"/><path d="M47.400 4A13 13 0 0 1 50.300 20.500" stroke-opacity=".6"/></g></symbol>
 <symbol id="i-recharge" viewBox="0 0 24 24"><rect x="6.5" y="2.5" width="11" height="19" rx="2.8"/><path d="M12.9 7.2L10.3 11.9h3.4l-2.6 4.9"/></symbol>
 <symbol id="i-bill" viewBox="0 0 24 24"><path d="M5.5 3h13v18l-2.6-1.7-2.2 1.7-2.2-1.7-2.2 1.7-2.6-1.7z"/><path d="M9 8h6M9 11.7h6M9 15.3h3.5"/></symbol>
 <symbol id="i-send" viewBox="0 0 24 24"><path d="M3.8 11.6L20.2 4l-4.9 16-3.3-6.4z"/><path d="M12 13.6L20.2 4"/></symbol>
@@ -200,7 +204,7 @@ dialog,input,select,textarea,button{font-family:inherit}
 <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16.4V11a6 6 0 0 1 12 0v5.4l1.6 2.1H4.4z"/><path d="M10 20.8a2.1 2.1 0 0 0 4 0"/></symbol>
 <symbol id="i-theme" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.4"/><path d="M12 3.6v16.8a8.4 8.4 0 0 0 0-16.8z" fill="currentColor"/></symbol>
 </svg>
-<header><div class="w"><div class="logo"><svg class="lm" aria-hidden="true"><use href="#logo"/></svg><span>নেটলিংক<b>.</b></span></div><div class="hr"><span id="who"></span><button class="lk" id="bell" hidden aria-label="নোটিফিকেশন"><svg class="ic"><use href="#i-bell"/></svg><b id="nbg"></b></button><button class="lk" id="adm" hidden>অ্যাডমিন</button><button class="lk" id="out" hidden>লগআউট</button><button class="lk" id="th" aria-label="থিম"><svg class="ic"><use href="#i-theme"/></svg></button></div></div></header>
+<header><div class="w"><div class="logo"><svg class="lm" aria-hidden="true"><use href="#logo"/></svg><span>কিবরিয়া টেলিকম</span></div><div class="hr"><span id="who"></span><button class="lk" id="bell" hidden aria-label="নোটিফিকেশন"><svg class="ic"><use href="#i-bell"/></svg><b id="nbg"></b></button><button class="lk" id="adm" hidden>অ্যাডমিন</button><button class="lk" id="out" hidden>লগআউট</button><button class="lk" id="th" aria-label="থিম"><svg class="ic"><use href="#i-theme"/></svg></button></div></div></header>
 
 <section id="pend" class="w" hidden><div class="lcard" style="margin-top:20px"><h2 id="pt1"></h2><p class="hint" id="pt2"></p><button class="go" id="pkyc" type="button" hidden>তথ্য আবার জমা দিন</button><div id="pnl"></div></div></section>
 
@@ -273,7 +277,7 @@ dialog,input,select,textarea,button{font-family:inherit}
 <h2>সাম্প্রতিক লেনদেন</h2><div class="pk" id="at3"></div>
 <h2>মার্চেন্ট নম্বর</h2><div class="pk"><div class="row"><div><label for="cb">বিকাশ</label><input id="cb" maxlength="11"></div><div><label for="cn">নগদ</label><input id="cn" maxlength="11"></div></div><label for="cr">রকেট</label><input id="cr" maxlength="12"><button class="go" id="cs" style="padding:10px;font-size:16px">সেভ করুন</button></div>
 </main></div>
-<footer>© নেটলিংক টেলিকম</footer>
+<footer>© কিবরিয়া টেলিকম</footer>
 
 <dialog id="dg"><h3 style="margin:0 0 8px">নিশ্চিত করুন</h3><div id="sum"></div>
 <label for="cp">আপনার পাসওয়ার্ড দিয়ে নিশ্চিত করুন</label><input id="cp" type="password" autocomplete="current-password">
@@ -324,7 +328,7 @@ function showLim(){const o=limOf('operator',op,...LMO),s=limOf('payment',sm,...L
 function renderBrands(){if(!BRD.payment.some(b=>b.name===sm))sm=(BRD.payment[0]||{}).name||'';if(op&&!BRD.operator.some(b=>b.name===op))op='';bgrid('#ops',BRD.operator,op,v=>{op=v;showOffers();showLim()});bgrid('#sm',BRD.payment,sm,v=>{sm=v;showLim()});showLim()}
 async function loadBrands(){try{const{data,error}=await sb.from('brands').select('*').eq('active',true).order('sort').order('id');if(error||!data||!data.length)return;BRD={operator:data.filter(b=>b.kind==='operator'),payment:data.filter(b=>b.kind==='payment')};if(!BRD.operator.length)BRD.operator=DEF_BR.operator.slice();if(!BRD.payment.length)BRD.payment=DEF_BR.payment.slice();renderBrands();showOffers()}catch(e){}}
 function weakPw(p,c){c=c||{};p=String(p||'');const L=p.length,lo=p.toLowerCase(),num=/^\d+$/.test(p);
-const common=['password','password1','123456789','1234567890','qwerty','qwerty123','qwertyuiop','abc123','abcdef','iloveyou','admin123','welcome','letmein','bangladesh','netlink','nesco123','111222','112233','121212','123123','123321','159753','520520','696969','1q2w3e','1q2w3e4r','asdfgh','asdfghjk','zxcvbn'];
+const common=['password','password1','123456789','1234567890','qwerty','qwerty123','qwertyuiop','abc123','abcdef','iloveyou','admin123','welcome','letmein','bangladesh','netlink','kibria','kibriya','kibriatelecom','nesco123','111222','112233','121212','123123','123321','159753','520520','696969','1q2w3e','1q2w3e4r','asdfgh','asdfghjk','zxcvbn'];
 if(common.includes(lo))return 'এটা খুব সহজ ও পরিচিত পাসওয়ার্ড।';
 if(/^(.)\1+$/.test(p))return 'একই অক্ষর বারবার (যেমন ১১১১১১) চলবে না।';
 for(let b=1;b<=L/2;b++){if(L%b===0&&p.slice(0,b).repeat(L/b)===p)return 'একই অংশ বারবার (যেমন ১২১২১২, ১২৩১২৩) চলবে না।'}
