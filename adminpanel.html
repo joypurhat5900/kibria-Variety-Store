@@ -106,12 +106,30 @@ div.kc{cursor:default}
 .kyg img,.kp{display:block;width:100%;height:84px;object-fit:cover;border-radius:8px;border:1px solid var(--line);background:#fff;margin-bottom:6px;cursor:zoom-in}
 .kyg input[type=file]{font-size:0;padding:4px;border-width:1px;width:100%;min-width:0;max-width:100%}.kyg input[type=file]::file-selector-button{font:inherit;font-size:12px;padding:5px 8px;border:0;border-radius:8px;background:var(--pri);color:#fff;margin:0}
 .kp{height:auto;max-height:150px;object-fit:contain;margin:6px 0}
+.rtabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
+.rtab{padding:8px 14px;border-radius:20px;border:2px solid var(--line);background:var(--card);color:var(--ink);font-weight:600;font-size:14px}
+.rtab[aria-pressed="true"]{color:#fff;border-color:transparent;background:var(--c)}
+#rcReceipt{background:#fff;color:#111;width:300px;max-width:100%;margin:0 auto;padding:14px;border:1px dashed #888;font-size:14px;line-height:1.45}
+#rcReceipt .rcc{text-align:center}#rcReceipt h3{margin:0;font-size:18px}
+#rcReceipt hr{border:0;border-top:1px dashed #777;margin:8px 0}
+#rcReceipt .rl{display:flex;justify-content:space-between;gap:8px}#rcReceipt .rl b{text-align:right;word-break:break-all}
+#rcReceipt .rtot{font-size:17px;font-weight:700}
+.rcbtns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.rcbtns .btn2{margin:0}
+.rcerr{color:var(--bad);font-size:14px;min-height:20px;margin-top:6px}
+@media print{
+ header,#rail,.tp:not(#t11),#t11>*:not(#rcCard),dialog,#toast,footer{display:none!important}
+ :root{padding:0!important}body{background:#fff!important}
+ #ad main.w{padding:0!important;max-width:none!important;margin:0!important}
+ #rcCard{border:0!important;box-shadow:none!important;padding:0!important;margin:0!important;background:#fff!important}
+ #rcCard .noprint{display:none!important}#rcReceipt{border:0!important;width:80mm!important}
+}
 </style></head><body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><linearGradient id="lgrad1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8a5cff"/><stop offset=".55" stop-color="#5b34e6"/><stop offset="1" stop-color="#ff4d9d"/></linearGradient><linearGradient id="lgrad2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
 <symbol id="logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="19" fill="url(#lgrad1)"/><path d="M0 19Q0 0 19 0H45Q64 0 64 19V26Q32 14 0 34Z" fill="url(#lgrad2)"/><g fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 15V49"/><path d="M18 34L33.500 19"/><path d="M24.500 31.500L38 49"/></g><circle cx="39" cy="14" r="3.600" fill="#ffc83d"/><g fill="none" stroke="#ffc83d" stroke-width="2.400" stroke-linecap="round"><path d="M44.100 7.900A8 8 0 0 1 45.900 18"/><path d="M47.400 4A13 13 0 0 1 50.300 20.500" stroke-opacity=".6"/></g></symbol>
 <symbol id="a-dash" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7.5" height="9" rx="2"/><rect x="13" y="3.5" width="7.5" height="5.5" rx="2"/><rect x="13" y="11.5" width="7.5" height="9" rx="2"/><rect x="3.5" y="15" width="7.5" height="5.5" rx="2"/></symbol>
 <symbol id="a-inbox" viewBox="0 0 24 24"><path d="M3.5 13l2.4-7.2A2 2 0 0 1 7.8 4.5h8.4a2 2 0 0 1 1.9 1.3L20.5 13"/><path d="M3.5 13v4.5a2 2 0 0 0 2 2h13a2 2 0 0 0 2-2V13h-5l-1.3 2.2h-4.4L8.5 13z"/></symbol>
 <symbol id="a-users" viewBox="0 0 24 24"><circle cx="9" cy="8.2" r="3.3"/><path d="M2.8 19.5c.5-3.3 3-5.2 6.2-5.2s5.7 1.9 6.2 5.2"/><path d="M16 5.2a3.1 3.1 0 0 1 0 6M18.4 14.6c1.6.7 2.6 2.2 2.8 4.4"/></symbol>
+<symbol id="a-receipt" viewBox="0 0 24 24"><path d="M6 3h12v18l-2.500-1.600L13 21l-2.500-1.600L8 21l-2-1.400z"/><path d="M9 8h6M9 11.500h6M9 15h3.500"/></symbol>
 <symbol id="a-swap" viewBox="0 0 24 24"><path d="M4 8h13l-3.2-3.2M20 16H7l3.2 3.2"/></symbol>
 <symbol id="a-more" viewBox="0 0 24 24"><circle cx="5.5" cy="12" r="1.7" fill="currentColor"/><circle cx="12" cy="12" r="1.7" fill="currentColor"/><circle cx="18.5" cy="12" r="1.7" fill="currentColor"/></symbol>
 <symbol id="a-chat" viewBox="0 0 24 24"><path d="M6 4.5h12a2.5 2.5 0 0 1 2.5 2.5v7.6a2.5 2.5 0 0 1-2.5 2.5h-6.3L7.2 20.6v-3.5H6A2.5 2.5 0 0 1 3.5 14.6V7A2.5 2.5 0 0 1 6 4.5z"/><path d="M8.3 10.8h.01M12 10.8h.01M15.7 10.8h.01" stroke-width="2.6"/></symbol>
@@ -150,6 +168,28 @@ div.kc{cursor:default}
 <div class="tp" id="t2" hidden><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><h2 style="margin:0">গ্রাহক</h2><button class="btn2 g" data-a="ncopen" style="margin:0">➕ নতুন গ্রাহক</button></div><input id="cq" style="margin-top:10px" placeholder="নাম, মোবাইল বা ইমেইল দিয়ে খুঁজুন"><div class="pk" id="cl" style="margin-top:10px"></div></div>
 
 <div class="tp" id="t3" hidden><h2>লেনদেন</h2><select id="tf"><option value="">সব ধরন</option><option value="recharge">রিচার্জ</option><option value="bill">বিল পে</option><option value="send">সেন্ড মানি</option><option value="topup">ব্যালেন্স যোগ</option><option value="adjust">অ্যাডমিন সমন্বয়</option><option value="refund">টাকা ফেরত</option><option value="commission">কমিশন</option><option value="saving">সঞ্চয় জমা</option><option value="saving_out">সঞ্চয় ফেরত</option><option value="loan_in">ঋণ গ্রহণ</option><option value="loan_pay">ঋণ পরিশোধ</option></select><div class="pk" id="r3" style="margin-top:10px"></div></div>
+
+<div class="tp" id="t11" hidden>
+<h2>বিলিং ও রিসিট</h2>
+<div class="pk"><p class="hint" style="margin:0 0 6px">দোকানে হাতে করা লেনদেনের (ক্যাশ ইন/আউট, রিচার্জ, বিল পে) ক্যাশ মেমো বানান ও প্রিন্ট করুন। এখানকার হিসাব এই ব্রাউজারেই জমা থাকে, অ্যাপের গ্রাহকদের লেনদেনের সাথে মেশে না।</p>
+<div class="row"><div><label for="rcShop">দোকানের নাম</label><input id="rcShop" placeholder="কিবরিয়া টেলিকম" autocomplete="off"></div><div><label for="rcPh">মোবাইল নম্বর</label><input id="rcPh" inputmode="tel" placeholder="01XXXXXXXXX" autocomplete="off"></div></div></div>
+<h2>নতুন লেনদেন</h2>
+<div class="pk"><div class="rtabs" id="rcTabs"></div>
+<label for="rcType" id="rcTypeL">লেনদেনের ধরন</label><select id="rcType"></select>
+<div id="rcSubW" hidden><label for="rcSub" id="rcSubL"></label><select id="rcSub"></select></div>
+<div class="row"><div><label for="rcNum" id="rcNumL">গ্রাহকের নম্বর</label><input id="rcNum" inputmode="numeric" placeholder="01XXXXXXXXX" autocomplete="off"></div><div id="rcAccW" hidden><label for="rcAcc">অ্যাকাউন্ট / মিটার নং</label><input id="rcAcc" inputmode="numeric" autocomplete="off"></div></div>
+<div class="row"><div><label for="rcAmt">টাকার পরিমাণ</label><input id="rcAmt" inputmode="decimal" placeholder="0" autocomplete="off"></div><div><label for="rcFee">চার্জ / সার্ভিস ফি</label><input id="rcFee" inputmode="decimal" placeholder="0" autocomplete="off"></div></div>
+<label for="rcTrx">ট্রানজেকশন আইডি (TrxID)</label><input id="rcTrx" placeholder="ঐচ্ছিক" autocapitalize="characters" autocomplete="off">
+<div class="rcerr" id="rcErr" role="alert"></div>
+<button class="go" id="rcMake" type="button">রিসিট তৈরি করুন</button></div>
+<div class="pk" id="rcCard" hidden style="margin-top:12px"><h2 class="noprint" style="margin-top:6px">রিসিট</h2><div id="rcReceipt"></div>
+<div class="rcbtns noprint"><button class="btn2 g" id="rcPrint" type="button">প্রিন্ট করুন</button><button class="btn2" id="rcCopy" type="button">টেক্সট কপি</button><button class="btn2" id="rcShare" type="button">শেয়ার</button></div>
+<div class="hint noprint" id="rcMsg"></div></div>
+<h2>আজকের হিসাব</h2>
+<div class="kg"><div class="kc" style="--c:#6a3df0"><small>লেনদেন</small><b id="rcCnt">০</b></div><div class="kc" style="--c:#12a150"><small>মোট টাকা</small><b id="rcSumAmt">০</b></div><div class="kc" style="--c:#ffb020"><small>মোট চার্জ</small><b id="rcSumFee">০</b></div></div>
+<div class="pk" id="rcHist" style="margin-top:10px"></div>
+<button class="btn2 r" id="rcClr" type="button" style="width:100%;margin-top:10px">ইতিহাস মুছুন</button>
+</div>
 
 <div class="tp" id="t5" hidden><h2>লাইভ চ্যাট</h2><div class="pk" id="cv"></div></div>
 
@@ -213,7 +253,8 @@ div.kc{cursor:default}
 <p class="hint">বটকে টেলিগ্রামে /start পাঠান। Chat ID পেতে @userinfobot কে মেসেজ দিন বা getUpdates লিংক খুলুন।</p></div>
 </div>
 </main>
-<nav id="rail" aria-label="প্রধান মেনু"><button data-tab="t0" class="on" type="button"><span class="ri"><svg class="ic"><use href="#a-dash"/></svg></span><em>ওভারভিউ</em></button><button data-tab="t1" type="button"><span class="ri"><svg class="ic"><use href="#a-inbox"/></svg><span id="nb1" class="bd"></span></span><em>রিকোয়েস্ট</em></button><button data-tab="t2" type="button"><span class="ri"><svg class="ic"><use href="#a-users"/></svg></span><em>গ্রাহক</em></button><button data-tab="t3" type="button"><span class="ri"><svg class="ic"><use href="#a-swap"/></svg></span><em>লেনদেন</em></button><button data-tab="t5" type="button"><span class="ri"><svg class="ic"><use href="#a-chat"/></svg><span id="nb5" class="bd"></span></span><em>চ্যাট</em></button><button data-tab="t10" type="button"><span class="ri"><svg class="ic"><use href="#a-coin"/></svg><span id="nb10" class="bd"></span></span><em>সঞ্চয় ও ঋণ</em></button><button data-tab="t9" type="button"><span class="ri"><svg class="ic"><use href="#a-shield"/></svg><span id="nb9" class="bd"></span></span><em>অনুমোদন</em></button><button data-tab="t8" type="button"><span class="ri"><svg class="ic"><use href="#a-bell"/></svg></span><em>নোটিফিকেশন</em></button><button data-tab="t6" type="button"><span class="ri"><svg class="ic"><use href="#a-pct"/></svg></span><em>চার্জ</em></button><button data-tab="t7" type="button"><span class="ri"><svg class="ic"><use href="#a-star"/></svg></span><em>কমিশন</em></button><button data-tab="t4" type="button"><span class="ri"><svg class="ic"><use href="#a-gear"/></svg></span><em>সেটিংস</em></button></nav>
+<nav id="rail" aria-label="প্রধান মেনু"><button data-tab="t0" class="on" type="button"><span class="ri"><svg class="ic"><use href="#a-dash"/></svg></span><em>ওভারভিউ</em></button><button data-tab="t1" type="button"><span class="ri"><svg class="ic"><use href="#a-inbox"/></svg><span id="nb1" class="bd"></span></span><em>রিকোয়েস্ট</em></button><button data-tab="t2" type="button"><span class="ri"><svg class="ic"><use href="#a-users"/></svg></span><em>গ্রাহক</em></button><button data-tab="t3" type="button"><span class="ri"><svg class="ic"><use href="#a-swap"/></svg></span><em>লেনদেন</em></button>
+<button data-tab="t11" type="button"><span class="ri"><svg class="ic"><use href="#a-receipt"/></svg></span><em>রিসিট</em></button><button data-tab="t5" type="button"><span class="ri"><svg class="ic"><use href="#a-chat"/></svg><span id="nb5" class="bd"></span></span><em>চ্যাট</em></button><button data-tab="t10" type="button"><span class="ri"><svg class="ic"><use href="#a-coin"/></svg><span id="nb10" class="bd"></span></span><em>সঞ্চয় ও ঋণ</em></button><button data-tab="t9" type="button"><span class="ri"><svg class="ic"><use href="#a-shield"/></svg><span id="nb9" class="bd"></span></span><em>অনুমোদন</em></button><button data-tab="t8" type="button"><span class="ri"><svg class="ic"><use href="#a-bell"/></svg></span><em>নোটিফিকেশন</em></button><button data-tab="t6" type="button"><span class="ri"><svg class="ic"><use href="#a-pct"/></svg></span><em>চার্জ</em></button><button data-tab="t7" type="button"><span class="ri"><svg class="ic"><use href="#a-star"/></svg></span><em>কমিশন</em></button><button data-tab="t4" type="button"><span class="ri"><svg class="ic"><use href="#a-gear"/></svg></span><em>সেটিংস</em></button></nav>
 </div>
 
 <dialog id="brd"><h3 id="brdt" style="margin:0 0 6px">সীমা ঠিক করুন</h3><p class="hint" id="brdh" style="margin:0 0 6px"></p><div class="row"><div><label for="brdmin">সর্বনিম্ন (৳)</label><input id="brdmin" inputmode="decimal" autocomplete="off"></div><div><label for="brdmax">সর্বোচ্চ (৳)</label><input id="brdmax" inputmode="decimal" autocomplete="off"></div></div><div class="bt"><button data-a="brdx" type="button">বাতিল</button><button class="ok" data-a="brdok" type="button">সেভ করুন</button></div></dialog>
@@ -468,6 +509,69 @@ function renderBR(){const grp=(k,t)=>{const l=BRL.filter(b=>b.kind===k);return `
 $('#brl').innerHTML=grp('operator','অপারেটর')+grp('payment','পেমেন্ট মাধ্যম')}
 async function brSwap(id,dir){const r=BRL.find(x=>String(x.id)===id);if(!r)return;const l=BRL.filter(b=>b.kind===r.kind),i=l.findIndex(x=>x.id===r.id),j=i+dir;if(j<0||j>=l.length)return;[l[i],l[j]]=[l[j],l[i]];const res=await Promise.all(l.map((b,n)=>sb.from('brands').update({sort:(n+1)*10}).eq('id',b.id)));const er=res.find(x=>x.error);if(er)return toast(errMsg(er.error));await loadBR()}
 async function brLogoPicked(){const f=$('#brx').files[0],r=BRL.find(x=>String(x.id)===window._brT);if(!f||!r)return;if(!/^image\//.test(f.type))return toast('শুধু ছবি দিন।');try{toast('আপলোড হচ্ছে...');const url=await upBrand(f),{error}=await sb.from('brands').update({logo_url:url}).eq('id',r.id);if(error)throw error;const old=brPath(r.logo_url);if(old)sb.storage.from('brands').remove([old]);toast('✅ লোগো বদলানো হয়েছে');await loadBR()}catch(x){toast(errMsg(x))}}
+(function(){
+var SV={
+ bkash:{n:'বিকাশ',c:'#e2136e',t:['ক্যাশ ইন','ক্যাশ আউট','সেন্ড মানি','পেমেন্ট'],nl:'বিকাশ নম্বর'},
+ nagad:{n:'নগদ',c:'#f26a21',t:['ক্যাশ ইন','ক্যাশ আউট','সেন্ড মানি','পেমেন্ট'],nl:'নগদ নম্বর'},
+ rocket:{n:'রকেট',c:'#8c3494',t:['ক্যাশ ইন','ক্যাশ আউট','সেন্ড মানি','পেমেন্ট'],nl:'রকেট নম্বর'},
+ recharge:{n:'মোবাইল রিচার্জ',c:'#1769d1',t:['প্রিপেইড','পোস্টপেইড'],sub:['গ্রামীণফোন','রবি','বাংলালিংক','এয়ারটেল','টেলিটক','স্কিটো'],subL:'অপারেটর',nl:'মোবাইল নম্বর'},
+ bill:{n:'বিল পে',c:'#0b7a4b',t:['বিদ্যুৎ','গ্যাস','পানি','ইন্টারনেট','অন্যান্য'],sub:['প্রিপেইড','পোস্টপেইড','অন্যান্য'],subL:'বিদ্যুৎ/বিলের মাধ্যম',acc:1,nl:'গ্রাহকের মোবাইল নম্বর'}
+};
+var cur='bkash',last=null,data=[],DEF='কিবরিয়া টেলিকম';
+var g=function(i){return document.getElementById(i)};
+function ld(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
+function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function bd(n){return String(n).replace(/\d/g,function(d){return '০১২৩৪৫৬৭৮৯'[d]})}
+function fm(n){return bd((Math.round(n*100)/100).toLocaleString('en-US'))}
+function el(t,a,x){var e=document.createElement(t);if(a)for(var k in a)e.setAttribute(k,a[k]);if(x!=null)e.textContent=x;return e}
+function nm(v){return parseFloat(en(String(v||'')).replace(/,/g,''))}
+function tabs(){var w=g('rcTabs');w.textContent='';Object.keys(SV).forEach(function(k){var b=el('button',{'class':'rtab',type:'button','aria-pressed':k===cur},SV[k].n);b.style.setProperty('--c',SV[k].c);b.onclick=function(){cur=k;tabs();form()};w.appendChild(b)})}
+function fill(s,arr){s.textContent='';arr.forEach(function(x){s.appendChild(el('option',{value:x},x))})}
+function form(){var v=SV[cur];fill(g('rcType'),v.t);g('rcTypeL').textContent=cur==='bill'?'বিলের ধরন':cur==='recharge'?'সংযোগের ধরন':'লেনদেনের ধরন';
+ g('rcSubW').hidden=!v.sub;if(v.sub){fill(g('rcSub'),v.sub);g('rcSubL').textContent=v.subL}
+ g('rcAccW').hidden=!v.acc;g('rcNumL').textContent=v.nl;g('rcErr').textContent=''}
+function now(){var d=new Date(),p=function(n){return String(n).padStart(2,'0')};return{ts:d.getTime(),day:d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()),txt:bd(p(d.getDate())+'/'+p(d.getMonth()+1)+'/'+d.getFullYear()+'  '+p(d.getHours())+':'+p(d.getMinutes()))}}
+function make(){
+ var amt=nm(g('rcAmt').value),fee=nm(g('rcFee').value)||0,num=en(g('rcNum').value).trim();
+ if(!num){g('rcErr').textContent='গ্রাহকের নম্বর লিখুন।';return}
+ if(!(amt>0)){g('rcErr').textContent='টাকার পরিমাণ লিখুন।';return}
+ if(fee<0){g('rcErr').textContent='চার্জ ঋণাত্মক হতে পারে না।';return}
+ g('rcErr').textContent='';
+ var n=ld('tb_seq',0)+1;sv('tb_seq',n);var t=now(),v=SV[cur];
+ var r={id:n,svc:cur,sn:v.n,type:g('rcType').value,sub:v.sub?g('rcSub').value:'',subL:v.subL||'',num:num,acc:v.acc?en(g('rcAcc').value).trim():'',amt:amt,fee:fee,trx:g('rcTrx').value.trim(),shop:g('rcShop').value.trim()||DEF,ph:g('rcPh').value.trim(),ts:t.ts,day:t.day,dt:t.txt};
+ data.unshift(r);data=data.slice(0,500);sv('tb_data',data);show(r);hist();
+ g('rcAmt').value='';g('rcFee').value='';g('rcTrx').value='';g('rcNum').value='';g('rcAcc').value=''}
+function line(a,l,r){var d=el('div',{'class':'rl'});d.appendChild(el('span',null,l));d.appendChild(el('b',null,r));a.appendChild(d)}
+function show(r){
+ last=r;g('rcCard').hidden=false;var w=g('rcReceipt');w.textContent='';
+ var h=el('div',{'class':'rcc'});h.appendChild(el('h3',null,r.shop));if(r.ph)h.appendChild(el('div',null,'মোবাইল: '+r.ph));h.appendChild(el('div',null,'*** ক্যাশ মেমো ***'));
+ w.appendChild(h);w.appendChild(el('hr'));
+ line(w,'রিসিট নং',bd(String(r.id).padStart(5,'0')));line(w,'তারিখ',r.dt);w.appendChild(el('hr'));
+ line(w,'সার্ভিস',r.sn);line(w,'ধরন',r.type);if(r.sub)line(w,r.subL,r.sub);
+ line(w,'নম্বর',bd(r.num));if(r.acc)line(w,'অ্যাকাউন্ট/মিটার',bd(r.acc));if(r.trx)line(w,'TrxID',r.trx);
+ w.appendChild(el('hr'));line(w,'পরিমাণ','৳ '+fm(r.amt));line(w,'চার্জ','৳ '+fm(r.fee));
+ var t=el('div',{'class':'rl rtot'});t.appendChild(el('span',null,'মোট'));t.appendChild(el('span',null,'৳ '+fm(r.amt+r.fee)));w.appendChild(t);
+ w.appendChild(el('hr'));w.appendChild(el('div',{'class':'rcc'},'ধন্যবাদ, আবার আসবেন'));
+ g('rcMsg').textContent='';g('rcCard').scrollIntoView({behavior:'smooth',block:'nearest'})}
+function plain(r){var a=[r.shop];if(r.ph)a.push('মোবাইল: '+r.ph);a.push('রিসিট নং: '+bd(String(r.id).padStart(5,'0')),'তারিখ: '+r.dt,'সার্ভিস: '+r.sn+' ('+r.type+')');if(r.sub)a.push(r.subL+': '+r.sub);a.push('নম্বর: '+bd(r.num));if(r.acc)a.push('অ্যাকাউন্ট/মিটার: '+bd(r.acc));if(r.trx)a.push('TrxID: '+r.trx);a.push('পরিমাণ: ৳'+fm(r.amt),'চার্জ: ৳'+fm(r.fee),'মোট: ৳'+fm(r.amt+r.fee),'ধন্যবাদ');return a.join('\n')}
+function hist(){
+ var td=now().day,tot=0,fe=0,c=0,w=g('rcHist');w.textContent='';
+ data.forEach(function(r){if(r.day===td){c++;tot+=r.amt;fe+=r.fee}});
+ g('rcCnt').textContent=bd(c);g('rcSumAmt').textContent=fm(tot);g('rcSumFee').textContent=fm(fe);
+ if(!data.length){w.appendChild(el('p',{'class':'hint'},'কোনো লেনদেন নেই। উপরে ফর্ম পূরণ করে রিসিট তৈরি করুন।'));return}
+ data.slice(0,30).forEach(function(r){var d=el('div',{'class':'sm'}),l=el('span',{'class':'cn'});
+  l.appendChild(el('b',null,r.sn+' · '+r.type+' · ৳'+fm(r.amt+r.fee)));l.appendChild(el('br'));l.appendChild(el('small',null,bd(r.num)+' · '+r.dt));
+  var b=el('button',{type:'button','class':'sb'},'দেখুন');b.onclick=function(){show(r)};d.appendChild(l);d.appendChild(b);w.appendChild(d)})}
+g('rcMake').onclick=make;
+g('rcPrint').onclick=function(){try{window.print()}catch(e){g('rcMsg').textContent='প্রিন্ট চালু হয়নি। রিসিট স্ক্রিনশট নিন।'}};
+g('rcCopy').onclick=function(){if(!last)return;try{navigator.clipboard.writeText(plain(last)).then(function(){g('rcMsg').textContent='কপি হয়েছে।'},function(){g('rcMsg').textContent='কপি করা যায়নি।'})}catch(e){g('rcMsg').textContent='কপি করা যায়নি।'}};
+g('rcShare').onclick=function(){if(!last)return;try{if(navigator.share){navigator.share({text:plain(last)}).catch(function(){})}else{g('rcMsg').textContent='এই ব্রাউজারে শেয়ার সাপোর্ট নেই। "টেক্সট কপি" ব্যবহার করুন।'}}catch(e){g('rcMsg').textContent='শেয়ার করা যায়নি।'}};
+g('rcClr').onclick=function(){if(!data.length)return;if(confirm('সব লেনদেনের ইতিহাস মুছে যাবে। নিশ্চিত?')){data=[];sv('tb_data',data);hist();g('rcCard').hidden=true}};
+['rcShop','rcPh'].forEach(function(i){g(i).oninput=function(){sv('tb_shop',{n:g('rcShop').value,p:g('rcPh').value})}});
+var s=ld('tb_shop',{n:'',p:''});g('rcShop').value=s.n||'';g('rcPh').value=s.p||'';
+data=ld('tb_data',[]);if(!Array.isArray(data))data=[];
+tabs();form();hist();
+})();
 function rsl(){const pend=LNS.filter(l=>l.status==='pending'),rest=LNS.filter(l=>l.status!=='pending');
 $('#nb10').textContent=pend.length?bn(pend.length):'';$('#yn').textContent=pend.length?'('+bn(pend.length)+')':'';
 $('#yreq').innerHTML=pend.length?pend.map(l=>`<div class="sm" style="align-items:flex-start"><span>${who(l)}<br><b>${E(l.title)}</b><br><small>${fq(l.freq)[0]} · ঋণ ${M(l.principal)} · পরিশোধ্য ${M(l.payable)} · ${bn(l.months)} ${fq(l.freq)[1]} · কিস্তি ${M(l.installment)}<br>${dt(l.created_at)}</small></span><span><button class="sb g" data-a="lna" data-i="${l.id}">অনুমোদন</button><br><button class="sb r" data-a="lnr" data-i="${l.id}">বাতিল</button></span></div>`).join(''):'<p class="hint">কোনো ঋণের আবেদন নেই।</p>';
