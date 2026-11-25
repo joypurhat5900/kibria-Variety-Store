@@ -116,6 +116,12 @@ div.kc{cursor:default}
 #rcReceipt .rtot{font-size:17px;font-weight:700}
 .rcbtns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.rcbtns .btn2{margin:0}
 .rcerr{color:var(--bad);font-size:14px;min-height:20px;margin-top:6px}
+.rex label{margin-top:8px}
+#rcScanImg{display:block;max-width:100%;max-height:240px;object-fit:contain;border:1px solid var(--line);border-radius:10px;margin:8px 0;background:#fff}
+#rcMore summary{cursor:pointer;color:var(--pri);font-weight:600;padding:6px 0}
+#rcReceipt .rcs{font-weight:700;margin:3px 0 1px}
+#rcReceipt .rtok{text-align:center;font-weight:700;font-size:16px;letter-spacing:1px;font-family:ui-monospace,Menlo,Consolas,monospace;word-break:break-all;margin:6px 0;padding:4px;border:1px solid #333}
+.rcw{color:#b45309;font-size:13px}
 @media print{
  header,#rail,.tp:not(#t11),#t11>*:not(#rcCard),dialog,#toast,footer{display:none!important}
  :root{padding:0!important}body{background:#fff!important}
@@ -171,15 +177,20 @@ div.kc{cursor:default}
 
 <div class="tp" id="t11" hidden>
 <h2>বিলিং ও রিসিট</h2>
-<div class="pk"><p class="hint" style="margin:0 0 6px">দোকানে হাতে করা লেনদেনের (ক্যাশ ইন/আউট, রিচার্জ, বিল পে) ক্যাশ মেমো বানান ও প্রিন্ট করুন। এখানকার হিসাব এই ব্রাউজারেই জমা থাকে, অ্যাপের গ্রাহকদের লেনদেনের সাথে মেশে না।</p>
+<div class="pk"><p class="hint" style="margin:0 0 6px">দোকানে হাতে করা লেনদেনের (ক্যাশ ইন/আউট, রিচার্জ, বিল পে) ক্যাশ মেমো বানান ও প্রিন্ট করুন। বিকাশ/নগদ/রকেটের পেমেন্ট রিসিটের ছবি দিলে তথ্য নিজে থেকে ফর্মে বসে যায়। এখানকার হিসাব এই ব্রাউজারেই জমা থাকে, অ্যাপের গ্রাহকদের লেনদেনের সাথে মেশে না।</p>
 <div class="row"><div><label for="rcShop">দোকানের নাম</label><input id="rcShop" placeholder="কিবরিয়া টেলিকম" autocomplete="off"></div><div><label for="rcPh">মোবাইল নম্বর</label><input id="rcPh" inputmode="tel" placeholder="01XXXXXXXXX" autocomplete="off"></div></div></div>
 <h2>নতুন লেনদেন</h2>
-<div class="pk"><div class="rtabs" id="rcTabs"></div>
+<div class="pk">
+<button class="btn2 g" id="rcScan" type="button" style="width:100%">📷 রিসিটের ছবি থেকে তথ্য ভরুন</button><input id="rcFile" type="file" accept="image/*" hidden>
+<div class="hint" id="rcScanMsg"></div><img id="rcScanImg" alt="আপলোড করা রিসিট" hidden>
+<div class="rtabs" id="rcTabs" style="margin-top:10px"></div>
 <label for="rcType" id="rcTypeL">লেনদেনের ধরন</label><select id="rcType"></select>
 <div id="rcSubW" hidden><label for="rcSub" id="rcSubL"></label><select id="rcSub"></select></div>
 <div class="row"><div><label for="rcNum" id="rcNumL">গ্রাহকের নম্বর</label><input id="rcNum" inputmode="numeric" placeholder="01XXXXXXXXX" autocomplete="off"></div><div id="rcAccW" hidden><label for="rcAcc">অ্যাকাউন্ট / মিটার নং</label><input id="rcAcc" inputmode="numeric" autocomplete="off"></div></div>
-<div class="row"><div><label for="rcAmt">টাকার পরিমাণ</label><input id="rcAmt" inputmode="decimal" placeholder="0" autocomplete="off"></div><div><label for="rcFee">চার্জ / সার্ভিস ফি</label><input id="rcFee" inputmode="decimal" placeholder="0" autocomplete="off"></div></div>
+<div class="row"><div><label for="rcAmt">টাকার পরিমাণ</label><input id="rcAmt" inputmode="decimal" placeholder="0" autocomplete="off"></div><div><label for="rcFee">আপনার সার্ভিস চার্জ</label><input id="rcFee" inputmode="decimal" placeholder="0" autocomplete="off"></div></div>
 <label for="rcTrx">ট্রানজেকশন আইডি (TrxID)</label><input id="rcTrx" placeholder="ঐচ্ছিক" autocapitalize="characters" autocomplete="off">
+<details id="rcMore" style="margin-top:10px"><summary>আরও তথ্য (ঐচ্ছিক): বিলার, টোকেন, গ্রাহকের নাম, সময়, ভ্যাট...</summary><div class="row" id="rcEx" style="margin-top:6px"></div></details>
+<datalist id="rcProv"><option value="NESCO"><option value="DESCO"><option value="DPDC"><option value="WZPDCL"><option value="পল্লী বিদ্যুৎ (BREB)"><option value="তিতাস গ্যাস"><option value="বাখরাবাদ গ্যাস"><option value="ওয়াসা"></datalist>
 <div class="rcerr" id="rcErr" role="alert"></div>
 <button class="go" id="rcMake" type="button">রিসিট তৈরি করুন</button></div>
 <div class="pk" id="rcCard" hidden style="margin-top:12px"><h2 class="noprint" style="margin-top:6px">রিসিট</h2><div id="rcReceipt"></div>
@@ -517,7 +528,23 @@ var SV={
  recharge:{n:'মোবাইল রিচার্জ',c:'#1769d1',t:['প্রিপেইড','পোস্টপেইড'],sub:['গ্রামীণফোন','রবি','বাংলালিংক','এয়ারটেল','টেলিটক','স্কিটো'],subL:'অপারেটর',nl:'মোবাইল নম্বর'},
  bill:{n:'বিল পে',c:'#0b7a4b',t:['বিদ্যুৎ','গ্যাস','পানি','ইন্টারনেট','অন্যান্য'],sub:['প্রিপেইড','পোস্টপেইড','অন্যান্য'],subL:'বিদ্যুৎ/বিলের মাধ্যম',acc:1,nl:'গ্রাহকের মোবাইল নম্বর'}
 };
-var cur='bkash',last=null,data=[],DEF='কিবরিয়া টেলিকম';
+var BL=['bill','recharge'],ALL=null;
+var EX=[
+ {k:'when',l:'লেনদেনের সময়',t:'datetime-local',sv:ALL},
+ {k:'prov',l:'প্রতিষ্ঠান / বিলার',t:'text',sv:['bill'],list:'rcProv',ph:'যেমন: NESCO'},
+ {k:'bcode',l:'বিলার কোড',t:'text',sv:['bill'],inp:'numeric'},
+ {k:'cname',l:'গ্রাহকের নাম',t:'text',sv:ALL},
+ {k:'month',l:'বিলের মাস ও বছর',t:'text',sv:['bill'],ph:'যেমন: অক্টোবর ২০২৬'},
+ {k:'token',l:'প্রিপেইড টোকেন',t:'text',sv:['bill'],inp:'numeric'},
+ {k:'track',l:'রেফারেন্স / ট্র্যাকিং নং',t:'text',sv:BL},
+ {k:'svcn',l:'সেবার বিবরণ',t:'text',sv:BL,ph:'যেমন: নতুন সংযোগ ফি'},
+ {k:'via',l:'কোন মাধ্যমে পেমেন্ট করলেন',t:'select',sv:BL,opts:['','বিকাশ','নগদ','রকেট','নগদ টাকা','অন্যান্য']},
+ {k:'from',l:'যে নম্বর থেকে পেমেন্ট',t:'text',sv:BL,inp:'numeric'},
+ {k:'gfee',l:'গেটওয়ে ফি',t:'text',sv:BL,inp:'decimal',ph:'0'},
+ {k:'vat',l:'ভ্যাট',t:'text',sv:BL,inp:'decimal',ph:'0'},
+ {k:'status',l:'অবস্থা',t:'select',sv:ALL,opts:['সফল','প্রক্রিয়াধীন','ব্যর্থ']}
+];
+var cur='bkash',last=null,data=[],DEF='কিবরিয়া টেলিকম',whenTouched=false;
 var g=function(i){return document.getElementById(i)};
 function ld(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
 function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
@@ -525,43 +552,154 @@ function bd(n){return String(n).replace(/\d/g,function(d){return '০১২৩�
 function fm(n){return bd((Math.round(n*100)/100).toLocaleString('en-US'))}
 function el(t,a,x){var e=document.createElement(t);if(a)for(var k in a)e.setAttribute(k,a[k]);if(x!=null)e.textContent=x;return e}
 function nm(v){return parseFloat(en(String(v||'')).replace(/,/g,''))}
+function ex(k){return g('rcx_'+k)}
+function exv(k){var e=ex(k);return e?e.value.trim():''}
+function buildEx(){var w=g('rcEx');w.textContent='';EX.forEach(function(x){
+ var d=el('div',{'class':'rex','data-k':x.k});d.appendChild(el('label',{'for':'rcx_'+x.k},x.l));var i;
+ if(x.t==='select'){i=el('select',{id:'rcx_'+x.k});x.opts.forEach(function(o){i.appendChild(el('option',{value:o},o||'— বাছুন —'))})}
+ else{i=el('input',{id:'rcx_'+x.k,type:x.t,autocomplete:'off'});if(x.ph)i.setAttribute('placeholder',x.ph);if(x.inp)i.setAttribute('inputmode',x.inp);if(x.list)i.setAttribute('list',x.list)}
+ if(x.k==='when')i.oninput=function(){whenTouched=true};
+ d.appendChild(i);w.appendChild(d)})}
 function tabs(){var w=g('rcTabs');w.textContent='';Object.keys(SV).forEach(function(k){var b=el('button',{'class':'rtab',type:'button','aria-pressed':k===cur},SV[k].n);b.style.setProperty('--c',SV[k].c);b.onclick=function(){cur=k;tabs();form()};w.appendChild(b)})}
 function fill(s,arr){s.textContent='';arr.forEach(function(x){s.appendChild(el('option',{value:x},x))})}
 function form(){var v=SV[cur];fill(g('rcType'),v.t);g('rcTypeL').textContent=cur==='bill'?'বিলের ধরন':cur==='recharge'?'সংযোগের ধরন':'লেনদেনের ধরন';
  g('rcSubW').hidden=!v.sub;if(v.sub){fill(g('rcSub'),v.sub);g('rcSubL').textContent=v.subL}
- g('rcAccW').hidden=!v.acc;g('rcNumL').textContent=v.nl;g('rcErr').textContent=''}
-function now(){var d=new Date(),p=function(n){return String(n).padStart(2,'0')};return{ts:d.getTime(),day:d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()),txt:bd(p(d.getDate())+'/'+p(d.getMonth()+1)+'/'+d.getFullYear()+'  '+p(d.getHours())+':'+p(d.getMinutes()))}}
+ g('rcAccW').hidden=!v.acc;g('rcNumL').textContent=v.nl;g('rcErr').textContent='';
+ EX.forEach(function(x){var d=document.querySelector('#rcEx [data-k="'+x.k+'"]');if(d)d.hidden=!(x.sv===null||x.sv.indexOf(cur)>=0)})}
+function pad(n){return String(n).padStart(2,'0')}
+function stamp(d){return{ts:d.getTime(),day:d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()),txt:bd(pad(d.getDate())+'/'+pad(d.getMonth()+1)+'/'+d.getFullYear()+'  '+pad(d.getHours())+':'+pad(d.getMinutes()))}}
+function localISO(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes())}
 function make(){
  var amt=nm(g('rcAmt').value),fee=nm(g('rcFee').value)||0,num=en(g('rcNum').value).trim();
  if(!num){g('rcErr').textContent='গ্রাহকের নম্বর লিখুন।';return}
  if(!(amt>0)){g('rcErr').textContent='টাকার পরিমাণ লিখুন।';return}
  if(fee<0){g('rcErr').textContent='চার্জ ঋণাত্মক হতে পারে না।';return}
+ var gf=nm(exv('gfee'))||0,vt=nm(exv('vat'))||0;if(gf<0||vt<0){g('rcErr').textContent='ফি বা ভ্যাট ঋণাত্মক হতে পারে না।';return}
  g('rcErr').textContent='';
- var n=ld('tb_seq',0)+1;sv('tb_seq',n);var t=now(),v=SV[cur];
- var r={id:n,svc:cur,sn:v.n,type:g('rcType').value,sub:v.sub?g('rcSub').value:'',subL:v.subL||'',num:num,acc:v.acc?en(g('rcAcc').value).trim():'',amt:amt,fee:fee,trx:g('rcTrx').value.trim(),shop:g('rcShop').value.trim()||DEF,ph:g('rcPh').value.trim(),ts:t.ts,day:t.day,dt:t.txt};
+ var d=new Date();if(whenTouched&&exv('when')){var x=new Date(exv('when'));if(!isNaN(x))d=x}
+ var n=ld('tb_seq',0)+1;sv('tb_seq',n);var t=stamp(d),v=SV[cur];
+ var r={id:n,svc:cur,sn:v.n,type:g('rcType').value,sub:v.sub?g('rcSub').value:'',subL:v.subL||'',num:num,acc:v.acc?en(g('rcAcc').value).trim():'',amt:amt,fee:fee,gfee:gf,vat:vt,trx:g('rcTrx').value.trim(),
+  prov:exv('prov'),bcode:en(exv('bcode')),cname:exv('cname'),month:exv('month'),token:en(exv('token')),track:en(exv('track')),svcn:exv('svcn'),via:exv('via'),from:en(exv('from')),status:exv('status')||'সফল',
+  shop:g('rcShop').value.trim()||DEF,ph:g('rcPh').value.trim(),ts:t.ts,day:t.day,dt:t.txt};
  data.unshift(r);data=data.slice(0,500);sv('tb_data',data);show(r);hist();
- g('rcAmt').value='';g('rcFee').value='';g('rcTrx').value='';g('rcNum').value='';g('rcAcc').value=''}
+ ['rcAmt','rcFee','rcTrx','rcNum','rcAcc'].forEach(function(i){g(i).value=''});EX.forEach(function(x){if(x.k!=='status'){var e=ex(x.k);if(e)e.value=''}});whenTouched=false;
+ g('rcScanImg').hidden=true;g('rcScanMsg').textContent=''}
 function line(a,l,r){var d=el('div',{'class':'rl'});d.appendChild(el('span',null,l));d.appendChild(el('b',null,r));a.appendChild(d)}
+function tokG(s){return String(s).replace(/\D/g,'').replace(/(\d{4})(?=\d)/g,'$1 ')}
+function total(r){return (r.amt||0)+(r.fee||0)+(r.gfee||0)+(r.vat||0)}
 function show(r){
  last=r;g('rcCard').hidden=false;var w=g('rcReceipt');w.textContent='';
  var h=el('div',{'class':'rcc'});h.appendChild(el('h3',null,r.shop));if(r.ph)h.appendChild(el('div',null,'মোবাইল: '+r.ph));h.appendChild(el('div',null,'*** ক্যাশ মেমো ***'));
  w.appendChild(h);w.appendChild(el('hr'));
  line(w,'রিসিট নং',bd(String(r.id).padStart(5,'0')));line(w,'তারিখ',r.dt);w.appendChild(el('hr'));
+ w.appendChild(el('div',{'class':'rcs'},'লেনদেনের তথ্য'));
  line(w,'সার্ভিস',r.sn);line(w,'ধরন',r.type);if(r.sub)line(w,r.subL,r.sub);
- line(w,'নম্বর',bd(r.num));if(r.acc)line(w,'অ্যাকাউন্ট/মিটার',bd(r.acc));if(r.trx)line(w,'TrxID',r.trx);
- w.appendChild(el('hr'));line(w,'পরিমাণ','৳ '+fm(r.amt));line(w,'চার্জ','৳ '+fm(r.fee));
- var t=el('div',{'class':'rl rtot'});t.appendChild(el('span',null,'মোট'));t.appendChild(el('span',null,'৳ '+fm(r.amt+r.fee)));w.appendChild(t);
+ if(r.prov)line(w,'প্রতিষ্ঠান',r.prov);if(r.svcn)line(w,'সেবা',r.svcn);if(r.bcode)line(w,'বিলার কোড',r.bcode);
+ line(w,'নম্বর',bd(r.num));if(r.acc)line(w,r.svc==='bill'?'গ্রাহক/অ্যাকাউন্ট নং':'অ্যাকাউন্ট/মিটার',bd(r.acc));
+ if(r.cname)line(w,'গ্রাহকের নাম',r.cname);if(r.month)line(w,'বিলের মাস',r.month);if(r.track)line(w,'রেফারেন্স',r.track);
+ if(r.token){w.appendChild(el('div',{'class':'rcc'},'টোকেন'));w.appendChild(el('div',{'class':'rtok'},tokG(r.token)))}
+ w.appendChild(el('hr'));
+ w.appendChild(el('div',{'class':'rcs'},'পেমেন্টের তথ্য'));
+ if(r.via)line(w,'পেমেন্ট মাধ্যম',r.via);if(r.from)line(w,'পেমেন্ট নম্বর',bd(r.from));if(r.trx)line(w,'TrxID',r.trx);if(r.status)line(w,'অবস্থা',r.status);
+ line(w,'পরিমাণ','৳ '+fm(r.amt));
+ if(r.gfee>0)line(w,'গেটওয়ে ফি','৳ '+fm(r.gfee));if(r.vat>0)line(w,'ভ্যাট','৳ '+fm(r.vat));
+ line(w,'সার্ভিস চার্জ','৳ '+fm(r.fee));
+ var t=el('div',{'class':'rl rtot'});t.appendChild(el('span',null,'মোট'));t.appendChild(el('span',null,'৳ '+fm(total(r))));w.appendChild(t);
  w.appendChild(el('hr'));w.appendChild(el('div',{'class':'rcc'},'ধন্যবাদ, আবার আসবেন'));
  g('rcMsg').textContent='';g('rcCard').scrollIntoView({behavior:'smooth',block:'nearest'})}
-function plain(r){var a=[r.shop];if(r.ph)a.push('মোবাইল: '+r.ph);a.push('রিসিট নং: '+bd(String(r.id).padStart(5,'0')),'তারিখ: '+r.dt,'সার্ভিস: '+r.sn+' ('+r.type+')');if(r.sub)a.push(r.subL+': '+r.sub);a.push('নম্বর: '+bd(r.num));if(r.acc)a.push('অ্যাকাউন্ট/মিটার: '+bd(r.acc));if(r.trx)a.push('TrxID: '+r.trx);a.push('পরিমাণ: ৳'+fm(r.amt),'চার্জ: ৳'+fm(r.fee),'মোট: ৳'+fm(r.amt+r.fee),'ধন্যবাদ');return a.join('\n')}
+function plain(r){var a=[r.shop];if(r.ph)a.push('মোবাইল: '+r.ph);a.push('রিসিট নং: '+bd(String(r.id).padStart(5,'0')),'তারিখ: '+r.dt,'সার্ভিস: '+r.sn+' ('+r.type+')');
+ if(r.sub)a.push(r.subL+': '+r.sub);if(r.prov)a.push('প্রতিষ্ঠান: '+r.prov);if(r.svcn)a.push('সেবা: '+r.svcn);if(r.bcode)a.push('বিলার কোড: '+r.bcode);
+ a.push('নম্বর: '+bd(r.num));if(r.acc)a.push('অ্যাকাউন্ট/মিটার: '+bd(r.acc));if(r.cname)a.push('গ্রাহকের নাম: '+r.cname);if(r.month)a.push('বিলের মাস: '+r.month);if(r.track)a.push('রেফারেন্স: '+r.track);if(r.token)a.push('টোকেন: '+tokG(r.token));
+ if(r.via)a.push('পেমেন্ট মাধ্যম: '+r.via);if(r.from)a.push('পেমেন্ট নম্বর: '+bd(r.from));if(r.trx)a.push('TrxID: '+r.trx);if(r.status)a.push('অবস্থা: '+r.status);
+ a.push('পরিমাণ: ৳'+fm(r.amt));if(r.gfee>0)a.push('গেটওয়ে ফি: ৳'+fm(r.gfee));if(r.vat>0)a.push('ভ্যাট: ৳'+fm(r.vat));a.push('সার্ভিস চার্জ: ৳'+fm(r.fee),'মোট: ৳'+fm(total(r)),'ধন্যবাদ');return a.join('\n')}
 function hist(){
- var td=now().day,tot=0,fe=0,c=0,w=g('rcHist');w.textContent='';
+ var td=stamp(new Date()).day,tot=0,fe=0,c=0,w=g('rcHist');w.textContent='';
  data.forEach(function(r){if(r.day===td){c++;tot+=r.amt;fe+=r.fee}});
  g('rcCnt').textContent=bd(c);g('rcSumAmt').textContent=fm(tot);g('rcSumFee').textContent=fm(fe);
  if(!data.length){w.appendChild(el('p',{'class':'hint'},'কোনো লেনদেন নেই। উপরে ফর্ম পূরণ করে রিসিট তৈরি করুন।'));return}
  data.slice(0,30).forEach(function(r){var d=el('div',{'class':'sm'}),l=el('span',{'class':'cn'});
-  l.appendChild(el('b',null,r.sn+' · '+r.type+' · ৳'+fm(r.amt+r.fee)));l.appendChild(el('br'));l.appendChild(el('small',null,bd(r.num)+' · '+r.dt));
+  l.appendChild(el('b',null,r.sn+' · '+r.type+' · ৳'+fm(total(r))));l.appendChild(el('br'));l.appendChild(el('small',null,bd(r.num)+' · '+r.dt));
   var b=el('button',{type:'button','class':'sb'},'দেখুন');b.onclick=function(){show(r)};d.appendChild(l);d.appendChild(b);w.appendChild(d)})}
+
+/* ---------- রিসিটের ছবি থেকে তথ্য ---------- */
+var MON={jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,oct:10,nov:11,dec:12};
+var BMON=['','জানুয়ারি','ফেব্রুয়ারি','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর'];
+var PROV={nesco:'NESCO',desco:'DESCO',dpdc:'DPDC',wzpdcl:'WZPDCL',breb:'পল্লী বিদ্যুৎ (BREB)',reb:'পল্লী বিদ্যুৎ (BREB)',titas:'তিতাস গ্যাস',bakhrabad:'বাখরাবাদ গ্যাস',wasa:'ওয়াসা'};
+function fixDigits(s){var d=(s.match(/\d/g)||[]).length;if(s.length>=6&&/^[0-9OoIlSBZ]+$/.test(s)&&d/s.length>=0.6)return s.replace(/[Oo]/g,'0').replace(/[Il]/g,'1').replace(/S/g,'5').replace(/B/g,'8').replace(/Z/g,'2');return s}
+function num2(s){return s?parseFloat(String(s).replace(/,/g,'')):NaN}
+function parseRc(text){
+ var L=String(text||'').split(/\r?\n/).map(function(s){return s.replace(/[ \t]+/g,' ').trim()}).filter(Boolean),T=L.join('\n'),o={};
+ function m(re,i){var x=T.match(re);return x?String(x[i||1]||'').trim():''}
+ var pm=T.match(/(nesco|desco|dpdc|wzpdcl|breb|reb|titas|bakhrabad|wasa)(?![a-z])[\s_\-]*(pre\s*paid|post\s*paid)?/i);
+ if(pm){o.prov=PROV[pm[1].toLowerCase()]||pm[1].toUpperCase();var k=pm[1].toLowerCase();o.btype=(k==='titas'||k==='bakhrabad')?'গ্যাস':k==='wasa'?'পানি':'বিদ্যুৎ';if(pm[2])o.sub=/post/i.test(pm[2])?'পোস্টপেইড':'প্রিপেইড'}
+ if(!o.sub){if(/pre\s*paid/i.test(T))o.sub='প্রিপেইড';else if(/post\s*paid/i.test(T))o.sub='পোস্টপেইড'}
+ o.bcode=m(/Biller\s*Code\s*[:\-]?\s*(\d+)/i);
+ o.acc=m(/(?:Customer\s*no\.?|Account\s*No\.?|Meter\s*No\.?)\s*[:\-]?\s*([0-9][0-9\-]{4,})/i).replace(/\D/g,'');
+ var tk=m(/Token\s*[:\-]?\s*((?:\d{3,5}[ \-]?){3,6})/i).replace(/\D/g,'');if(tk){o.token=tk;if(!o.sub)o.sub='প্রিপেইড'}
+ var mo=m(/Bill\s*Month\s*[:\-]?\s*(\d{1,2})/i),yr=m(/Bill\s*Year\s*[:\-]?\s*(\d{4})/i);
+ if(mo&&+mo>=1&&+mo<=12)o.month=BMON[+mo]+(yr?' '+bd(yr):'');else if(yr)o.month=bd(yr);
+ o.cname=m(/Customer[ \t]*Name[ \t]*[:\-]?[ \t]*([A-Za-z][A-Za-z.' \-]{2,})/i).replace(/\s+/g,' ').trim();
+ var nagadAcc=m(/Nagad\s*Acc\.?\s*No\.?\s*[:\-]?\s*([0-9][0-9\-\s]{8,})/i).replace(/\D/g,'');
+ o.from=m(/Payment\s*From\s*[:\-]?\s*(\d{10,13})/i)||nagadAcc;
+ o.num=m(/Beneficiary\s*Mobile\s*No\.?\s*[:\-]?\s*(01\d{9})/i);
+ var tr=m(/Transaction\s*ID\s*[:\-]?\s*([A-Za-z0-9]{6,})/i);o.trx=tr?fixDigits(tr):'';
+ o.track=m(/Tracking\s*(?:Number|No\.?)\s*[:\-]?\s*(\d+)/i);
+ o.svcn=m(/Service\s*Name\s*[:\-]?\s*([^\n]+)/i);
+ // তারিখ-সময়
+ var d1=T.match(/(\d{1,2})[\-\s]([A-Za-z]{3})[A-Za-z]*[\-\s,]*(\d{2,4})[,\s]+(\d{1,2}):(\d{2})(?::\d{2})?\s*([ap]m)?/i);
+ if(d1&&MON[d1[2].toLowerCase()]){var y=+d1[3];if(y<100)y+=2000;var hh=+d1[4],ap=(d1[6]||'').toLowerCase();if(ap==='pm'&&hh<12)hh+=12;if(ap==='am'&&hh===12)hh=0;o.when=y+'-'+pad(MON[d1[2].toLowerCase()])+'-'+pad(+d1[1])+'T'+pad(hh)+':'+d1[5]}
+ // টাকা
+ o.amt=num2(m(/Paid\s*Amount\s*[:\-]?\s*([\d,]+(?:\.\d+)?)/i)||m(/^Amount\s*[:\-]?\s*([\d,]+(?:\.\d+)?)/mi));
+ o.gfee=num2(m(/Fee\s*Amount\s*[:\-]?\s*([\d,]+(?:\.\d+)?)/i)||m(/^Fee\s*[:\-]?\s*([\d,]+(?:\.\d+)?)/mi));
+ o.vat=num2(m(/^VAT\s*[:\-]?\s*([\d,]+(?:\.\d+)?)/mi));
+ o.total=num2(m(/(?:Total\s*payment|Payment\s*Received)\s*[:\-]?\s*([\d,]+(?:\.\d+)?)/i));
+ var st=m(/Status\s*[:\-]?\s*([A-Za-z]+)/i).toLowerCase();o.status=/success|complete/.test(st)?'সফল':/pend|process/.test(st)?'প্রক্রিয়াধীন':/fail|reject/.test(st)?'ব্যর্থ':'';
+ // মাধ্যম
+ if(/nagad|নগদ/i.test(T)){o.via='নগদ'}else if(/rocket/i.test(T)){o.via='রকেট'}else if(/bkash/i.test(T)){o.via='বিকাশ'}else if(/Beneficiary\s*Mobile/i.test(T)){o.via='রকেট';o.guessVia=true}
+ o.isBill=/Bill\s*Payment|Biller\s*Code|Bill\s*Information|Token/i.test(T);
+ return o}
+function applyRc(o){
+ var got=[],warn=[];
+ if(o.isBill||o.prov){cur='bill';tabs();form()}
+ if(cur==='bill'){if(o.btype&&[].slice.call(g('rcType').options).some(function(x){return x.value===o.btype}))g('rcType').value=o.btype;g('rcSub').value=o.sub||'অন্যান্য'}
+ function put(id,v,label){if(v!==''&&v!=null&&!(typeof v==='number'&&isNaN(v))){g(id).value=v;if(label)got.push(label)}}
+ put('rcNum',o.num,'গ্রাহকের মোবাইল');put('rcAcc',o.acc,'গ্রাহক/অ্যাকাউন্ট নং');put('rcTrx',o.trx,'TrxID');
+ if(!isNaN(o.amt)){g('rcAmt').value=o.amt;got.push('পরিমাণ')}
+ function putx(k,v,label){var e=ex(k);if(e&&v!==''&&v!=null&&!(typeof v==='number'&&isNaN(v))){e.value=v;if(label)got.push(label)}}
+ putx('prov',o.prov,'প্রতিষ্ঠান');putx('bcode',o.bcode,'বিলার কোড');putx('cname',o.cname,'গ্রাহকের নাম');putx('month',o.month,'বিলের মাস');putx('token',o.token?tokG(o.token):'','টোকেন');
+ putx('track',o.track,'রেফারেন্স');putx('svcn',o.svcn,'সেবার বিবরণ');putx('from',o.from,'পেমেন্ট নম্বর');
+ if(o.via){var ve=ex('via');if(ve){ve.value=o.via;got.push('পেমেন্ট মাধ্যম'+(o.guessVia?' (অনুমান)':''))}}
+ if(!isNaN(o.gfee)&&o.gfee>0)putx('gfee',o.gfee,'গেটওয়ে ফি');if(!isNaN(o.vat)&&o.vat>0)putx('vat',o.vat,'ভ্যাট');
+ if(o.status){var se=ex('status');if(se)se.value=o.status}
+ if(o.when){var we=ex('when');if(we){we.value=o.when;whenTouched=true;got.push('সময়')}}
+ g('rcMore').open=true;
+ if(!o.num)warn.push('গ্রাহকের মোবাইল নম্বর রিসিটে পাওয়া যায়নি, নিজে লিখুন');
+ var sum=(isNaN(o.amt)?0:o.amt)+(isNaN(o.gfee)?0:o.gfee)+(isNaN(o.vat)?0:o.vat);
+ if(!isNaN(o.total)&&Math.abs(sum-o.total)>0.01)warn.push('রিসিটের মোট ৳'+o.total+' কিন্তু পরিমাণ+ফি+ভ্যাট ৳'+(Math.round(sum*100)/100)+', সংখ্যাগুলো মিলিয়ে নিন');
+ if(o.trx&&/[A-Z]/.test(o.trx)&&/[0-9]/.test(o.trx))warn.push('TrxID-তে 0 (শূন্য) আর O (অক্ষর) গুলিয়ে যেতে পারে, মিলিয়ে নিন');
+ warn.push('আপনার সার্ভিস চার্জ থাকলে নিজে লিখুন');
+ return{got:got,warn:warn}}
+var tessP=null;
+function loadTess(){if(window.Tesseract)return Promise.resolve();if(tessP)return tessP;tessP=new Promise(function(ok,no){var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';s.onload=ok;s.onerror=function(){tessP=null;no(new Error('OCR লাইব্রেরি লোড হয়নি, ইন্টারনেট সংযোগ দেখুন'))};document.head.appendChild(s)});return tessP}
+async function ocrFile(f,say){
+ await loadTess();
+ var run=async function(lp){var opt={logger:function(m){if(m.status)say((m.status==='recognizing text'?'পড়া হচ্ছে ':'লোড হচ্ছে ')+(m.progress?Math.round(m.progress*100)+'%':''))}};if(lp)opt.langPath=lp;
+  var w=await Tesseract.createWorker('eng',1,opt);try{await w.setParameters({tessedit_pageseg_mode:'6',preserve_interword_spaces:'1'});var r=await w.recognize(f);return r.data.text}finally{try{await w.terminate()}catch(e){}}};
+ try{return await run('https://cdn.jsdelivr.net/npm/@tesseract.js-data/eng/4.0.0_best_int')}catch(e){return await run(null)}}
+async function scan(f){
+ var msg=g('rcScanMsg'),im=g('rcScanImg');
+ if(!f||!/^image\//.test(f.type)){msg.textContent='শুধু ছবি দিন।';return}
+ if(im._u)URL.revokeObjectURL(im._u);im._u=URL.createObjectURL(f);im.src=im._u;im.hidden=false;
+ var b=g('rcScan');b.disabled=true;msg.className='hint';msg.textContent='ছবি পড়া শুরু হচ্ছে... (প্রথমবার একটু সময় লাগে)';
+ try{var text=await ocrFile(f,function(t){msg.textContent=t});var o=parseRc(text),r=applyRc(o);
+  if(!r.got.length){msg.innerHTML='<span class="rcw">এই ছবি থেকে কিছু পড়া যায়নি। পরিষ্কার, সোজা স্ক্রিনশট দিন, অথবা নিজে লিখুন।</span>'}
+  else{msg.innerHTML='✅ ফর্মে বসেছে: '+r.got.join(', ')+'।<br><span class="rcw">'+r.warn.map(function(x){return '• '+x}).join('<br>')+'</span>'}
+ }catch(e){msg.innerHTML='<span class="rcw">ছবি পড়া যায়নি: '+String(e.message||e).replace(/[<>&]/g,'')+'</span>'}
+ finally{b.disabled=false}}
+window.rcParse=parseRc;window.rcApplyText=function(t){return applyRc(parseRc(t))};
+
+g('rcScan').onclick=function(){g('rcFile').value='';g('rcFile').click()};
+g('rcFile').onchange=function(){scan(g('rcFile').files[0])};
 g('rcMake').onclick=make;
 g('rcPrint').onclick=function(){try{window.print()}catch(e){g('rcMsg').textContent='প্রিন্ট চালু হয়নি। রিসিট স্ক্রিনশট নিন।'}};
 g('rcCopy').onclick=function(){if(!last)return;try{navigator.clipboard.writeText(plain(last)).then(function(){g('rcMsg').textContent='কপি হয়েছে।'},function(){g('rcMsg').textContent='কপি করা যায়নি।'})}catch(e){g('rcMsg').textContent='কপি করা যায়নি।'}};
@@ -570,7 +708,7 @@ g('rcClr').onclick=function(){if(!data.length)return;if(confirm('সব লে�
 ['rcShop','rcPh'].forEach(function(i){g(i).oninput=function(){sv('tb_shop',{n:g('rcShop').value,p:g('rcPh').value})}});
 var s=ld('tb_shop',{n:'',p:''});g('rcShop').value=s.n||'';g('rcPh').value=s.p||'';
 data=ld('tb_data',[]);if(!Array.isArray(data))data=[];
-tabs();form();hist();
+buildEx();tabs();form();hist();
 })();
 function rsl(){const pend=LNS.filter(l=>l.status==='pending'),rest=LNS.filter(l=>l.status!=='pending');
 $('#nb10').textContent=pend.length?bn(pend.length):'';$('#yn').textContent=pend.length?'('+bn(pend.length)+')':'';
