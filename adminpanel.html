@@ -116,7 +116,8 @@ div.kc{cursor:default}
 #rcMore summary{cursor:pointer;color:var(--pri);font-weight:600;padding:6px 0}
 .rcw{color:#b45309;font-size:13px}
 #rcFrame{width:100%;overflow:hidden}
-#rcReceipt{box-sizing:border-box;width:105mm;height:148.5mm;background:#fff;color:#111;padding:5mm;border:2px solid #111;font-size:14px;line-height:1.38;overflow:hidden;transform-origin:top left}
+#rcReceipt{box-sizing:border-box;position:relative;width:105mm;background:#fff;color:#111;padding:7mm 6mm;border:2.5px solid #111;border-radius:10px;font-size:14px;line-height:1.4;transform-origin:top left}
+#rcReceipt::before{content:"";position:absolute;inset:4px;border:1px solid #111;border-radius:6px;pointer-events:none}
 #rcReceipt .rcc{text-align:center}
 #rcReceipt h3{margin:0;font-size:1.35em}
 #rcReceipt hr{border:0;border-top:1px dashed #777;margin:.45em 0}
@@ -134,7 +135,8 @@ div.kc{cursor:default}
  #rcCard[hidden]{display:none!important}
  #rcCard .noprint{display:none!important}
  #rcFrame{width:105mm!important;height:148.5mm!important;overflow:visible!important}
- #rcReceipt{transform:none!important;border:2px solid #000!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ #rcReceipt{transform:none!important;height:148.5mm!important;display:flex!important;flex-direction:column;justify-content:center;border:2.5px solid #000!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ #rcReceipt::before{border-color:#000!important}
 }
 </style></head><body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><linearGradient id="lgrad1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8a5cff"/><stop offset=".55" stop-color="#5b34e6"/><stop offset="1" stop-color="#ff4d9d"/></linearGradient><linearGradient id="lgrad2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
@@ -202,7 +204,7 @@ div.kc{cursor:default}
 <button class="go" id="rcMake" type="button">রিসিট তৈরি করুন</button></div>
 <div class="pk" id="rcCard" hidden style="margin-top:12px"><h2 class="noprint" style="margin-top:6px">রিসিট</h2><div id="rcFrame"><div id="rcReceipt"></div></div>
 <div class="rcbtns noprint"><button class="btn2 g" id="rcPrint" type="button">প্রিন্ট করুন</button><button class="btn2 g" id="rcShare" type="button">শেয়ার (JPG)</button><button class="btn2" id="rcJpg" type="button">JPG সেভ</button><button class="btn2" id="rcCopy" type="button">টেক্সট কপি</button></div>
-<div class="hint noprint" id="rcMsg"></div><div class="hint noprint">রিসিট A4 পেজের চার ভাগের এক ভাগ (A6) মাপের, প্রিন্টে পেজের ঠিক মাঝখানে আসে। প্রিন্ট ডায়ালগে কাগজ A4, স্কেল ১০০% এবং "Headers and footers" বন্ধ রাখুন।</div></div>
+<div class="hint noprint" id="rcMsg"></div><div class="hint noprint">স্ক্রিন ও JPG-তে রিসিট লেখার মাপ অনুযায়ী বর্ডারসহ হয়। প্রিন্টে রিসিট A4 পেজের চার ভাগের এক ভাগ (A6) মাপে পেজের ঠিক মাঝখানে আসে; প্রিন্ট ডায়ালগে কাগজ A4, স্কেল ১০০% এবং "Headers and footers" বন্ধ রাখুন।</div></div>
 <h2>আজকের হিসাব</h2>
 <div class="kg"><div class="kc" style="--c:#6a3df0"><small>লেনদেন</small><b id="rcCnt">০</b></div><div class="kc" style="--c:#12a150"><small>মোট টাকা</small><b id="rcSumAmt">০</b></div><div class="kc" style="--c:#ffb020"><small>মোট চার্জ</small><b id="rcSumFee">০</b></div></div>
 <div class="pk" id="rcHist" style="margin-top:10px"></div>
@@ -605,9 +607,14 @@ function rows(r){var a=[];function kv(l,v,o){a.push({t:'kv',l:l,v:v,o:o})}
  if(r.via)kv('পেমেন্ট মাধ্যম',r.via);if(r.from)kv('পেমেন্ট নম্বর',bd(r.from));if(r.trx)kv('TrxID',r.trx);if(r.status)kv('অবস্থা',r.status);
  kv('পরিমাণ','৳ '+fm(r.amt));if(r.gfee>0)kv('গেটওয়ে ফি','৳ '+fm(r.gfee));if(r.vat>0)kv('ভ্যাট','৳ '+fm(r.vat));kv('সার্ভিস চার্জ','৳ '+fm(r.fee));
  kv('মোট','৳ '+fm(total(r)),'tot');a.push({t:'hr'},{t:'c',x:'ধন্যবাদ, আবার আসবেন'});return a}
-function fit(){var w=g('rcReceipt'),fr=g('rcFrame');if(g('rcCard').hidden)return;w.style.transform='none';w.style.fontSize='14px';var fs=14;
- while(w.scrollHeight>w.clientHeight+1&&fs>7.5){fs-=0.5;w.style.fontSize=fs+'px'}
+function fit(){var w=g('rcReceipt'),fr=g('rcFrame');if(g('rcCard').hidden||saved)return;w.style.transform='none';w.style.fontSize='';w.style.height='';
  var s=Math.min(1,fr.clientWidth/w.offsetWidth);w.style.transform=s<1?'scale('+s+')':'none';fr.style.height=Math.ceil(w.offsetHeight*s)+'px'}
+var saved=null;
+function prePrint(){var w=g('rcReceipt');if(saved||g('rcCard').hidden)return;saved={};w.style.transform='none';w.style.height='148.5mm';var fs=14;w.style.fontSize='14px';
+ while(w.scrollHeight>w.clientHeight+1&&fs>7){fs-=0.5;w.style.fontSize=fs+'px'}}
+function postPrint(){if(!saved)return;saved=null;fit()}
+window.addEventListener('beforeprint',prePrint);window.addEventListener('afterprint',postPrint);
+window.rcPre=prePrint;window.rcPost=postPrint;
 window.addEventListener('resize',fit);
 function show(r){
  last=r;g('rcCard').hidden=false;var w=g('rcReceipt');w.textContent='';
@@ -619,11 +626,11 @@ function show(r){
   else if(it.t==='tok'){w.appendChild(el('div',{'class':'rtok'},it.x))}
   else{d=el('div',{'class':'rl'+(it.o==='tot'?' rtot':'')});d.appendChild(el('span',null,it.l));d.appendChild(el(it.o==='tot'?'span':'b',null,it.v));w.appendChild(d)}});
  g('rcMsg').textContent='';fit();g('rcCard').scrollIntoView({behavior:'smooth',block:'nearest'})}
-/* ---------- JPG (A6 = ১০৫×১৪৮.৫ মিমি, ৩০০ ডিপিআই) ---------- */
+/* ---------- JPG: লেখার মাপ অনুযায়ী উচ্চতা, চারপাশে সুন্দর বর্ডার ---------- */
 async function renderJpg(r){
  if(document.fonts&&document.fonts.ready)try{await document.fonts.ready}catch(e){}
- var W=1240,H=1748,P=92,cv=document.createElement('canvas');cv.width=W;cv.height=H;var x=cv.getContext('2d');
- var FF='"Baloo Da 2","Hind Siliguri","Noto Sans Bengali",system-ui,sans-serif',MONO='ui-monospace,Menlo,Consolas,monospace',IW=W-2*P,TOP=P+24,BOT=H-P-10;
+ var W=1080,PX=84,TOP=104,BOT=96,B=38,cv=document.createElement('canvas'),x=cv.getContext('2d');cv.width=W;cv.height=600;
+ var FF='"Baloo Da 2","Hind Siliguri","Noto Sans Bengali",system-ui,sans-serif',MONO='ui-monospace,Menlo,Consolas,monospace',IW=W-2*PX;
  var items=rows(r);
  function font(sz,b,mono){x.font=(b?'700 ':'400 ')+Math.round(sz)+'px '+(mono?MONO:FF)}
  function wrap(t,mw){var out=[],cur='';String(t).split(/(\s+)/).forEach(function(wd){
@@ -631,21 +638,22 @@ async function renderJpg(r){
   if(cur.trim())out.push(cur.trim());cur='';
   if(x.measureText(wd).width>mw){var c='';Array.from(wd).forEach(function(ch){if(x.measureText(c+ch).width>mw){out.push(c);c=ch}else c+=ch});cur=c}else cur=wd.replace(/^\s+/,'')});
   if(cur.trim())out.push(cur.trim());return out.length?out:['']}
- function pass(sc,draw){var y=TOP,B=36*sc,L=function(z){return z*1.4};
+ function pass(draw){var y=TOP,L=function(z){return z*1.42};
   items.forEach(function(it){
-   if(it.t==='h'){font(58*sc,1);x.textAlign='center';wrap(it.x,IW).forEach(function(l){y+=L(58*sc);if(draw)x.fillText(l,W/2,y-14*sc)})}
-   else if(it.t==='c'){font(B*.95,0);x.textAlign='center';y+=L(B*.95);if(draw)x.fillText(it.x,W/2,y-10*sc)}
-   else if(it.t==='s'){font(B,1);x.textAlign='left';y+=L(B);if(draw)x.fillText(it.x,P,y-10*sc)}
-   else if(it.t==='hr'){y+=26*sc;if(draw){x.save();x.setLineDash([14,10]);x.strokeStyle='#777';x.lineWidth=3;x.beginPath();x.moveTo(P,y-13*sc);x.lineTo(W-P,y-13*sc);x.stroke();x.restore()}}
-   else if(it.t==='tok'){var z=46*sc;font(z,1,1);var h=L(z)+20*sc;y+=12*sc;if(draw){x.save();x.strokeStyle='#222';x.lineWidth=3;x.strokeRect(P,y,IW,h);x.restore();x.textAlign='center';x.fillText(it.x,W/2,y+h/2+z*.33)}y+=h+12*sc}
-   else{var z=it.o==='tot'?B*1.2:B;font(z,0);var lw=x.measureText(it.l).width;font(z,1);var vmax=Math.max(IW*.5,IW-lw-34),ls=wrap(it.v,vmax);
-    ls.forEach(function(l,i){y+=L(z);if(draw){if(i===0){font(z,it.o==='tot');x.textAlign='left';x.fillText(it.l,P,y-10*sc)}font(z,1);x.textAlign='right';x.fillText(l,W-P,y-10*sc)}})}
+   if(it.t==='h'){var z=B*1.6;font(z,1);x.textAlign='center';wrap(it.x,IW).forEach(function(l){y+=L(z);if(draw)x.fillText(l,W/2,y-z*.22)})}
+   else if(it.t==='c'){var z=B*.95;font(z,0);x.textAlign='center';y+=L(z);if(draw)x.fillText(it.x,W/2,y-z*.22)}
+   else if(it.t==='s'){font(B,1);x.textAlign='left';y+=L(B)+4;if(draw)x.fillText(it.x,PX,y-B*.22)}
+   else if(it.t==='hr'){y+=B*.7;if(draw){x.save();x.setLineDash([14,10]);x.strokeStyle='#8a8a8a';x.lineWidth=3;x.beginPath();x.moveTo(PX,y-B*.35);x.lineTo(W-PX,y-B*.35);x.stroke();x.restore()}}
+   else if(it.t==='tok'){var z=B*1.28;font(z,1,1);var h=L(z)+24;y+=14;if(draw){x.save();x.strokeStyle='#222';x.lineWidth=4;x.strokeRect(PX,y,IW,h);x.restore();x.textAlign='center';x.fillText(it.x,W/2,y+h/2+z*.33)}y+=h+14}
+   else{var z=it.o==='tot'?B*1.25:B;font(z,0);var lw=x.measureText(it.l).width;font(z,1);var ls=wrap(it.v,Math.max(IW*.5,IW-lw-34));
+    ls.forEach(function(l,i){y+=L(z);if(draw){if(i===0){font(z,it.o==='tot');x.textAlign='left';x.fillText(it.l,PX,y-z*.22)}font(z,1);x.textAlign='right';x.fillText(l,W-PX,y-z*.22)}})}
   });return y}
- var sc=1,guard=0;while(pass(sc,false)>BOT&&guard++<30)sc*=.96;
+ var H=Math.ceil(pass(false)+BOT);cv.width=W;cv.height=H;
  x.fillStyle='#fff';x.fillRect(0,0,W,H);x.fillStyle='#111';x.textBaseline='alphabetic';
- pass(sc,true);
- x.strokeStyle='#111';x.lineWidth=10;x.strokeRect(26,26,W-52,H-52);
- return new Promise(function(ok,no){cv.toBlob(function(b){b?ok(b):no(new Error('ছবি তৈরি হয়নি'))},'image/jpeg',0.92)})}
+ pass(true);
+ function rr(i,lw,rad){x.lineWidth=lw;x.beginPath();var l=i,t=i,rt=W-i,b=H-i;x.moveTo(l+rad,t);x.lineTo(rt-rad,t);x.quadraticCurveTo(rt,t,rt,t+rad);x.lineTo(rt,b-rad);x.quadraticCurveTo(rt,b,rt-rad,b);x.lineTo(l+rad,b);x.quadraticCurveTo(l,b,l,b-rad);x.lineTo(l,t+rad);x.quadraticCurveTo(l,t,l+rad,t);x.closePath();x.stroke()}
+ x.strokeStyle='#111';rr(30,9,26);rr(52,3,16);
+ return new Promise(function(ok,no){cv.toBlob(function(b){b?ok(b):no(new Error('ছবি তৈরি হয়নি'))},'image/jpeg',0.93)})}
 function dl(bl,name){var u=URL.createObjectURL(bl),a=el('a',{href:u,download:name});document.body.appendChild(a);a.click();setTimeout(function(){a.remove();URL.revokeObjectURL(u)},1500)}
 function jname(r){return 'receipt-'+String(r.id).padStart(5,'0')+'.jpg'}
 window.rcRenderJpg=renderJpg;
@@ -701,7 +709,8 @@ function parseRc(text){
  o.isBill=/Bill\s*Payment|Biller\s*Code|Bill\s*Information|Token/i.test(T);
  return o}
 function applyRc(o){
- var got=[],warn=[];
+ var got=[],warn=[],same=false;
+ if(!o.num&&o.from){o.num=o.from;same=true}else if(!o.from&&o.num){o.from=o.num;same=true}
  if(o.isBill||o.prov){cur='bill';tabs();form()}
  if(cur==='bill'){if(o.btype&&[].slice.call(g('rcType').options).some(function(x){return x.value===o.btype}))g('rcType').value=o.btype;g('rcSub').value=o.sub||'অন্যান্য'}
  function put(id,v,label){if(v!==''&&v!=null&&!(typeof v==='number'&&isNaN(v))){g(id).value=v;if(label)got.push(label)}}
@@ -715,7 +724,7 @@ function applyRc(o){
  if(o.status){var se=ex('status');if(se)se.value=o.status}
  if(o.when){var we=ex('when');if(we){we.value=o.when;whenTouched=true;got.push('সময়')}}
  g('rcMore').open=true;
- if(!o.num)warn.push('গ্রাহকের মোবাইল নম্বর রিসিটে পাওয়া যায়নি, নিজে লিখুন');
+ if(same)warn.push('রিসিটে একটাই নম্বর ছিল, তাই গ্রাহকের নম্বর ও পেমেন্ট নম্বর দুই জায়গাতেই একই বসানো হয়েছে (আলাদা হলে বদলে নিন)');else if(!o.num)warn.push('গ্রাহকের মোবাইল নম্বর রিসিটে পাওয়া যায়নি, নিজে লিখুন');
  var sum=(isNaN(o.amt)?0:o.amt)+(isNaN(o.gfee)?0:o.gfee)+(isNaN(o.vat)?0:o.vat);
  if(!isNaN(o.total)&&Math.abs(sum-o.total)>0.01)warn.push('রিসিটের মোট ৳'+o.total+' কিন্তু পরিমাণ+ফি+ভ্যাট ৳'+(Math.round(sum*100)/100)+', সংখ্যাগুলো মিলিয়ে নিন');
  if(o.trx&&/[A-Z]/.test(o.trx)&&/[0-9]/.test(o.trx))warn.push('TrxID-তে 0 (শূন্য) আর O (অক্ষর) গুলিয়ে যেতে পারে, মিলিয়ে নিন');
@@ -743,7 +752,7 @@ window.rcParse=parseRc;window.rcApplyText=function(t){return applyRc(parseRc(t))
 g('rcScan').onclick=function(){g('rcFile').value='';g('rcFile').click()};
 g('rcFile').onchange=function(){scan(g('rcFile').files[0])};
 g('rcMake').onclick=make;
-g('rcPrint').onclick=function(){try{window.print()}catch(e){g('rcMsg').textContent='প্রিন্ট চালু হয়নি। রিসিট স্ক্রিনশট নিন।'}};
+g('rcPrint').onclick=function(){try{prePrint();window.print();setTimeout(postPrint,800)}catch(e){g('rcMsg').textContent='প্রিন্ট চালু হয়নি। রিসিট স্ক্রিনশট নিন।'}};
 g('rcCopy').onclick=function(){if(!last)return;try{navigator.clipboard.writeText(plain(last)).then(function(){g('rcMsg').textContent='কপি হয়েছে।'},function(){g('rcMsg').textContent='কপি করা যায়নি।'})}catch(e){g('rcMsg').textContent='কপি করা যায়নি।'}};
 g('rcShare').onclick=async function(){if(!last)return;var m=g('rcMsg');m.textContent='ছবি তৈরি হচ্ছে...';
  try{var bl=await renderJpg(last),f=new File([bl],jname(last),{type:'image/jpeg'});
